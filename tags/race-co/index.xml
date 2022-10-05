@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Race-Co on 0xSlaxo Blog</title>
+    <link>https://sl4x0.github.io/tags/race-co/</link>
+    <description>Recent content in Race-Co on 0xSlaxo Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Thu, 21 Jul 2022 23:48:05 +0000</lastBuildDate><atom:link href="https://sl4x0.github.io/tags/race-co/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Race Conditions</title>
+      <link>https://sl4x0.github.io/web-notes/race-condition/</link>
+      <pubDate>Thu, 21 Jul 2022 23:48:05 +0000</pubDate>
+      
+      <guid>https://sl4x0.github.io/web-notes/race-condition/</guid>
+      <description>Race Condition References RACE CONDITION BUGS!
+PayloadsAllTheThings/Race Condition at master · swisskyrepo/PayloadsAllTheThings
+GitHub - ngalongc/bug-bounty-reference: Inspired by https://github.com/djadmin/awesome-bug-bounty, a list of bug bounty write-up that is categorized by the bug nature
+Race Condition
+GitHub - alexbieber/Bug_Bounty_writeups: BUG BOUNTY WRITEUPS - OWASP TOP 10 🔴🔴🔴🔴✔
+Race-Condition Vulnerability Lab
+pentest-guide/Race-Condition at master · Voorivex/pentest-guide
+Writeups Bug Bounty hackerone
+Race conditions are one of the most interesting vulnerabilities in modern web applications. They stem from simple programming mistakes developers often make, and these mistakes have proved costly: attackers have used race conditions to steal money from online banks, e-commerce sites, stock brokerages, and cryptocurrency exchanges.</description>
+    </item>
+    
+  </channel>
+</rss>

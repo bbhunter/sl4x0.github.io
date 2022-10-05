@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>CORS on 0xSlaxo Blog</title>
+    <link>https://sl4x0.github.io/tags/cors/</link>
+    <description>Recent content in CORS on 0xSlaxo Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Tue, 12 Jul 2022 23:48:05 +0000</lastBuildDate><atom:link href="https://sl4x0.github.io/tags/cors/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Cross-Origin Resource Sharing</title>
+      <link>https://sl4x0.github.io/web-notes/cors-misconfigration/</link>
+      <pubDate>Tue, 12 Jul 2022 23:48:05 +0000</pubDate>
+      
+      <guid>https://sl4x0.github.io/web-notes/cors-misconfigration/</guid>
+      <description>In this section, we will explain what cross-origin resource sharing (CORS) is, describe some common examples of cross-origin resource sharing based attacks, and discuss how to protect against these attacks.
+References Bug Bounty Bootcamp: The Guide to Finding and Reporting Web Vulnerabilities
+What is CORS cross-origin resource sharing
+Cross-Origin Resource Sharing CORS MDN
+CORS vulnerability
+CORS Misconfiguration
+CORS - Misconfigurations &amp;amp; Bypass
+PayloadsAllTheThings/README.md at master · swisskyrepo/PayloadsAllTheThings
+Exploiting Misconfigured CORS (Cross Origin Resource Sharing)</description>
+    </item>
+    
+  </channel>
+</rss>

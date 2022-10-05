@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>SSO on 0xSlaxo Blog</title>
+    <link>https://sl4x0.github.io/tags/sso/</link>
+    <description>Recent content in SSO on 0xSlaxo Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sun, 14 Aug 2022 23:48:05 +0000</lastBuildDate><atom:link href="https://sl4x0.github.io/tags/sso/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Single-Sign On</title>
+      <link>https://sl4x0.github.io/web-notes/single-sign-on/</link>
+      <pubDate>Sun, 14 Aug 2022 23:48:05 +0000</pubDate>
+      
+      <guid>https://sl4x0.github.io/web-notes/single-sign-on/</guid>
+      <description>Single sign-on (SSO) is a feature that allows users to access multiple services belonging to the same organization without logging in multiple times.
+Once you’ve logged into a website that uses SSO, you won’t have to enter your credentials again when accessing another service or resource belonging to the same company.
+References SAML Attacks
+HowToHunt/SAML.md at master · KathanP19/HowToHunt
+GitHub - ngalongc/bug-bounty-reference: Inspired by https://github.com/djadmin/awesome-bug-bounty, a list of bug bounty write-up that is categorized by the bug nature</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Auth on 0xSlaxo Blog</title>
+    <link>https://sl4x0.github.io/tags/auth/</link>
+    <description>Recent content in Auth on 0xSlaxo Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 03 Aug 2022 23:48:05 +0000</lastBuildDate><atom:link href="https://sl4x0.github.io/tags/auth/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Authentication</title>
+      <link>https://sl4x0.github.io/web-notes/aurhentication/</link>
+      <pubDate>Wed, 03 Aug 2022 23:48:05 +0000</pubDate>
+      
+      <guid>https://sl4x0.github.io/web-notes/aurhentication/</guid>
+      <description>In this section, we&amp;rsquo;ll look at some of the most common authentication mechanisms used by websites and discuss potential vulnerabilities in them.
+We&amp;rsquo;ll highlight both inherent vulnerabilities in different authentication mechanisms, as well as some typical vulnerabilities that are introduced by their improper implementation.
+References Authentication - OWASP Cheat Sheet Series
+GitHub - ngalongc/bug-bounty-reference: Inspired by https://github.com/djadmin/awesome-bug-bounty, a list of bug bounty write-up that is categorized by the bug nature</description>
+    </item>
+    
+  </channel>
+</rss>

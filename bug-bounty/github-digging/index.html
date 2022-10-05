@@ -1,0 +1,440 @@
+<!doctype html>
+<html lang="en-us">
+  <head>
+    <title>GitHub Digging By @Alwali // 0xSlaxo Blog</title>
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <meta charset="utf-8" />
+    <meta name="generator" content="Hugo 0.101.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="author" content="Abdelrhman Allam" />
+    <meta name="description" content="" />
+    <link rel="stylesheet" href="https://sl4x0.github.io/css/main.min.88e7083eff65effb7485b6e6f38d10afbec25093a6fac42d734ce9024d3defbd.css" />
+
+    
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="GitHub Digging By @Alwali"/>
+<meta name="twitter:description" content="🖨️Employees of The Company
+Google : site:github.com inurl:”org=company”
+GitHub : org:company
+®️ Docker Registry Authentication Data
+https://github.com/Plazmaz/leaky-repo/tree/master/.docker
+org:company filename:.dockercfg
+org:company docker AND auth AND email
+user:name filename:.dockercfg
+user:name docker AND auth AND email
+&quot;[company.com](http://company.com/)&quot; docker AND auth AND email
+🈂️ Web Server Credentials
+https://github.com/Plazmaz/leaky-repo/blob/master/.idea/WebServers.xml
+org:company filename:webservers.xml
+org:company fileTransfer AND pass
+user:name filename:webservers.xml
+user:name fileTransfer AND pass
+&quot;[company.com](http://company.com/)&quot; fileTransfer AND pass
+🔑 Firefox Saved Password Collection
+https://github.com/Plazmaz/leaky-repo/blob/master/.mozilla/firefox/logins.json
+org:company filename:firefox/logins.json
+org:company encryptedUsername encryptedPassword"/>
+
+    <meta property="og:title" content="GitHub Digging By @Alwali" />
+<meta property="og:description" content="🖨️Employees of The Company
+Google : site:github.com inurl:”org=company”
+GitHub : org:company
+®️ Docker Registry Authentication Data
+https://github.com/Plazmaz/leaky-repo/tree/master/.docker
+org:company filename:.dockercfg
+org:company docker AND auth AND email
+user:name filename:.dockercfg
+user:name docker AND auth AND email
+&quot;[company.com](http://company.com/)&quot; docker AND auth AND email
+🈂️ Web Server Credentials
+https://github.com/Plazmaz/leaky-repo/blob/master/.idea/WebServers.xml
+org:company filename:webservers.xml
+org:company fileTransfer AND pass
+user:name filename:webservers.xml
+user:name fileTransfer AND pass
+&quot;[company.com](http://company.com/)&quot; fileTransfer AND pass
+🔑 Firefox Saved Password Collection
+https://github.com/Plazmaz/leaky-repo/blob/master/.mozilla/firefox/logins.json
+org:company filename:firefox/logins.json
+org:company encryptedUsername encryptedPassword" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://sl4x0.github.io/bug-bounty/github-digging/" /><meta property="article:section" content="bug-bounty" />
+
+
+
+
+
+  </head>
+  <body>
+    <header class="app-header">
+      <a href="https://sl4x0.github.io/"><img class="app-header-avatar" src="/avatar.jpg" alt="Abdelrhman Allam" /></a>
+      <h1>0xSlaxo Blog</h1>
+      <nav class="app-header-menu">
+          <a class="app-header-menu-item" href="/about/">About</a>
+             | 
+          
+          <a class="app-header-menu-item" href="/">Home</a>
+             | 
+          
+          <a class="app-header-menu-item" href="/tags/">Tags</a>
+      </nav>
+      <p> M.A.C.S Student | N00b CTFer</p>
+      <div class="app-header-social">
+        
+          <a href="https://github.com/sl4x0" target="_blank" rel="noreferrer noopener">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-github">
+  <title>My Github</title>
+  <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
+</svg>
+          </a>
+        
+          <a href="https://www.facebook.com/sl4x0" target="_blank" rel="noreferrer noopener">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-facebook">
+  <title>My facebook</title>
+  <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
+</svg>
+          </a>
+        
+          <a href="https://twitter.com/sl4x0" target="_blank" rel="noreferrer noopener">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-twitter">
+  <title>My Twitter</title>
+  <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path>
+</svg>
+          </a>
+        
+          <a href="https://linkedin.com/in/sl4x0" target="_blank" rel="noreferrer noopener">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-linkedin">
+  <title>My Twitter</title>
+  <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle>
+</svg>
+          </a>
+        
+      </div>
+    </header>
+    <main class="app-container">
+      
+  <article class="post">
+    <header class="post-header">
+      <h1 class ="post-title">GitHub Digging By @Alwali</h1>
+      <div class="post-meta">
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-calendar">
+  <title>calendar</title>
+  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line>
+</svg>
+          Jan 1, 0001
+        </div>
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-clock">
+  <title>clock</title>
+  <circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>
+</svg>
+          5 min read
+        </div>
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tag">
+  <title>tag</title>
+  <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line>
+</svg>
+              <a class="tag" href="https://sl4x0.github.io/tags/dorking/">dorking</a>
+              <a class="tag" href="https://sl4x0.github.io/tags/bug-bounty/">bug-bounty</a>
+        </div>
+      </div>
+    </header>
+    <div class="post-content">
+      <ul>
+<li>
+<p>🖨️Employees of The Company</p>
+<p><strong>Google</strong> : <code>site:github.com inurl:”org=company”</code></p>
+<p><strong>GitHub</strong> : <code>org:company</code></p>
+</li>
+<li>
+<p>®️ Docker Registry Authentication Data</p>
+<p><a href="https://github.com/Plazmaz/leaky-repo/tree/master/.docker">https://github.com/Plazmaz/leaky-repo/tree/master/.docker</a></p>
+<p><code>org:company filename:.dockercfg</code></p>
+<p><code>org:company docker AND auth AND email</code></p>
+<p><code>user:name filename:.dockercfg</code></p>
+<p><code>user:name docker AND auth AND email</code></p>
+<p><code>&quot;[company.com](http://company.com/)&quot; docker AND auth AND email</code></p>
+</li>
+<li>
+<p>🈂️ Web Server Credentials</p>
+<p><a href="https://github.com/Plazmaz/leaky-repo/blob/master/.idea/WebServers.xml">https://github.com/Plazmaz/leaky-repo/blob/master/.idea/WebServers.xml</a></p>
+<p><code>org:company filename:webservers.xml</code></p>
+<p><code>org:company fileTransfer AND pass</code></p>
+<p><code>user:name filename:webservers.xml</code></p>
+<p><code>user:name fileTransfer AND pass</code></p>
+<p><code>&quot;[company.com](http://company.com/)&quot; fileTransfer AND pass</code></p>
+</li>
+<li>
+<p>🔑 Firefox Saved Password Collection</p>
+<p><a href="https://github.com/Plazmaz/leaky-repo/blob/master/.mozilla/firefox/logins.json">https://github.com/Plazmaz/leaky-repo/blob/master/.mozilla/firefox/logins.json</a></p>
+<p><code>org:company filename:firefox/logins.json</code></p>
+<p><code>org:company encryptedUsername encryptedPassword</code></p>
+<p><code>user:name filename:firefox/logins.json</code></p>
+<p><code>user:name encryptedUsername encryptedPassword</code></p>
+<p><code>&quot;[company.com](http://company.com/)&quot; encryptedUsername encryptedPassword</code></p>
+</li>
+<li>
+<p>🔑 Private SSH Key</p>
+<p><a href="https://github.com/Plazmaz/leaky-repo/tree/master/.ssh">https://github.com/Plazmaz/leaky-repo/tree/master/.ssh</a></p>
+<p><code>org:company filename:.ssh/id_rsa</code></p>
+<p><code>org:company &quot;BEGIN RSA PRIVATE KEY&quot; OR ssh-rsa</code></p>
+<p><code>user:name filename:.ssh/id_rsa</code></p>
+<p><code>user:name &quot;BEGIN RSA PRIVATE KEY&quot; OR ssh-rsa</code></p>
+<p><code>&quot;[company.com](http://company.com/)&quot; &quot;BEGIN RSA PRIVATE KEY&quot; OR ssh-rsa</code></p>
+</li>
+<li>
+<p>🐍 SFTP OR SSH Server Credentials</p>
+<p><a href="https://github.com/Plazmaz/leaky-repo/blob/master/.vscode/sftp.json">https://github.com/Plazmaz/leaky-repo/blob/master/.vscode/sftp.json</a>
+<code>org:company filename:sftp.json org:company host AND pass</code></p>
+<p><code>user:name filename:sftp.json</code></p>
+<p><code>user:name host AND pass</code></p>
+<p><code>&quot;[company.com](http://company.com/)&quot; host AND pass</code></p>
+</li>
+<li>
+<p>🪣 S3 Credentials “.credentials”</p>
+<p><a href="https://github.com/Plazmaz/leaky-repo/blob/master/cloud/.credentials">https://github.com/Plazmaz/leaky-repo/blob/master/cloud/.credentials</a></p>
+<p><code>org:company filename:.credentials</code></p>
+<p><code>org:company aws_secret_access_key OR aws_secret_key</code></p>
+<p><code>user:name filename:.credentials</code></p>
+<p><code>user:name aws_secret_access_key OR aws_secret_key</code></p>
+<p><code>&quot;[company.com](http://company.com/)&quot; aws_secret_access_key aws_secret_key</code></p>
+</li>
+<li>
+<p>🪣 S3 Credentials “.s3cfg”</p>
+<p><a href="https://github.com/Plazmaz/leaky-repo/blob/master/cloud/.s3cfg">https://github.com/Plazmaz/leaky-repo/blob/master/cloud/.s3cfg</a></p>
+<p><code>org:company filename:.s3cfg</code></p>
+<p><code>org:company secret_key</code></p>
+<p><code>user:name filename:.s3cfg</code></p>
+<p><code>user:name secret_key</code></p>
+<p><code>&quot;[company.com](http://company.com/)&quot; secret_key</code></p>
+</li>
+<li>
+<p>🌊 Digital Ocean Tugboat Config</p>
+<p><a href="https://github.com/Plazmaz/leaky-repo/blob/master/cloud/.tugboat">https://github.com/Plazmaz/leaky-repo/blob/master/cloud/.tugboat</a></p>
+<p><code>org:company filename:.tugboat</code></p>
+<p><code>org:company authentication AND api_key</code></p>
+<p><code>user:name filename:.tugboat</code></p>
+<p><code>user:name authentication AND api_key</code></p>
+<p><code>&quot;[company.com](http://company.com/)&quot; authentication AND api_key</code></p>
+</li>
+<li>
+<p>😖 Heroku Config</p>
+<p><a href="https://github.com/Plazmaz/leaky-repo/blob/master/cloud/heroku.json">https://github.com/Plazmaz/leaky-repo/blob/master/cloud/heroku.json</a></p>
+<p><code>org:company filename:heroku.json</code></p>
+<p><code>org:company HEROKU_API_KEY OR HEROKU_KEY</code></p>
+<p><code>user:name filename:heroku.json</code></p>
+<p><code>user:name HEROKU_API_KEY OR HEROKU_KEY</code></p>
+<p><code>&quot;[company.com](http://company.com/)&quot; HEROKU_API_KEY OR HEROKU_KEY</code></p>
+</li>
+<li>
+<p>🗃️ PostgreSQL File Contains Passwords</p>
+<p><a href="https://github.com/Plazmaz/leaky-repo/blob/master/db/.pgpass">https://github.com/Plazmaz/leaky-repo/blob/master/db/.pgpass</a></p>
+<p>org:company filename:.pgpass</p>
+<p>org:company :database:</p>
+<p>user:name filename:.pgpass</p>
+<p>user:name :database:</p>
+<p>&ldquo;<a href="http://company.com/">company.com</a>&rdquo; :database:</p>
+</li>
+<li>
+<p>🔑 DBEAVER Config Containing Credentials</p>
+<p><a href="https://github.com/Plazmaz/leaky-repo/blob/master/db/dbeaver-data-sources.xml">https://github.com/Plazmaz/leaky-repo/blob/master/db/dbeaver-data-sources.xml</a></p>
+<p><code>org:company filename:dbeaver-data-sources.xml</code></p>
+<p><code>org:company connection AND jdbc</code></p>
+<p><code>user:name filename:dbeaver-data-sources.xml</code></p>
+<p><code>user:name connection AND jdbc</code></p>
+<p><code>&quot;[company.com](http://company.com/)&quot; connection AND jdbc</code></p>
+</li>
+<li>
+<p>🥟 MYSQL Hashes Dump</p>
+<p><a href="https://github.com/Plazmaz/leaky-repo/blob/master/db/dump.sql">https://github.com/Plazmaz/leaky-repo/blob/master/db/dump.sql</a></p>
+<p><code>org:company filename:dump.sql</code></p>
+<p><code>org:company &quot;MySQL dump&quot; AND &quot;INSERT INTO”</code></p>
+<p><code>user:name filename:dump.sql</code></p>
+<p><code>user:name &quot;MySQL dump&quot; AND &quot;INSERT INTO”</code></p>
+<p><code>&quot;[company.com](http://company.com/)&quot; &quot;MySQL dump&quot; AND &quot;INSERT INTO&quot;</code></p>
+</li>
+<li>
+<p>🗃️ MONGOID Config File</p>
+<p><a href="https://github.com/Plazmaz/leaky-repo/blob/master/db/mongoid.yml">https://github.com/Plazmaz/leaky-repo/blob/master/db/mongoid.yml</a></p>
+<p><code>org:company filename:mongoid.yml</code></p>
+<p><code>org:company production AND mongodb</code></p>
+<p><code>user:name filename:mongoid.yml</code></p>
+<p><code>user:name production AND mongodb</code></p>
+<p><code>&quot;[company.com](http://company.com/)&quot; production AND mongodb</code></p>
+</li>
+<li>
+<p>🛠️ MONGOLAB Credentials For ROBOMONGO</p>
+<p><a href="https://github.com/Plazmaz/leaky-repo/blob/master/db/robomongo.json">https://github.com/Plazmaz/leaky-repo/blob/master/db/robomongo.json</a></p>
+<p><code>org:company filename:robomongo.json</code></p>
+<p><code>org:company userPassword AND serverHost</code></p>
+<p><code>user:name filename:robomongo.json</code></p>
+<p><code>user:name userPassword AND serverHost</code></p>
+<p><code>&quot;[company.com](http://company.com/)&quot; userPassword AND serverHost</code></p>
+</li>
+<li>
+<p>🥨 File Zilla config file</p>
+<p><a href="https://github.com/Plazmaz/leaky-repo/tree/master/filezilla">https://github.com/Plazmaz/leaky-repo/tree/master/filezilla</a></p>
+<p><code>org:company filename:filezilla.xml</code></p>
+<p><code>org:company FileZilla3 AND &quot;Pass encoding”</code></p>
+<p><code>user:name filename:filezilla.xml</code></p>
+<p><code>user:name FileZilla3 AND &quot;Pass encoding”</code></p>
+<p><code>&quot;[company.com](http://company.com/)&quot; FileZilla3 AND &quot;Pass encoding&quot;</code></p>
+</li>
+<li>
+<p>🔏 PEM Private key</p>
+<p><a href="https://github.com/Plazmaz/leaky-repo/blob/master/misc-keys/cert-key.pem">https://github.com/Plazmaz/leaky-repo/blob/master/misc-keys/cert-key.pem</a></p>
+<p><code>org:company filename:cert-key.pem</code></p>
+<p><code>user:name filename:cert-key.pem</code></p>
+<p><code>org:company &quot;BEGIN PRIVATE KEY”</code></p>
+<p><code>user:name filename:cert-key.pem</code></p>
+<p><code>&quot;[company.com](http://company.com/)&quot; &quot;BEGIN PRIVATE KEY&quot;</code></p>
+</li>
+<li>
+<p>🗝️ PuTTY-gen Private Key</p>
+<p><a href="https://github.com/Plazmaz/leaky-repo/blob/master/misc-keys/putty-example.ppk">https://github.com/Plazmaz/leaky-repo/blob/master/misc-keys/putty-example.ppk</a></p>
+<p><code>org:company filename:putty extension:ppk org:company PuTTY-User-Key-File user:name filename:putty extension:ppk user:name PuTTY-User-Key-File &quot;[company.com](http://company.com/)&quot; PuTTY-User-Key-File</code></p>
+</li>
+<li>
+<p>🧞‍♂️ Secret Key For Django Setup</p>
+<p><a href="https://github.com/Plazmaz/leaky-repo/blob/master/web/django/settings.py">https://github.com/Plazmaz/leaky-repo/blob/master/web/django/settings.py</a></p>
+<p><code>org:company filename:settings.py org:company SECRET_KEY user:name filename:settings.py user:name SECRET_KEY &quot;[company.com](http://company.com/)&quot; SECRET_KEY</code></p>
+</li>
+<li>
+<p>📽️ Salesforce Credentials In A NodeJS Project</p>
+<p><a href="https://github.com/Plazmaz/leaky-repo/blob/master/web/js/salesforce.js">https://github.com/Plazmaz/leaky-repo/blob/master/web/js/salesforce.js</a></p>
+<p><code>org:company filename:salesforce.js org:company &quot;conn.login(&quot; OR &quot;require('jsforce')&quot; user:name filename:salesforce.js user:name &quot;conn.login(&quot; OR &quot; require('jsforce')&quot; &quot;[company.com](http://company.com/)&quot; &quot;conn.login(&quot; OR &quot; require('jsforce')&quot;</code></p>
+</li>
+<li>
+<p>🚮 Credentials For Ruby on Rails</p>
+<p><a href="https://github.com/Plazmaz/leaky-repo/blob/master/web/ruby/secrets.yml">https://github.com/Plazmaz/leaky-repo/blob/master/web/ruby/secrets.yml</a></p>
+<p><code>org:company filename:secrets.yml org:company secret_key_base user:name filename:secrets.yml user:name secret_key_base &quot;[company.com](http://company.com/)&quot; secret_key_base</code></p>
+</li>
+<li>
+<p>📊 Credentials For Voice AND Chat Platforms</p>
+<p><code>org:company filename:credentials.yml org:company slack_token OR access-token OR _TOKEN user:name filename:credentials.yml user:name slack_token OR access-token OR _TOKEN &quot;[company.com](http://company.com/)&quot; slack_token OR access-token OR _TOKEN</code></p>
+</li>
+<li>
+<p>🤚 Slack Token For Rocket-Chat</p>
+<p><a href="https://hackerone.com/reports/386614">https://hackerone.com/reports/386614</a></p>
+<p><code>org:company filename:.travis.yml org:company notification AND slack OR secure user:name filename:.travis.yml user:name notification AND slack OR secure &quot;[company.com](http://company.com/)&quot; notification AND slack OR secure</code></p>
+</li>
+<li>
+<p>🦤 Credentials For Laravel</p>
+<p><a href="https://github.com/Plazmaz/leaky-repo/blob/master/web/var/www/.env">https://github.com/Plazmaz/leaky-repo/blob/master/web/var/www/.env</a></p>
+<p><code>org:company filename:.env org:company APP_KEY OR DB_PASS user:name filename:.env user:name APP_KEY OR DB_PASS &quot;[company.com](http://company.com/)&quot; APP_KEY OR DB_PASS</code></p>
+</li>
+<li>
+<p>🎁 PHP Configuration File</p>
+<p><a href="https://github.com/Plazmaz/leaky-repo/blob/master/web/var/www/public_html/config.php">https://github.com/Plazmaz/leaky-repo/blob/master/web/var/www/public_html/config.php</a></p>
+<p><code>org:company filename:config.php org:company mysql_connect OR dbpass user:name filename:config.php user:name mysql_connect OR dbpass &quot;[company.com](http://company.com/)&quot; mysql_connect OR dbpass</code></p>
+</li>
+<li>
+<p>📦 WordPress Configuration File</p>
+<p><a href="https://github.com/Plazmaz/leaky-repo/blob/master/web/var/www/public_html/wp-config.php">https://github.com/Plazmaz/leaky-repo/blob/master/web/var/www/public_html/wp-config.php</a></p>
+<p><code>org:company filename:wp-config.php org:company DB_PASSWORD OR AUTH_KEY user:name filename:wp-config.php user:name DB_PASSWORD OR AUTH_KEY &quot;[company.com](http://company.com/)&quot; DB_PASSWORDt OR AUTH_KEY</code></p>
+</li>
+<li>
+<p>🗃️ ESMTP Configuration File</p>
+<p><a href="https://github.com/Plazmaz/leaky-repo/blob/master/.esmtprc">https://github.com/Plazmaz/leaky-repo/blob/master/.esmtprc</a></p>
+<p><code>org:company filename:.esmtprc org:company &quot;hostname smtp&quot; user:name filename:.esmtprc user:name &quot;hostname smtp&quot; &quot;[company.com](http://company.com/)&quot; &quot;hostname smtp&quot;</code></p>
+</li>
+<li>
+<p>🔏 SFTP OR SSH Server Credentials</p>
+<p><a href="https://github.com/Plazmaz/leaky-repo/blob/master/.ftpconfig">https://github.com/Plazmaz/leaky-repo/blob/master/.ftpconfig</a></p>
+<p>org:company filename:.ftpconfig
+org:company protocol AND ftp AND pass
+user:name filename:.ftpconfig
+user:name protocol AND ftp AND pass
+&ldquo;<a href="http://company.com/">company.com</a>&rdquo; protocol AND ftp AND pass</p>
+</li>
+<li>
+<p>☪️ Contains SMTP Credentials</p>
+<p><a href="https://github.com/Plazmaz/leaky-repo/blob/master/.netrc">https://github.com/Plazmaz/leaky-repo/blob/master/.netrc</a></p>
+<p><code>org:company filename:.netrc org:company machine AND login AND password user:name filename:.netrc user:name machine AND login AND password &quot;[company.com](http://company.com/)&quot; machine AND login AND password</code></p>
+</li>
+<li>
+<p>®️ NPM Registry Authentication Data</p>
+<p><a href="https://github.com/Plazmaz/leaky-repo/blob/master/.npmrc">https://github.com/Plazmaz/leaky-repo/blob/master/.npmrc</a></p>
+<p><code>org:company filename:.npmrc org:company registry AND _auth OR _authToken user:name filename:.npmrc user:name registry AND _auth OR _authToken &quot;[company.com](http://company.com/)&quot; registry AND _auth OR _authToken</code></p>
+</li>
+<li>
+<p>🦈 FTP , SFTP OR SSH Credentials</p>
+<p><a href="https://github.com/Plazmaz/leaky-repo/blob/master/.remote-sync.json">https://github.com/Plazmaz/leaky-repo/blob/master/.remote-sync.json</a></p>
+<p><code>org:company filename:.remote-sync.json org:company &quot;remote sync&quot; AND pass user:name filename:.remote-sync.json user:name &quot;remote sync&quot; AND pass &quot;[company.com](http://company.com/)&quot; &quot;remote sync&quot; AND pass</code></p>
+</li>
+<li>
+<p>🎊 IRC Configuration</p>
+<p><a href="https://github.com/Plazmaz/leaky-repo/blob/master/config">https://github.com/Plazmaz/leaky-repo/blob/master/config</a></p>
+<p><code>org:company filename:config org:company IRC_HOST AND IRC_PASS user:name filename:config user:name IRC_HOST AND IRC_PASS &quot;[company.com](http://company.com/)&quot; IRC_HOST AND IRC_PASS</code></p>
+</li>
+<li>
+<p>🕵️‍♀️ Server Details AND Credentials</p>
+<p><a href="https://github.com/Plazmaz/leaky-repo/blob/master/deployment-config.json">https://github.com/Plazmaz/leaky-repo/blob/master/deployment-config.json</a></p>
+<p><code>org:company filename:deployment-config.json org:company type AND sftp AND pass user:name filename:deployment-config.json user:name type AND sftp AND pass &quot;[company.com](http://company.com/)&quot; type AND sftp AND pass</code></p>
+</li>
+<li>
+<p>🚧 Hub Configuration</p>
+<p><a href="https://github.com/Plazmaz/leaky-repo/blob/master/hub">https://github.com/Plazmaz/leaky-repo/blob/master/hub</a></p>
+<p><code>org:company filename:hub oauth_token org:company [github.com](http://github.com/) AND user AND oauth_token user:name filename:hub oauth_token user:name [github.com](http://github.com/) AND user AND oauth_token &quot;[company.com](http://company.com/)&quot; [github.com](http://github.com/) AND user AND oauth_token</code></p>
+</li>
+<li>
+<p>🚗 Ventrilo Configuration</p>
+<p><a href="https://github.com/Plazmaz/leaky-repo/blob/master/ventrilo_srv.ini">https://github.com/Plazmaz/leaky-repo/blob/master/ventrilo_srv.ini</a></p>
+<p><code>org:company filename:ventrillo_srv.ini org:company AdminPassword AND Password user:name filename:ventrillo_srv.ini user:name AdminPassword AND Password &quot;[company.com](http://company.com/)&quot; AdminPassword AND Password</code></p>
+</li>
+<li>
+<p>🦝 Slack Token</p>
+<p><a href="https://hackerone.com/reports/397527">https://hackerone.com/reports/397527</a></p>
+<p><a href="https://github.com/streaak/keyhacks#Slack-API-token">https://github.com/streaak/keyhacks#Slack-API-token</a></p>
+<p><code>org:company xoxp user:name token=xoxp user:name xoxp &quot;[company.com](http://company.com/)&quot; xoxp org:company token=xoxp</code></p>
+</li>
+<li>
+<p>🏇 JSON Web Token</p>
+<p><code>org:company .eyJ</code></p>
+<p><code>org:company Authorization OR JWT AND eyJ user:name .eyJ user:name Authorization OR JWT AND eyJ &quot;[company.com](http://company.com/)&quot; Authorization OR JWT AND eyJ</code></p>
+</li>
+<li>
+<p>🧬 General Queries</p>
+<p><code>&quot;Company&quot; security_credentials &quot;Company&quot; connectionstring &quot;Company&quot; send_keys OR sendkeys &quot;Company&quot; consumerkey &quot;Company&quot; JDBC &quot;Company&quot; JIRA_Pass &quot;Company&quot; ssh2_auth_password &quot;Company&quot; ssh2_auth_password NOT string &quot;Company&quot; password OR pwd Search Github &quot;Company&quot; auth_key &quot;Company&quot; SSO_LOGIN &quot;Company&quot; secret_access_key &quot;Company&quot; bucket_password &quot;Company&quot; redis_password &quot;Company&quot; root_password &quot;Company&quot; _TOKEN OR _KEY</code></p>
+</li>
+<li>
+<p>🛠️ Tools For Searching</p>
+<p><a href="https://github.com/gwen001/github-search/blob/master/github-employees.py">github-search/github-employees.py at master · gwen001/github-search</a></p>
+<ul>
+<li>
+<p><a href="https://github.com/michenriksen/gitrob">https://github.com/michenriksen/gitrob</a></p>
+</li>
+<li>
+<p><a href="https://github.com/zricethezav/gitleaks">https://github.com/zricethezav/gitleaks</a></p>
+</li>
+<li>
+<p><a href="https://github.com/dxa4481/truffleHog">https://github.com/dxa4481/truffleHog</a></p>
+</li>
+<li>
+<p><a href="https://github.com/obheda12/GitDorker">https://github.com/obheda12/GitDorker</a></p>
+</li>
+<li>
+<p><a href="https://github.com/hisxo/gitGraber">https://github.com/hisxo/gitGraber</a></p>
+<p><a href="https://github.com/gwen001/github-search/blob/master/github-grabrepo.php">github-search/github-grabrepo.php at master · gwen001/github-search</a></p>
+<p><a href="https://github.com/gwen001/github-search/blob/master/github-dorks.py">github-search/github-dorks.py at master · gwen001/github-search</a></p>
+</li>
+</ul>
+</li>
+<li>
+<p>🍖 Bonus</p>
+<p><a href="https://github.com/daffainfo/AllAboutBugBounty/blob/master/Reconnaissance/Github%20Dorks.md">AllAboutBugBounty/Github Dorks.md at master · daffainfo/AllAboutBugBounty</a></p>
+</li>
+</ul>
+<p><strong><a href="https://www.facebook.com/sl4x0/">@sl4x0</a></strong></p>
+
+    </div>
+    <div class="post-footer">
+      
+    </div>
+  </article>
+
+    </main>
+  </body>
+</html>

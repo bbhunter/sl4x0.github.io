@@ -1,0 +1,237 @@
+<!doctype html>
+<html lang="en-us">
+  <head>
+    <title>Access Control // 0xSlaxo Blog</title>
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <meta charset="utf-8" />
+    <meta name="generator" content="Hugo 0.101.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="author" content="Abdelrhman Allam" />
+    <meta name="description" content="" />
+    <link rel="stylesheet" href="https://sl4x0.github.io/css/main.min.88e7083eff65effb7485b6e6f38d10afbec25093a6fac42d734ce9024d3defbd.css" />
+
+    
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Access Control"/>
+<meta name="twitter:description" content="In this section, we will discuss what access control security is, describe privilege escalation and the types of vulnerabilities that can arise with access control, and summarize how to prevent these vulnerabilities.
+References Hacksplaining: Web Security for Developers
+Mind-Maps/Access Control Vulnerabilities - Pratik Gaikwad at master · imran-parray/Mind-Maps
+All labs - Web Security Academy
+What is access control? Authentication identifies the user and confirms that they are who they say they are."/>
+
+    <meta property="og:title" content="Access Control" />
+<meta property="og:description" content="In this section, we will discuss what access control security is, describe privilege escalation and the types of vulnerabilities that can arise with access control, and summarize how to prevent these vulnerabilities.
+References Hacksplaining: Web Security for Developers
+Mind-Maps/Access Control Vulnerabilities - Pratik Gaikwad at master · imran-parray/Mind-Maps
+All labs - Web Security Academy
+What is access control? Authentication identifies the user and confirms that they are who they say they are." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://sl4x0.github.io/web-notes/access-control/" /><meta property="article:section" content="web-notes" />
+<meta property="article:published_time" content="2022-07-26T23:48:05+00:00" />
+<meta property="article:modified_time" content="2022-07-26T23:48:05+00:00" />
+
+
+
+  </head>
+  <body>
+    <header class="app-header">
+      <a href="https://sl4x0.github.io/"><img class="app-header-avatar" src="/avatar.jpg" alt="Abdelrhman Allam" /></a>
+      <h1>0xSlaxo Blog</h1>
+      <nav class="app-header-menu">
+          <a class="app-header-menu-item" href="/about/">About</a>
+             | 
+          
+          <a class="app-header-menu-item" href="/">Home</a>
+             | 
+          
+          <a class="app-header-menu-item" href="/tags/">Tags</a>
+      </nav>
+      <p> M.A.C.S Student | N00b CTFer</p>
+      <div class="app-header-social">
+        
+          <a href="https://github.com/sl4x0" target="_blank" rel="noreferrer noopener">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-github">
+  <title>My Github</title>
+  <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
+</svg>
+          </a>
+        
+          <a href="https://www.facebook.com/sl4x0" target="_blank" rel="noreferrer noopener">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-facebook">
+  <title>My facebook</title>
+  <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
+</svg>
+          </a>
+        
+          <a href="https://twitter.com/sl4x0" target="_blank" rel="noreferrer noopener">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-twitter">
+  <title>My Twitter</title>
+  <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path>
+</svg>
+          </a>
+        
+          <a href="https://linkedin.com/in/sl4x0" target="_blank" rel="noreferrer noopener">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-linkedin">
+  <title>My Twitter</title>
+  <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle>
+</svg>
+          </a>
+        
+      </div>
+    </header>
+    <main class="app-container">
+      
+  <article class="post">
+    <header class="post-header">
+      <h1 class ="post-title">Access Control</h1>
+      <div class="post-meta">
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-calendar">
+  <title>calendar</title>
+  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line>
+</svg>
+          Jul 26, 2022
+        </div>
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-clock">
+  <title>clock</title>
+  <circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>
+</svg>
+          7 min read
+        </div>
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tag">
+  <title>tag</title>
+  <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line>
+</svg>
+              <a class="tag" href="https://sl4x0.github.io/tags/bac/">BAC</a>
+              <a class="tag" href="https://sl4x0.github.io/tags/web-notes/">Web-Notes</a>
+        </div>
+      </div>
+    </header>
+    <div class="post-content">
+      <p>In this section, we will discuss what access control security is, describe privilege escalation and the types of vulnerabilities that can arise with access control, and summarize how to prevent these vulnerabilities.</p>
+<h1 id="references"><code>References</code></h1>
+<p><a href="https://www.hacksplaining.com/exercises/broken-access-control">Hacksplaining: Web Security for Developers</a></p>
+<p><a href="https://github.com/imran-parray/Mind-Maps/tree/master/Access%20Control%20Vulnerabilities%20-%20Pratik%20Gaikwad">Mind-Maps/Access Control Vulnerabilities - Pratik Gaikwad at master · imran-parray/Mind-Maps</a></p>
+<p><a href="https://portswigger.net/web-security/all-labs#access-control-vulnerabilities">All labs - Web Security Academy</a></p>
+<hr>
+<h1 id="what-is-access-control"><strong><code>What is access control?</code></strong></h1>
+<ul>
+<li><strong>Authentication</strong> identifies the user and confirms that they are who they say they are.</li>
+<li><strong>Session management</strong> identifies which subsequent HTTP requests are being made by that same user.</li>
+<li><strong>Access control</strong> determines whether the user is allowed to carry out the action that they are attempting to perform.</li>
+</ul>
+<h2 id="imagehttpsuser-imagesgithubusercontentcom70459751181092003-b93049bc-ba5d-474f-b47b-fdb25ad54a8apng"><img src="https://user-images.githubusercontent.com/70459751/181092003-b93049bc-ba5d-474f-b47b-fdb25ad54a8a.png" alt="image"></h2>
+<h1 id="vertical-access-controls"><strong><code>Vertical access controls</code></strong></h1>
+<p>Vertical access controls are mechanisms that restrict access to <code>sensitive functionality</code> that is not available to <code>other types of users</code>.</p>
+<p>For example, an <code>administrator</code> might be able to modify or delete any user&rsquo;s account, while an ordinary <code>user</code> has no access to these actions.</p>
+<h1 id="horizontal-access-controls"><strong><code>Horizontal access controls</code></strong></h1>
+<p>Horizontal access controls are mechanisms that restrict access to resources to the <code>users who are specifically allowed to access those resources</code>.</p>
+<p>For example, a banking application will allow a user to <code>view transactions</code> and make payments from their own accounts, but <code>not the accounts of any other user</code>.</p>
+<h1 id="context-dependent-access-controls"><strong><code>Context-dependent access controls</code></strong></h1>
+<p>Context-dependent access controls prevent a user performing actions in the <code>wrong order</code>.</p>
+<p>For example, a retail website might prevent users from modifying the contents of their shopping cart <code>after they have made payment</code>.</p>
+<hr>
+<h1 id="examples-of-broken-access-controls"><strong><code>Examples of broken access controls</code></strong></h1>
+<p>Broken Access Control happens when a user can perform actions he mustn’t do.</p>
+<h2 id="vertical-privilege-escalation"><strong><code>Vertical privilege escalation</code></strong></h2>
+<p>Access to function that are no permited to access to.</p>
+<p>EX: <code>User</code> can Access to <code>admin</code> panel and delete any user account</p>
+<h2 id="unprotected-functionality"><strong><code>Unprotected functionality</code></strong></h2>
+<p>For example, a website might host sensitive functionality at the following URL: <code>https://insecure-website.com/admin</code></p>
+<p>Even if it’s not publicly accessed to any user, but may some attackers access to it form : <code>https://insecure-website.com/robots.txt</code></p>
+<p><a href="https://portswigger.net/web-security/access-control/lab-unprotected-admin-functionality">Lab: Unprotected admin functionality</a></p>
+<p>In some cases, sensitive functionality is not robustly protected but is concealed by giving it a less predictable URL:</p>
+<p>For example, consider an application that hosts administrative functions at the following URL: <code>https://insecure-website.com/administrator-panel-yb556</code></p>
+<p>the URL might be disclosed in JavaScript that constructs the user interface based on the user&rsquo;s role:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#f92672">&lt;</span>script<span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>var isAdmin <span style="color:#f92672">=</span> <span style="color:#66d9ef">false</span>;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span> (isAdmin) <span style="color:#960050;background-color:#1e0010">{</span>
+</span></span><span style="display:flex;"><span>	...
+</span></span><span style="display:flex;"><span>	var adminPanelTag <span style="color:#f92672">=</span> document.createElement(<span style="color:#e6db74">&#39;a&#39;</span>);
+</span></span><span style="display:flex;"><span>	adminPanelTag.setAttribute(<span style="color:#e6db74">&#39;https://insecure-website.com/administrator-panel-yb556&#39;</span>);
+</span></span><span style="display:flex;"><span>	adminPanelTag.innerText <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;Admin panel&#39;</span>;
+</span></span><span style="display:flex;"><span>	...
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/</span>script<span style="color:#f92672">&gt;</span>
+</span></span></code></pre></div><p><a href="https://portswigger.net/web-security/access-control/lab-unprotected-admin-functionality-with-unpredictable-url">Lab: Unprotected admin functionality with unpredictable URL</a></p>
+<h2 id="parameter-based-access-control-methods"><strong><code>Parameter-based access control methods</code></strong></h2>
+<p>Some applications determine the user&rsquo;s access rights or role <strong><code>at login</code></strong>, and then store this information in a user-controllable location, such as a hidden field, <code>**cookie**</code>, or preset query string parameter. The application makes subsequent access control decisions based on the submitted value. For example:</p>
+<p><a href="https://insecure-website.com/login/home.jsp?admin=true">https://insecure-website.com/login/home.jsp?admin=true</a></p>
+<p><a href="https://insecure-website.com/login/home.jsp?role=1">https://insecure-website.com/login/home.jsp?role=1</a></p>
+<p><a href="https://portswigger.net/web-security/access-control/lab-user-role-controlled-by-request-parameter">Lab: User role controlled by request parameter</a></p>
+<p><a href="https://portswigger.net/web-security/access-control/lab-user-role-can-be-modified-in-user-profile">Lab: User role can be modified in user profile</a></p>
+<h2 id="broken-access-control-resulting-from-platform-misconfiguration"><strong><code>Broken access control resulting from platform misconfiguration</code></strong></h2>
+<p>For example an application might configure rules like the following: <code>DENY: POST, /admin/deleteUser, managers</code></p>
+<p>Some application frameworks support various non-standard HTTP headers that can be used to override the URL in the original request, such as <code>X-Original-URL</code>and <code>X-Rewrite-URL</code>
+If a web site uses r<code>igorous front-end controls</code> to restrict access based on URL, but the application <code>allows the URL to be overridden</code> via a request header</p>
+<p>Then it might be possible to bypass the access controls using a request like the following:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span>POST <span style="color:#f92672">/</span> HTTP<span style="color:#f92672">/</span><span style="color:#ae81ff">1</span>.<span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>X<span style="color:#f92672">-</span>Original<span style="color:#f92672">-</span>URL: <span style="color:#f92672">/</span><span style="color:#66d9ef">admin</span><span style="color:#f92672">/</span>deleteUser
+</span></span><span style="display:flex;"><span>...
+</span></span></code></pre></div><p><a href="https://portswigger.net/web-security/access-control/lab-url-based-access-control-can-be-circumvented">Lab: URL-based access control can be circumvented </a></p>
+<p>If an attacker can use the <code>GET</code>(or another) method to perform actions on a restricted URL, then they can circumvent the access control that is implemented at the platform layer.</p>
+<p><a href="https://portswigger.net/web-security/access-control/lab-method-based-access-control-can-be-circumvented">Lab: Method-based access control can be circumvented</a></p>
+<hr>
+<h1 id="horizontal-privilege-escalation"><strong><code>Horizontal privilege escalation</code></strong></h1>
+<p>Horizontal privilege escalation arises when a <code>user</code> is able to gain access to resources belonging to <code>another user</code>, For example, if an employee should only be able to access their <strong><code>own employment and payroll records</code></strong>, but can in fact also access the records of <code>**other employees</code>.**</p>
+<p>For example, a user might ordinarily access their own account page using a URL like the following: <code>[https://insecure-website.com/myaccount?id=123](https://insecure-website.com/myaccount?id=123)</code> if the attacker could modify the id parameter !!</p>
+<p><a href="https://portswigger.net/web-security/access-control/lab-user-id-controlled-by-request-parameter">Lab: User ID controlled by request parameter </a></p>
+<p>In some applications, the exploitable parameter does not have a <code>predictable value</code>. For example, instead of an incrementing number, an application might use globally unique identifiers (<code>GUIDs</code>) to identify users.</p>
+<p>the GUIDs belonging to other users might be <code>disclosed</code> elsewhere in the application where users are referenced, such as <code>user messages or reviews</code>.</p>
+<p><a href="https://portswigger.net/web-security/access-control/lab-user-id-controlled-by-request-parameter-with-unpredictable-user-ids">Lab: User ID controlled by request parameter, with unpredictable user IDs</a></p>
+<p>In some cases, an application does detect when the user is not <code>permitted to</code> access the resource, and returns a <code>redirect to the login page</code>. However, the response containing the redirect might <code>still include some sensitive data</code> belonging to the targeted user, so the attack is still successful.</p>
+<p><a href="https://portswigger.net/web-security/access-control/lab-user-id-controlled-by-request-parameter-with-data-leakage-in-redirect">Lab: User ID controlled by request parameter with data leakage in redirect</a></p>
+<hr>
+<h1 id="horizontal-to-vertical-privilege-escalation"><strong><code>Horizontal to vertical privilege escalation</code></strong></h1>
+<p>For example, a <code>horizontal escalation</code> might allow an attacker to reset or capture the <code>password belonging to another user</code>. If the attacker targets an <code>administrative user</code> and compromises their account, then they can gain administrative access and so <code>perform vertical privilege escalation</code>.</p>
+<p>Attacker might gain horizonal access to another user account and if he an admin he will make a vertical privillage esclation</p>
+<p><a href="https://portswigger.net/web-security/access-control/lab-user-id-controlled-by-request-parameter-with-password-disclosure">Lab: User ID controlled by request parameter with password disclosure</a></p>
+<hr>
+<h1 id="insecure-direct-object-references-idor"><strong><code>Insecure direct object references (IDOR)</code></strong></h1>
+<p>Its an Access Control Vulnerability that arises when an application <code>uses user-supplied input</code> to access objects directly.</p>
+<p>IDOR vulnerabilities are most commonly associated with <code>horizontal privilege</code> escalation but can arise also with <code>vertical</code> one.</p>
+<h2 id="idor-examples"><strong><code>IDOR examples</code></strong></h2>
+<p>Consider a website that uses the following URL to access the customer account page, by <code>retrieving information from the back-end database</code>:</p>
+<p><code>[https://insecure-website.com/customer_account?customer_number=132355](https://insecure-website.com/customer_account?customer_number=132355)</code> If the customer number not secure enough the attacker can modify it and break the access control</p>
+<p>An attacker might be able to perform <code>horizontal and vertical privilege escalation</code> by altering the user to one with <code>additional privileges</code> while bypassing access controls</p>
+<p>For example, a website might save <code>chat message transcripts</code> to disk using an incrementing filename, and allow users to retrieve these by visiting a URL like the following:</p>
+<p><code>https://insecure-website.com/static/12144.txt</code></p>
+<p>In this situation, an attacker can simply <strong><code>modify the filename to retrieve a transcript created by another user</code></strong> and potentially obtain user credentials and other sensitive data.</p>
+<p><a href="https://portswigger.net/web-security/access-control/lab-insecure-direct-object-references">Lab: Insecure direct object references</a></p>
+<hr>
+<h1 id="access-control-vulnerabilities-in-multi-step-processes"><strong><code>Access control vulnerabilities in multi-step processes</code></strong></h1>
+<p>Many web sites implement <code>important functions</code> over a series of steps.</p>
+<p>For example, administrative function to <code>update user details</code> might involve the following steps:</p>
+<ol>
+<li>Load form containing details for a specific user.</li>
+<li>Submit changes.</li>
+<li>Review the changes and confirm.</li>
+</ol>
+<p>For example, suppose access controls are <strong><code>correctly applied to the first and second steps</code></strong>, but not to the third step. Effectively, the web site assumes that a user will only <code>**reach step 3 if they have already completed the first steps**</code>, which are properly controlled. Here, an attacker can gain unauthorized access to the function by <code>**skipping the first two steps and directly submitting the request**</code> for the third step with the required parameters.</p>
+<p><a href="https://portswigger.net/web-security/access-control/lab-multi-step-process-with-no-access-control-on-one-step">Lab: Multi-step process with no access control on one step</a></p>
+<h1 id="referer-based-access-control"><strong><code>Referer-based access control</code></strong></h1>
+<p>The <code>Referer</code>header is generally added to requests by browsers to indicate the page from which a request <code>was initiated</code>.</p>
+<p>For example, suppose an application robustly enforces access control over the main administrative page at <code>/admin</code>, but for sub-pages such as <code>/admin/deleteUser</code> only inspects the <code>Referer</code> header. If the <code>Referer</code> header contains the main <code>/admin</code> URL, then the request is allowed.</p>
+<p>In this situation, since the <code>Referer</code> header can be fully controlled by an attacker, they can <code>**forge direct requests**</code> to sensitive sub-pages, supplying the required <code>Referer</code> header, and so gain unauthorized access.</p>
+<p><a href="https://portswigger.net/web-security/access-control/lab-referer-based-access-control">Lab: Referer-based access control </a></p>
+<hr>
+<h1 id="prevention"><code>Prevention</code></h1>
+<ul>
+<li>Never rely on <code>**obfuscation**</code> alone for access control.</li>
+<li>Unless a resource is intended to be publicly accessible, <code>**deny access by default**</code>.</li>
+<li>Wherever possible, use a single application-wide mechanism for enforcing access controls.</li>
+<li>At the code level, make it mandatory for developers to declare the access that is allowed for each resource, and deny access by default.</li>
+<li>Thoroughly audit and test access controls to ensure they are working as designed.</li>
+</ul>
+
+    </div>
+    <div class="post-footer">
+      
+    </div>
+  </article>
+
+    </main>
+  </body>
+</html>

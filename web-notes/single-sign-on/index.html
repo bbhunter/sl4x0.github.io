@@ -1,0 +1,317 @@
+<!doctype html>
+<html lang="en-us">
+  <head>
+    <title>Single-Sign On // 0xSlaxo Blog</title>
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <meta charset="utf-8" />
+    <meta name="generator" content="Hugo 0.101.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="author" content="Abdelrhman Allam" />
+    <meta name="description" content="" />
+    <link rel="stylesheet" href="https://sl4x0.github.io/css/main.min.88e7083eff65effb7485b6e6f38d10afbec25093a6fac42d734ce9024d3defbd.css" />
+
+    
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Single-Sign On"/>
+<meta name="twitter:description" content="Single sign-on (SSO) is a feature that allows users to access multiple services belonging to the same organization without logging in multiple times.
+Once you’ve logged into a website that uses SSO, you won’t have to enter your credentials again when accessing another service or resource belonging to the same company.
+References SAML Attacks
+HowToHunt/SAML.md at master · KathanP19/HowToHunt
+GitHub - ngalongc/bug-bounty-reference: Inspired by https://github.com/djadmin/awesome-bug-bounty, a list of bug bounty write-up that is categorized by the bug nature"/>
+
+    <meta property="og:title" content="Single-Sign On" />
+<meta property="og:description" content="Single sign-on (SSO) is a feature that allows users to access multiple services belonging to the same organization without logging in multiple times.
+Once you’ve logged into a website that uses SSO, you won’t have to enter your credentials again when accessing another service or resource belonging to the same company.
+References SAML Attacks
+HowToHunt/SAML.md at master · KathanP19/HowToHunt
+GitHub - ngalongc/bug-bounty-reference: Inspired by https://github.com/djadmin/awesome-bug-bounty, a list of bug bounty write-up that is categorized by the bug nature" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://sl4x0.github.io/web-notes/single-sign-on/" /><meta property="article:section" content="web-notes" />
+<meta property="article:published_time" content="2022-08-14T23:48:05+00:00" />
+<meta property="article:modified_time" content="2022-08-14T23:48:05+00:00" />
+
+
+
+  </head>
+  <body>
+    <header class="app-header">
+      <a href="https://sl4x0.github.io/"><img class="app-header-avatar" src="/avatar.jpg" alt="Abdelrhman Allam" /></a>
+      <h1>0xSlaxo Blog</h1>
+      <nav class="app-header-menu">
+          <a class="app-header-menu-item" href="/about/">About</a>
+             | 
+          
+          <a class="app-header-menu-item" href="/">Home</a>
+             | 
+          
+          <a class="app-header-menu-item" href="/tags/">Tags</a>
+      </nav>
+      <p> M.A.C.S Student | N00b CTFer</p>
+      <div class="app-header-social">
+        
+          <a href="https://github.com/sl4x0" target="_blank" rel="noreferrer noopener">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-github">
+  <title>My Github</title>
+  <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
+</svg>
+          </a>
+        
+          <a href="https://www.facebook.com/sl4x0" target="_blank" rel="noreferrer noopener">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-facebook">
+  <title>My facebook</title>
+  <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
+</svg>
+          </a>
+        
+          <a href="https://twitter.com/sl4x0" target="_blank" rel="noreferrer noopener">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-twitter">
+  <title>My Twitter</title>
+  <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path>
+</svg>
+          </a>
+        
+          <a href="https://linkedin.com/in/sl4x0" target="_blank" rel="noreferrer noopener">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-linkedin">
+  <title>My Twitter</title>
+  <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle>
+</svg>
+          </a>
+        
+      </div>
+    </header>
+    <main class="app-container">
+      
+  <article class="post">
+    <header class="post-header">
+      <h1 class ="post-title">Single-Sign On</h1>
+      <div class="post-meta">
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-calendar">
+  <title>calendar</title>
+  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line>
+</svg>
+          Aug 14, 2022
+        </div>
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-clock">
+  <title>clock</title>
+  <circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>
+</svg>
+          10 min read
+        </div>
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tag">
+  <title>tag</title>
+  <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line>
+</svg>
+              <a class="tag" href="https://sl4x0.github.io/tags/sso/">SSO</a>
+              <a class="tag" href="https://sl4x0.github.io/tags/web-notes/">Web-Notes</a>
+        </div>
+      </div>
+    </header>
+    <div class="post-content">
+      <p><strong>Single sign-on</strong> (SSO) is a feature that allows users to access multiple services belonging to the same organization <strong>without logging in multiple times</strong>.</p>
+<p>Once you’ve logged into a website that uses SSO, you <strong>won’t</strong> have to enter your credentials again when accessing another service or resource belonging to the same company.</p>
+<h1 id="references">References</h1>
+<p><a href="https://book.hacktricks.xyz/pentesting-web/saml-attacks">SAML Attacks</a></p>
+<p><a href="https://github.com/KathanP19/HowToHunt/blob/master/SAML/SAML.md">HowToHunt/SAML.md at master · KathanP19/HowToHunt</a></p>
+<p><a href="https://github.com/ngalongc/bug-bounty-reference#stealing-access-token">GitHub - ngalongc/bug-bounty-reference: Inspired by https://github.com/djadmin/awesome-bug-bounty, a list of bug bounty write-up that is categorized by the bug nature</a></p>
+<p><a href="https://github.com/swisskyrepo/PayloadsAllTheThings/tree/master/SAML%20Injection">PayloadsAllTheThings/SAML Injection at master · swisskyrepo/PayloadsAllTheThings</a></p>
+<hr>
+<h1 id="mechanisms">Mechanisms</h1>
+<p><strong>Cookie sharing</strong>, <strong>SAML</strong>, and <strong>OAuth</strong> are the three most common ways of implementing SSO.</p>
+<p>Each mechanism has unique <strong>strengths</strong> and <strong>weaknesses</strong>, and developers choose different approaches depending on their needs.</p>
+<h2 id="cooking-sharing">Cooking Sharing</h2>
+<p>The implementation of SSO is quite easy if the services that need to share authentication are located under the same parent domain, as is the case with
+the web and mobile versions of Facebook at <a href="http://www.facebook.com/">www.facebook.com</a> and <code>m.facebook.com</code>. In these situations, applications can <strong>share cookies across subdomains</strong>.</p>
+<h3 id="how-cookie-sharing-works">How Cookie Sharing Works</h3>
+<p>For example, if the server sets a cookie like the following, the cookie will be sent to all subdomains of <a href="http://facebook.com/">facebook.com</a>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>Set<span style="color:#f92672">-</span>Cookie<span style="color:#f92672">:</span> cookie<span style="color:#f92672">=</span>abc123<span style="color:#f92672">;</span> Domain<span style="color:#f92672">=</span>facebook<span style="color:#f92672">.</span><span style="color:#a6e22e">com</span><span style="color:#f92672">;</span> Secure<span style="color:#f92672">;</span> HttpOnly
+</span></span></code></pre></div><p>However it’s uncommon way to share cookies As the parent domain is not the same at <a href="http://facebook.com">facebook.com</a> and <a href="http://messenger.com">messenger.com</a></p>
+<p>Moreover, this simple SSO setup comes with unique vulnerabilities. First, because the session cookie is shared across all subdomains, attackers can take
+over the accounts of all websites under the same parent domain by <strong>stealing a single cookie from the user</strong>. Usually, attackers can steal the session cookies by
+finding a vulnerability like cross-site scripting. Another common method used to compromise shared-session SSO is with a <strong>subdomain takeover</strong> vulnerability.</p>
+<h3 id="subdomain-takeovers">Subdomain Takeovers</h3>
+<p>Imagine that <a href="http://example.com/">example.com</a> implements a shared-session-based <strong>SSO</strong> system. Its cookies will be sent to any subdomain
+of <a href="http://example.com/">example.com</a>, including <a href="http://abc.example.com/">abc.example.com</a>. Now the attacker who took over <a href="http://abc.example.com/">abc.example.com</a> can host a malicious script there to steal session cookies.</p>
+<p>If the attacker can steal the shared session cookie by taking control of a single subdomain, all <a href="http://example.com/">example.com</a> sites will be at risk.</p>
+<p>Because the compromise of a single subdomain can mean a total compromise of the entire SSO system, using shared cookies as an SSO mechanism greatly widens the attack surface for each service.</p>
+<h2 id="security-assertion-markup-language">Security Assertion Markup Language</h2>
+<p><em>Security Assertion Markup Language</em> (<strong>SAML</strong>) is an XML-based markup language used to facilitate SSO on larger-scale applications.</p>
+<p>SAML enables SSO by facilitating information exchange among three parties: <strong>the user</strong>, <strong>the identity provider</strong>, and the <strong>service provider</strong>.</p>
+<h3 id="how-saml-works">How SAML Works</h3>
+<p>In SAML systems, the user obtains an <strong>identity assertion</strong> from the identity provider and uses that to authenticate to the service provider.</p>
+<p>The <em>identity provider</em> is a server in charge of authenticating the user and <strong>passing on user information to the service provider</strong>.</p>
+<p>The <em>service provider</em> is the actual <strong>site</strong> that the user intends to access.</p>
+<p><img src="https://user-images.githubusercontent.com/70459751/184545675-0fc5ef27-f025-4e6e-9cf5-3ce43ebf677b.png" alt="image"></p>
+<p>A simplified view of the SAML authentication process</p>
+<p>For instance, take a look at the following <strong>SAML identity assertion</strong>. It communicates the user’s identity via the user’s username:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-php" data-lang="php"><span style="display:flex;"><span><span style="color:#f92672">&lt;</span><span style="color:#a6e22e">saml</span><span style="color:#f92672">:</span><span style="color:#a6e22e">AttributeStatement</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span> <span style="color:#f92672">&lt;</span><span style="color:#a6e22e">saml</span><span style="color:#f92672">:</span><span style="color:#a6e22e">Attribute</span> <span style="color:#a6e22e">Name</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;username&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span> <span style="color:#f92672">&lt;</span><span style="color:#a6e22e">saml</span><span style="color:#f92672">:</span><span style="color:#a6e22e">AttributeValue</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span> <span style="color:#a6e22e">user1</span>
+</span></span><span style="display:flex;"><span> <span style="color:#f92672">&lt;/</span><span style="color:#a6e22e">saml</span><span style="color:#f92672">:</span><span style="color:#a6e22e">AttributeValue</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span> <span style="color:#f92672">&lt;/</span><span style="color:#a6e22e">saml</span><span style="color:#f92672">:</span><span style="color:#a6e22e">Attribute</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/</span><span style="color:#a6e22e">saml</span><span style="color:#f92672">:</span><span style="color:#a6e22e">AttributeStatement</span><span style="color:#f92672">&gt;</span>
+</span></span></code></pre></div><p>⚠️Realistic SAML messages will be longer and contain a lot more information.⚠️</p>
+<h3 id="saml-vulnerabilities">SAML Vulnerabilities</h3>
+<p>An attacker who can control the SAML response passed to the service provider can authenticate as someone else.</p>
+<p>SAML can be secure if the SAML signature is <strong>implemented correctly</strong>. However, its security breaks apart if attackers can find a way to bypass the
+signature validation and forge the identity assertion to assume the identity of others.</p>
+<p>The <strong>digital signature</strong> that most applications apply to SAML messages ensures that no one can tamper with them. If a SAML message has the wrong signature, it won’t be accepted:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-php" data-lang="php"><span style="display:flex;"><span><span style="color:#a6e22e">SignatureValue</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span> <span style="color:#a6e22e">dXNlcjE</span><span style="color:#f92672">=</span>
+</span></span><span style="display:flex;"><span> <span style="color:#f92672">&lt;/</span><span style="color:#a6e22e">saml</span><span style="color:#f92672">:</span><span style="color:#a6e22e">SignatureValue</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/</span><span style="color:#a6e22e">saml</span><span style="color:#f92672">:</span><span style="color:#a6e22e">Signature</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;</span><span style="color:#a6e22e">saml</span><span style="color:#f92672">:</span><span style="color:#a6e22e">AttributeStatement</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span> <span style="color:#f92672">&lt;</span><span style="color:#a6e22e">saml</span><span style="color:#f92672">:</span><span style="color:#a6e22e">Attribute</span> <span style="color:#a6e22e">Name</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;username&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span> <span style="color:#f92672">&lt;</span><span style="color:#a6e22e">saml</span><span style="color:#f92672">:</span><span style="color:#a6e22e">AttributeValue</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span> <span style="color:#a6e22e">user1</span>
+</span></span><span style="display:flex;"><span> <span style="color:#f92672">&lt;/</span><span style="color:#a6e22e">saml</span><span style="color:#f92672">:</span><span style="color:#a6e22e">AttributeValue</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span> <span style="color:#f92672">&lt;/</span><span style="color:#a6e22e">saml</span><span style="color:#f92672">:</span><span style="color:#a6e22e">Attribute</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/</span><span style="color:#a6e22e">saml</span><span style="color:#f92672">:</span><span style="color:#a6e22e">AttributeStatement</span><span style="color:#f92672">&gt;</span>
+</span></span></code></pre></div><p>Sometimes the SAML signature <strong>isn’t implemented or verified at all</strong>! If this is the case, attackers can forge the identity information in the SAML response at will.</p>
+<p>Other times, developers make the mistake of verifying signatures only if they exist. Attackers can then <strong>empty the signature</strong> field or remove the field completely to <strong>bypass the security measure</strong>.</p>
+<p>If you take a closer look at the previous signed SAML message, you’ll notice that the signature, <code>dXNlcjE=</code>, is just the <strong>base64</strong> encoding of user1. We can deduce that the signature
+mechanism used is base64(username). To forge a valid identity assertion for <strong>victim_user</strong>, we can change the signature field to <code>base64(&quot;victim_user&quot;)</code>, which is <code>dmljdGltX3VzZXI=</code>, and obtain a valid session as <strong>victim_user</strong>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-php" data-lang="php"><span style="display:flex;"><span><span style="color:#f92672">&lt;</span><span style="color:#a6e22e">saml</span><span style="color:#f92672">:</span><span style="color:#a6e22e">Signature</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span> <span style="color:#f92672">&lt;</span><span style="color:#a6e22e">saml</span><span style="color:#f92672">:</span><span style="color:#a6e22e">SignatureValue</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span> <span style="color:#a6e22e">dmljdGltX3VzZXI</span><span style="color:#f92672">=</span>
+</span></span><span style="display:flex;"><span> <span style="color:#f92672">&lt;/</span><span style="color:#a6e22e">saml</span><span style="color:#f92672">:</span><span style="color:#a6e22e">SignatureValue</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/</span><span style="color:#a6e22e">saml</span><span style="color:#f92672">:</span><span style="color:#a6e22e">Signature</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;</span><span style="color:#a6e22e">saml</span><span style="color:#f92672">:</span><span style="color:#a6e22e">AttributeStatement</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;</span><span style="color:#a6e22e">saml</span><span style="color:#f92672">:</span><span style="color:#a6e22e">Attribute</span> <span style="color:#a6e22e">Name</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;username&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span> <span style="color:#f92672">&lt;</span><span style="color:#a6e22e">saml</span><span style="color:#f92672">:</span><span style="color:#a6e22e">AttributeValue</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span> <span style="color:#a6e22e">victim_user</span>
+</span></span><span style="display:flex;"><span> <span style="color:#f92672">&lt;/</span><span style="color:#a6e22e">saml</span><span style="color:#f92672">:</span><span style="color:#a6e22e">AttributeValue</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span> <span style="color:#f92672">&lt;/</span><span style="color:#a6e22e">saml</span><span style="color:#f92672">:</span><span style="color:#a6e22e">Attribute</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/</span><span style="color:#a6e22e">saml</span><span style="color:#f92672">:</span><span style="color:#a6e22e">AttributeStatement</span><span style="color:#f92672">&gt;</span>
+</span></span></code></pre></div><p>Encryption protects a message’s <strong>confidentiality</strong>, not its <strong>integrity</strong>. If a SAML response is encrypted but not signed, or signed with a weak signature, attackers can
+attempt to tamper with the encrypted message to mess with the outcome of the identity assertion.</p>
+<p>To learn more about encryption attacks, visit Wikipedia at <a href="https://en.wikipedia.org/wiki/Encryption#Attacks_and_countermeasures">https://en.wikipedia.org/wiki/Encryption#Attacks_and_countermeasures</a>.</p>
+<p>SAML messages are also a common source of <strong>sensitive data leaks</strong>. If a SAML message contains sensitive user information, like passwords, and isn’t
+encrypted, an attacker who intercepts the victim’s traffic might be able to <strong>steal those pieces of information</strong>.</p>
+<p>If SAML message is passed into a database, attackers might be able to pollute that field to achieve <strong>SQL injection</strong>.
+Depending on how the SAML message is used server-side, attackers might also be able to perform <strong>XSS</strong>, <strong>XXE</strong>, and a whole host of other nasty web attacks.</p>
+<h2 id="oauth">OAuth</h2>
+<p>OAuth is essentially a way for users to grant <strong>scope-specific access tokens</strong> to service providers through an identity provider.</p>
+<h3 id="how-oauth-works">How OAuth Works</h3>
+<p>When you log in to an application using OAuth, the service provider requests access to your information from the identity provider. These resources might
+include your email address, contacts, birthdate, and anything else it needs to determine who you are. These permissions and pieces of data are called <strong>the
+scope</strong>. The <em>identity provider</em> will then create a unique <code>access_token</code> that the service provider can use to obtain the resources defined by the scope.</p>
+<p>When you log in to the service provider via <strong>OAuth</strong>, the first request that the service provider will send to the <strong>identity
+provider</strong> is the request for an authorization. This request will include the service provider’s <code>client_id</code> used to identify the service provider, a <code>redirect_uri</code>
+used to redirect the <strong>authentication flow</strong>, a scope listing the requested permissions, and a state parameter, which is essentially a CSRF token:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-nix" data-lang="nix"><span style="display:flex;"><span><span style="color:#e6db74">identity.com/oauth</span><span style="color:#f92672">?</span>
+</span></span><span style="display:flex;"><span>client_id<span style="color:#960050;background-color:#1e0010">=</span>CLIENT_ID
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">&amp;</span>response_type<span style="color:#960050;background-color:#1e0010">=</span>code
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">&amp;</span>state<span style="color:#960050;background-color:#1e0010">=</span>STATE
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">&amp;</span>redirect_uri<span style="color:#960050;background-color:#1e0010">=</span><span style="color:#e6db74">https://example.com/callback</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">&amp;</span>scope<span style="color:#960050;background-color:#1e0010">=</span>email
+</span></span></code></pre></div><p>Then, the identity provider will ask the user to grant access to the service provider, typically via a <strong>pop-up window</strong>.</p>
+<p><img src="https://user-images.githubusercontent.com/70459751/184545684-28013489-1e54-4d5b-9108-82262ffd39fc.png" alt="image"></p>
+<p>pop-up during OAuth flow</p>
+<p>After the user agrees to the permissions the service provider asks for, the identity provider will send the <code>redirect_uri</code> an authorization code:</p>
+<p><a href="https://example.com/callback?authorization_code=abc123&amp;state=STATE"><code>https://example.com/callback?authorization_code=abc123&amp;state=STATE</code></a></p>
+<p>Client IDs and client secrets authenticate the service provider to the identity provider:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-nix" data-lang="nix"><span style="display:flex;"><span><span style="color:#e6db74">identity.com/oauth/token</span><span style="color:#f92672">?</span>
+</span></span><span style="display:flex;"><span>client_id<span style="color:#960050;background-color:#1e0010">=</span>CLIENT_ID
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">&amp;</span>client_secret<span style="color:#960050;background-color:#1e0010">=</span>CLIENT_SECRET
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">&amp;</span>redirect_uri<span style="color:#960050;background-color:#1e0010">=</span><span style="color:#e6db74">https://example.com/callback</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">&amp;</span>code<span style="color:#960050;background-color:#1e0010">=</span>abc123
+</span></span></code></pre></div><p>The identity provider will send back the <code>access_token</code>, which can be used to access the user’s information:</p>
+<p><a href="https://example.com/callback?#access_token=xyz123"><code>https://example.com/callback?#access_token=xyz123</code></a></p>
+<h3 id="oauth-vulnerabilities">OAuth Vulnerabilities</h3>
+<p>The <code>redirect_uri</code> determines where the identity provider sends critical pieces of information like the <code>access_token</code>. Most major identity providers, therefore, require service providers to specify an <strong>allowlist</strong> of URLs to use as
+the <code>redirect_uri</code>. If the <code>redirect_uri</code> provided in a request isn’t on the <strong>allowlist</strong>, the identity provider will reject the request. The following request, for example, will be rejected if only <a href="http://example.com/">example.com</a> subdomains are allowed:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-nix" data-lang="nix"><span style="display:flex;"><span>client_id<span style="color:#960050;background-color:#1e0010">=</span>CLIENT_ID
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">&amp;</span>response_type<span style="color:#960050;background-color:#1e0010">=</span>code
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">&amp;</span>state<span style="color:#960050;background-color:#1e0010">=</span>STATE
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">&amp;</span>redirect_uri<span style="color:#960050;background-color:#1e0010">=</span><span style="color:#e6db74">https://attacker.com</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">&amp;</span>scope<span style="color:#960050;background-color:#1e0010">=</span>email
+</span></span></code></pre></div><p>But what if an open redirect vulnerability exists within one of the <strong>allowlisted</strong> <code>redirect_uri</code> URLs? Often, <code>access_tokens</code> are communicated via a
+URL fragment, which survives all cross-domain redirects. If an attacker can make the OAuth flow redirect to the attacker’s domain in the end, they can steal the <code>access_token</code> from the URL fragment and gain access to the user’s account.
+One way of redirecting the OAuth flow is through a <code>URL-parameterbased</code> open redirect. For example, using the following URL as the <code>redirect_uri</code></p>
+<p><code>redirect_uri=https://example.com/callback?[next=attacker.com](http://next%3Dattacker.com/)</code></p>
+<p>will cause the flow to redirect to the callback URL first</p>
+<p><a href="https://example.com/callback?next=attacker.com#access_token=xyz123"><code>https://example.com/callback?next=attacker.com#access_token=xyz123</code></a></p>
+<p>and then to the attacker’s domain:</p>
+<p><a href="https://attacker.com/#access_token=xyz123"><code>https://attacker.com#access_token=xyz123</code></a></p>
+<p>The attacker can send the victim a crafted URL that will initiate the OAuth flow, and then run a listener on their server to harvest the leaked tokens:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-nix" data-lang="nix"><span style="display:flex;"><span><span style="color:#e6db74">identity.com/oauth</span><span style="color:#f92672">?</span>
+</span></span><span style="display:flex;"><span>client_id<span style="color:#960050;background-color:#1e0010">=</span>CLIENT_ID
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">&amp;</span>response_type<span style="color:#960050;background-color:#1e0010">=</span>code
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">&amp;</span>state<span style="color:#960050;background-color:#1e0010">=</span>STATE
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">&amp;</span>redirect_uri<span style="color:#960050;background-color:#1e0010">=</span><span style="color:#e6db74">https://example.com/callback?next=attacker.com</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">&amp;</span>scope<span style="color:#960050;background-color:#1e0010">=</span>email
+</span></span></code></pre></div><p>Another way of redirecting the OAuth flow is through a <code>referer-based</code> open redirect.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-html" data-lang="html"><span style="display:flex;"><span>&lt;<span style="color:#f92672">a</span> <span style="color:#a6e22e">href</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;https://example.com/login_via_facebook&#34;</span>&gt;Click here to log in to example.com&lt;/<span style="color:#f92672">a</span>&gt;
+</span></span></code></pre></div><p>This will cause the flow to redirect to the callback URL first:</p>
+<p><a href="https://example.com/callback?#access_token=xyz123"><code>https://example.com/callback?#access_token=xyz123</code></a></p>
+<p>Then it would redirect to the attacker’s domain via the <code>referer</code>:</p>
+<p><a href="https://attacker.com/#access_token=xyz123"><code>https://attacker.com#access_token=xyz123</code></a></p>
+<p>Let’s say the <code>redirect_uri</code> parameter permits only further redirects to URLs that are under the <a href="http://example.com/">example.com</a> domain. If attackers can
+find an open redirect <strong>within that domain</strong>, they can still steal OAuth tokens via redirects. Let’s say an unfixed open redirect is on the logout endpoint of <a href="http://example.com/">example.com</a>:</p>
+<p><a href="https://example.com/logout?next=attacker.com"><code>https://example.com/logout?next=attacker.com</code></a></p>
+<p>By taking advantage of this open redirect, the attacker can form a <em>chain</em> of redirects to eventually smuggle the token offsite, starting with the following:</p>
+<p><code>redirect_uri=https://example.com/callback?[next=example.com/logout?next=attacker.com](http://next%3Dexample.com/logout?next=attacker.com)</code></p>
+<p>This <code>redirect_uri</code> will first cause the flow to redirect to the callback URL:</p>
+<p><a href="https://example.com/callback?next=example.com/logout?next=attacker.com#access_token=xyz123"><code>https://example.com/callback?next=example.com/logout?next=attacker.com#access_token=xyz123</code></a></p>
+<p>Then to the logout URL vulnerable to open redirect:</p>
+<p><a href="https://example.com/logout?next=attacker.com#access_token=xyz123"><code>https://example.com/logout?next=attacker.com#access_token=xyz123</code></a></p>
+<p>Then it will redirect to the attacker’s domain.</p>
+<p><a href="https://attacker.com/#access_token=xyz123"><code>https://attacker.com#access_token=xyz123</code></a></p>
+<p>Sometimes tokens aren’t invalidated periodically and can be used by attackers long after they
+are stolen, and remain valid even after password reset. You can test for these issues by using the same access tokens after logout and <strong>after password reset</strong>.</p>
+<hr>
+<h1 id="hunting-for-saml-vulnerabilities">Hunting for SAML Vulnerabilities</h1>
+<p>You can figure this out by intercepting the traffic used for authenticating to a site and looking for
+XML-like messages or the keyword <code>saml</code>. Note that SAML messages aren’t always passed in plain XML format. They might be encoded in base64 or other encoding schemes.</p>
+<h3 id="step-1-locate-the-saml-response">Step 1: Locate the SAML Response</h3>
+<p>You can usually do this by intercepting the requests going between the browser and the service provider using a proxy. The SAML response will be sent when the user’s browser is logging into a new session for that particular service provider.</p>
+<h3 id="step-2-analyze-the-response-fields">Step 2: Analyze the Response Fields</h3>
+<p>For example, look for field names like username, email address, <code>userID</code>, and so on. Try tampering with these fields in your proxy. If the SAML message lacks a signature, or if the signature of the SAML response isn’t verified at all, tampering with the message is all you need to do to authenticate as someone else!</p>
+<h3 id="step-3-bypass-the-signature">Step 3: Bypass the Signature</h3>
+<p>If the signatures are verified only when they exist, you could try removing the signature value from the SAML response. Sometimes this is the only  action required to bypass security checks. You can do this in two ways. First, you can empty the signature field:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-html" data-lang="html"><span style="display:flex;"><span>&lt;<span style="color:#f92672">saml:Signature</span>&gt;
+</span></span><span style="display:flex;"><span> &lt;<span style="color:#f92672">saml:SignatureValue</span>&gt;
+</span></span><span style="display:flex;"><span> &lt;/<span style="color:#f92672">saml:SignatureValue</span>&gt;
+</span></span><span style="display:flex;"><span>&lt;/<span style="color:#f92672">saml:Signature</span>&gt;
+</span></span><span style="display:flex;"><span>&lt;<span style="color:#f92672">saml:AttributeStatement</span>&gt;
+</span></span><span style="display:flex;"><span> &lt;<span style="color:#f92672">saml:Attribute</span> <span style="color:#a6e22e">Name</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;username&#34;</span>&gt;
+</span></span><span style="display:flex;"><span> &lt;<span style="color:#f92672">saml:AttributeValue</span>&gt;
+</span></span><span style="display:flex;"><span> victim_user
+</span></span><span style="display:flex;"><span> &lt;/<span style="color:#f92672">saml:AttributeValue</span>&gt;
+</span></span><span style="display:flex;"><span> &lt;/<span style="color:#f92672">saml:Attribute</span>&gt;
+</span></span><span style="display:flex;"><span>&lt;/<span style="color:#f92672">saml:AttributeStatement</span>&gt;
+</span></span></code></pre></div><p>Or you can try removing the field entirely:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-html" data-lang="html"><span style="display:flex;"><span>&lt;<span style="color:#f92672">saml:AttributeStatement</span>&gt;
+</span></span><span style="display:flex;"><span> &lt;<span style="color:#f92672">saml:Attribute</span> <span style="color:#a6e22e">Name</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;username&#34;</span>&gt;
+</span></span><span style="display:flex;"><span> &lt;<span style="color:#f92672">saml:AttributeValue</span>&gt;
+</span></span><span style="display:flex;"><span> victim_user
+</span></span><span style="display:flex;"><span> &lt;/<span style="color:#f92672">saml:AttributeValue</span>&gt;
+</span></span><span style="display:flex;"><span> &lt;/<span style="color:#f92672">saml:Attribute</span>&gt;
+</span></span><span style="display:flex;"><span>&lt;/<span style="color:#f92672">saml:AttributeStatement</span>&gt;
+</span></span></code></pre></div><h3 id="step-4-re-encode-the-message">Step 4: Re-encode the Message</h3>
+<p>The service provider will use that information to authenticate you to the service. If you’re successful, you can obtain a valid session that belongs to the victim’s account. SAML Raider is a Burp Suite extension that can help you with editing and re-encoding SAML messages.</p>
+<h1 id="hunting-for-oauth-token-theft">Hunting for OAuth Token Theft</h1>
+<p>You can figure this out by intercepting the requests to complete authentication on the website and look for the <code>oauth</code> keyword in the HTTP messages. Then start looking for open redirect vulnerabilities.</p>
+<hr>
+<h1 id="finding-your-first-sso-bypass">Finding Your First SSO Bypass!</h1>
+<ol>
+<li>If the target application is using single sign-on, determine the SSO mechanism in use.</li>
+<li>If the application is using shared session cookies, try to steal session cookies by using subdomain takeovers.</li>
+<li>If the application uses a SAML-based SSO scheme, test whether the server is verifying SAML signatures properly.</li>
+<li>If the application uses OAuth, try to steal OAuth tokens by using open redirects.</li>
+<li>Submit your report about SSO bypass to the bug bounty program!</li>
+</ol>
+
+    </div>
+    <div class="post-footer">
+      
+    </div>
+  </article>
+
+    </main>
+  </body>
+</html>

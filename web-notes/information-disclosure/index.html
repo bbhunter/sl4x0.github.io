@@ -1,0 +1,316 @@
+<!doctype html>
+<html lang="en-us">
+  <head>
+    <title>Information Disclosure // 0xSlaxo Blog</title>
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <meta charset="utf-8" />
+    <meta name="generator" content="Hugo 0.101.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="author" content="Abdelrhman Allam" />
+    <meta name="description" content="" />
+    <link rel="stylesheet" href="https://sl4x0.github.io/css/main.min.88e7083eff65effb7485b6e6f38d10afbec25093a6fac42d734ce9024d3defbd.css" />
+
+    
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Information Disclosure"/>
+<meta name="twitter:description" content="These bugs are common; in fact, they’re the type of bug I find most often while bug bounty hunting, even when I’m searching for other bug types.
+References Sensitive Information Disclosure
+Mechanisms Information disclosure occurs when an application fails to properly protect sensitive information, giving users access to information they shouldn’t have available to them.
+This sensitive information can include technical details that aid an attack, like software version numbers, internal IP addresses, sensitive filenames, filepaths, user’s age, bank account numbers, email addresses, and mailing addresses, to unauthorized third parties."/>
+
+    <meta property="og:title" content="Information Disclosure" />
+<meta property="og:description" content="These bugs are common; in fact, they’re the type of bug I find most often while bug bounty hunting, even when I’m searching for other bug types.
+References Sensitive Information Disclosure
+Mechanisms Information disclosure occurs when an application fails to properly protect sensitive information, giving users access to information they shouldn’t have available to them.
+This sensitive information can include technical details that aid an attack, like software version numbers, internal IP addresses, sensitive filenames, filepaths, user’s age, bank account numbers, email addresses, and mailing addresses, to unauthorized third parties." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://sl4x0.github.io/web-notes/information-disclosure/" /><meta property="article:section" content="web-notes" />
+<meta property="article:published_time" content="2021-10-23T23:48:05+00:00" />
+<meta property="article:modified_time" content="2021-10-23T23:48:05+00:00" />
+
+
+
+  </head>
+  <body>
+    <header class="app-header">
+      <a href="https://sl4x0.github.io/"><img class="app-header-avatar" src="/avatar.jpg" alt="Abdelrhman Allam" /></a>
+      <h1>0xSlaxo Blog</h1>
+      <nav class="app-header-menu">
+          <a class="app-header-menu-item" href="/about/">About</a>
+             | 
+          
+          <a class="app-header-menu-item" href="/">Home</a>
+             | 
+          
+          <a class="app-header-menu-item" href="/tags/">Tags</a>
+      </nav>
+      <p> M.A.C.S Student | N00b CTFer</p>
+      <div class="app-header-social">
+        
+          <a href="https://github.com/sl4x0" target="_blank" rel="noreferrer noopener">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-github">
+  <title>My Github</title>
+  <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
+</svg>
+          </a>
+        
+          <a href="https://www.facebook.com/sl4x0" target="_blank" rel="noreferrer noopener">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-facebook">
+  <title>My facebook</title>
+  <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
+</svg>
+          </a>
+        
+          <a href="https://twitter.com/sl4x0" target="_blank" rel="noreferrer noopener">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-twitter">
+  <title>My Twitter</title>
+  <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path>
+</svg>
+          </a>
+        
+          <a href="https://linkedin.com/in/sl4x0" target="_blank" rel="noreferrer noopener">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-linkedin">
+  <title>My Twitter</title>
+  <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle>
+</svg>
+          </a>
+        
+      </div>
+    </header>
+    <main class="app-container">
+      
+  <article class="post">
+    <header class="post-header">
+      <h1 class ="post-title">Information Disclosure</h1>
+      <div class="post-meta">
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-calendar">
+  <title>calendar</title>
+  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line>
+</svg>
+          Oct 23, 2021
+        </div>
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-clock">
+  <title>clock</title>
+  <circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>
+</svg>
+          13 min read
+        </div>
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tag">
+  <title>tag</title>
+  <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line>
+</svg>
+              <a class="tag" href="https://sl4x0.github.io/tags/info-disclosure/">Info-Disclosure</a>
+              <a class="tag" href="https://sl4x0.github.io/tags/web-notes/">Web-Notes</a>
+        </div>
+      </div>
+    </header>
+    <div class="post-content">
+      <p>These bugs are common; in fact, they’re the type of bug I find most often while bug bounty hunting, even when I’m searching for other bug types.</p>
+<h1 id="references">References</h1>
+<p><a href="https://gowsundar.gitbook.io/book-of-bugbounty-tips/sensitive-information-disclosure">Sensitive Information Disclosure</a></p>
+<hr>
+<h1 id="mechanisms">Mechanisms</h1>
+<p>Information disclosure occurs when an application fails to properly <strong>protect sensitive information</strong>, giving users access to information they shouldn’t have available to them.</p>
+<p>This sensitive information can include technical details that aid an attack, like <strong>software version numbers</strong>, <strong>internal IP addresses</strong>, <strong>sensitive filenames</strong>, <strong>filepaths,</strong> <strong>user’s age</strong>,
+<strong>bank account numbers</strong>, <strong>email addresses</strong>, and <strong>mailing addresses</strong>, to unauthorized third parties.</p>
+<p>For example, learning the exact <strong>software versions</strong> an application uses will allow attackers to look for publicly
+disclosed vulnerabilities that affect the application. Configuration files often contain information such as <strong>access tokens and internal IP addresses</strong>
+that attackers can use to further compromise the organization.</p>
+<p>For example, the <code>X-Powered-By</code> header, which is used by many applications, shows you which
+framework the application runs: <code>X-Powered-By: PHP/5.2.17</code></p>
+<p>Finally, applications often leak sensitive information by including it in their <strong>public code</strong>. Developers might accidentally place information such as
+credentials, internal IP addresses, informative code comments, and users’ private information in <strong>public source code</strong> such as the HTML and JavaScript
+files that get served to users.</p>
+<hr>
+<h1 id="hunting-for-information-disclosure">Hunting for Information Disclosure</h1>
+<p>You can use several strategies to find information disclosure vulnerabilities,
+depending on the application you’re targeting and what you’re looking for.</p>
+<h3 id="step-1-attempt-a-path-traversal-attack">Step 1: Attempt a Path Traversal Attack</h3>
+<p><strong>Path traversal</strong> attacks are used to access files outside the web application’s root folder.</p>
+<p>For example, let’s say a website allows you to load an image in the application’s image folder by using a relative URL.</p>
+<p>This URL, for example, will redirect users to <a href="https://example.com/images/1.png">https://example.com/images/1.png</a>: <a href="https://example.com/image?url=/images/1.png"><code>https://example.com/image?url=/images/1.png</code></a></p>
+<p>In this case, the url parameter contains a <strong>relative URL</strong> (/images/1.png) that references files within the web application root. You can insert the <code>../</code>
+sequence to try to navigate out of the images folder and out of the web root.</p>
+<p>It might take some trial and error to determine how many <code>../</code> sequences you need to reach the system’s <strong>root directory</strong>. Also, if the application implements some sort of input validation and doesn’t allow ../ in the filepath,
+you can use encoded variations of ../, such as <code>%2e%2e%2f</code> (URL encoding), <code>%252e%252e%255f</code> (double URL encoding), and ..<code>%2f</code> (partial URL encoding).</p>
+<h3 id="step-2-search-the-wayback-machine">Step 2: Search the Wayback Machine</h3>
+<p>On the Wayback Machine’s site, simply search for a domain to see its past versions. To search for a domain’s files, visit <a href="https://web.archive.org/web/*/DOMAIN">https://web.archive.org/web/*/DOMAIN</a>.</p>
+<p>For example, <a href="https://web.archive.org/web/*/example.com/*">https://web.archive.org/web/<em>/example.com/</em></a> will return a list of URLs related to <a href="http://example.com/">example.com</a>.</p>
+<p><img src="https://user-images.githubusercontent.com/70459751/184545801-7f5f5ccb-553d-4494-8aa0-19d85f20e88a.png" alt="image"></p>
+<p>You can then use the search function to see whether any sensitive pages have been archived. For example, to look for admin pages, search for the term <code>/admin</code> in the found URLs</p>
+<p><img src="https://user-images.githubusercontent.com/70459751/184545806-f9ec476d-0fbc-4685-8935-98fd6824d1d9.png" alt="image"></p>
+<p>You can also search for backup files and configuration files by using common file extensions like <code>.conf</code> and <code>.env</code>, or look for source code, like JavaScript or PHP files, by using the file extensions <code>.js</code> and <code>.php</code>.</p>
+<p>Download interesting archived pages and look for any sensitive info. For example, are there any hardcoded credentials that are still in use, or does the page leak any hidden endpoints that normal users shouldn’t know about?</p>
+<h3 id="step-3-search-paste-dump-sites">Step 3: Search Paste Dump Sites</h3>
+<p>Next, look into paste dump sites like <strong>Pastebin</strong> and <strong>GitHub</strong> gists. But on a site like Pastebin, for example, shared text files are public by default. If developers upload a <strong>sensitive file</strong>, everyone will be able to read it. For this reason, these code-sharing sites are pretty infamous for leaking credentials like <strong>API keys and passwords</strong>.</p>
+<p>Tools like PasteHunter or pastebin-scraper can also automate the process. Pastebin-scraper <a href="https://github.com/streaak/pastebin-scraper/">https://github.com/streaak/pastebin-scraper/</a> uses the Pastebin API to help you search for paste files. This tool is a shell script, so download it to a local directory
+and run the following command to search for public paste files associated with a particular keyword. The -g option indicates a general keyword search: <code>./scrape.sh -g KEYWORD</code></p>
+<h3 id="step-4-reconstruct-source-code-from-an-exposed-git-directory">Step 4: Reconstruct Source Code from an Exposed .git Directory</h3>
+<p>When a developer uses Git to version-control a project’s source code, Git will store all of the project’s version-control information, including the
+<strong>commit history of project files</strong>, in a Git directory. Normally, this .git folder shouldn’t be accessible to the public, but sometimes it’s accidentally made
+available. This is when information leaks happen. When a .git directory is exposed, attackers can obtain an application’s source code and therefore gain access to <strong>developer comments</strong>, hardcoded <strong>API keys</strong>, and other
+sensitive data via secret scanning tools like truffleHog <a href="https://github.com/trufflesecurity/trufflehog">https://github.com/trufflesecurity/trufflehog</a> or Gitleaks <a href="https://github.com/zricethezav/gitleaks">https://github.com/zricethezav/gitleaks</a>.</p>
+<h3 id="checking-whether-a-git-folder-is-public"><code>Checking Whether a .git Folder Is Public</code></h3>
+<p>To check whether an application’s .git folder is public, simply go to the application’s root directory (for example, <a href="http://example.com/">example.com</a>) and add /.git to the URL: <a href="https://example.com/.git">https://example.com/.git</a></p>
+<p>Three things could happen when you browse to the <code>/.git</code> directory. If you get a <code>404 error</code>, this means the application’s .git directory isn’t made available
+to the public, and you won’t be able to leak information this way. If you get a <code>403 error</code>, the .git directory is available on the server, but you won’t be able to
+directly access the folder’s root, and therefore won’t be able to list all the files contained in the directory. If you <code>don’t get an error</code> and the server responds
+with the directory listing of the <code>.git directory</code>, you can directly browse the folder’s contents and retrieve any information contained in it.</p>
+<h3 id="downloading-files"><code>Downloading Files</code></h3>
+<p>The wget command retrieves content from web servers. You can use wget in recursive mode (-r) to mass-download all files stored within the specified directory and its subdirectories:
+<code>$ wget -r [example.com/.git](http://example.com/.git)</code></p>
+<p>You can do this by trying to access the directory’s config file:
+<code>$ curl [https://example.com/.git/config](https://example.com/.git/config)</code></p>
+<p>A <code>.git</code> directory is laid out in a specific way. When you execute the following command in a Git repository, you should see contents resembling the following:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-php" data-lang="php"><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">$</span> <span style="color:#a6e22e">ls</span> <span style="color:#f92672">.</span><span style="color:#a6e22e">git</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">COMMIT_EDITMSG</span> <span style="color:#a6e22e">HEAD</span> <span style="color:#a6e22e">branches</span> <span style="color:#a6e22e">config</span> <span style="color:#a6e22e">description</span> <span style="color:#a6e22e">hooks</span> <span style="color:#a6e22e">index</span> <span style="color:#a6e22e">info</span> <span style="color:#a6e22e">logs</span> <span style="color:#a6e22e">objects</span> <span style="color:#a6e22e">refs</span>
+</span></span></code></pre></div><p>the following command will return a list of folders:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-php" data-lang="php"><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">$</span> <span style="color:#a6e22e">ls</span> <span style="color:#f92672">.</span><span style="color:#a6e22e">git</span><span style="color:#f92672">/</span><span style="color:#a6e22e">objects</span>
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">00</span> <span style="color:#ae81ff">0</span><span style="color:#a6e22e">a</span> <span style="color:#ae81ff">14</span> <span style="color:#ae81ff">5</span><span style="color:#a6e22e">a</span> <span style="color:#ae81ff">64</span> <span style="color:#ae81ff">6</span><span style="color:#a6e22e">e</span> <span style="color:#ae81ff">82</span> <span style="color:#ae81ff">8</span><span style="color:#a6e22e">c</span> <span style="color:#ae81ff">96</span> <span style="color:#a6e22e">a0</span> <span style="color:#a6e22e">aa</span> <span style="color:#a6e22e">b4</span> <span style="color:#a6e22e">be</span> <span style="color:#a6e22e">c8</span> <span style="color:#a6e22e">d2</span> <span style="color:#a6e22e">dc</span> <span style="color:#a6e22e">e6</span> <span style="color:#a6e22e">f0</span> <span style="color:#a6e22e">fa</span> <span style="color:#a6e22e">info</span> <span style="color:#a6e22e">pack</span>
+</span></span></code></pre></div><p>And this command will reveal the Git objects stored in a particular folder:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-php" data-lang="php"><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">$</span> <span style="color:#a6e22e">ls</span> <span style="color:#f92672">.</span><span style="color:#a6e22e">git</span><span style="color:#f92672">/</span><span style="color:#a6e22e">objects</span><span style="color:#f92672">/</span><span style="color:#ae81ff">0</span><span style="color:#a6e22e">a</span>
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">082</span><span style="color:#a6e22e">f2656a655c8b0a87956c7bcdc93dfda23f8</span> <span style="color:#ae81ff">4</span><span style="color:#a6e22e">a1ee2f3a3d406411a72e1bea63507560092bd</span> <span style="color:#ae81ff">66452433322</span><span style="color:#a6e22e">af3d3</span>
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">19</span><span style="color:#a6e22e">a377415a890c70bbd263</span> <span style="color:#ae81ff">8</span><span style="color:#a6e22e">c20ea4482c6d2b0c9cdaf73d4b05c2c8c44e9</span> <span style="color:#a6e22e">ee44c60c73c5a622bb1733338d3fa964</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">b333f0</span>
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">0</span><span style="color:#a6e22e">ec99d617a7b78c5466daa1e6317cbd8ee07cc</span> <span style="color:#ae81ff">52113e4</span><span style="color:#a6e22e">f248648117bc4511da04dd4634e6753</span> 
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">72e6850</span><span style="color:#a6e22e">ef963c6aeee4121d38cf9de773865d8</span>
+</span></span></code></pre></div><p>You can determine an object’s type by using this command:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-php" data-lang="php"><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">$</span> <span style="color:#a6e22e">git</span> <span style="color:#a6e22e">cat</span><span style="color:#f92672">-</span><span style="color:#a6e22e">file</span> <span style="color:#f92672">-</span><span style="color:#a6e22e">t</span> <span style="color:#a6e22e">OBJECT</span><span style="color:#f92672">-</span><span style="color:#a6e22e">HASH</span>
+</span></span></code></pre></div><p>You can display the file associated with a Git object by using the following command:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-php" data-lang="php"><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">$</span> <span style="color:#a6e22e">git</span> <span style="color:#a6e22e">cat</span><span style="color:#f92672">-</span><span style="color:#a6e22e">file</span> <span style="color:#f92672">-</span><span style="color:#a6e22e">p</span> <span style="color:#a6e22e">OBJECT</span><span style="color:#f92672">-</span><span style="color:#a6e22e">HASH</span>
+</span></span></code></pre></div><p>The <code>/config</code> file is the Git configuration file for the project, and the <code>/HEAD</code> file contains a reference to the current branch:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-php" data-lang="php"><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">$</span> <span style="color:#a6e22e">cat</span> <span style="color:#f92672">.</span><span style="color:#a6e22e">git</span><span style="color:#f92672">/</span><span style="color:#a6e22e">HEAD</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">ref</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">refs</span><span style="color:#f92672">/</span><span style="color:#a6e22e">heads</span><span style="color:#f92672">/</span><span style="color:#a6e22e">master</span>
+</span></span></code></pre></div><p>But how do you find out which files on the server are available when object files have complex paths, such as <code>.git/objects/0a/72e6850ef963c6aeee4121d38cf9de773865d8?</code>
+You start with filepaths that you already know exist, like <code>.git/HEAD</code>! Reading this file will give you a reference to the current branch (for example, <code>.git/refs/heads/master</code>) that you can use to find more files on the system:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-php" data-lang="php"><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">$</span> <span style="color:#a6e22e">cat</span> <span style="color:#f92672">.</span><span style="color:#a6e22e">git</span><span style="color:#f92672">/</span><span style="color:#a6e22e">HEAD</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">ref</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">refs</span><span style="color:#f92672">/</span><span style="color:#a6e22e">heads</span><span style="color:#f92672">/</span><span style="color:#a6e22e">master</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">$</span> <span style="color:#a6e22e">cat</span> <span style="color:#f92672">.</span><span style="color:#a6e22e">git</span><span style="color:#f92672">/</span><span style="color:#a6e22e">refs</span><span style="color:#f92672">/</span><span style="color:#a6e22e">heads</span><span style="color:#f92672">/</span><span style="color:#a6e22e">master</span>
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">0</span><span style="color:#a6e22e">a66452433322af3d319a377415a890c70bbd263</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">$</span> <span style="color:#a6e22e">git</span> <span style="color:#a6e22e">cat</span><span style="color:#f92672">-</span><span style="color:#a6e22e">file</span> <span style="color:#f92672">-</span><span style="color:#a6e22e">t</span> <span style="color:#ae81ff">0</span><span style="color:#a6e22e">a66452433322af3d319a377415a890c70bbd263</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">commit</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">$</span> <span style="color:#a6e22e">git</span> <span style="color:#a6e22e">cat</span><span style="color:#f92672">-</span><span style="color:#a6e22e">file</span> <span style="color:#f92672">-</span><span style="color:#a6e22e">p</span> <span style="color:#ae81ff">0</span><span style="color:#a6e22e">a66452433322af3d319a377415a890c70bbd263</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">tree</span> <span style="color:#ae81ff">0</span><span style="color:#a6e22e">a72e6850ef963c6aeee4121d38cf9de773865d8</span>
+</span></span></code></pre></div><p>Now examine that tree object:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-php" data-lang="php"><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">$</span> <span style="color:#a6e22e">git</span> <span style="color:#a6e22e">cat</span><span style="color:#f92672">-</span><span style="color:#a6e22e">file</span> <span style="color:#f92672">-</span><span style="color:#a6e22e">p</span> <span style="color:#ae81ff">0</span><span style="color:#a6e22e">a72e6850ef963c6aeee4121d38cf9de773865d8</span>
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">100644</span> <span style="color:#a6e22e">blob</span> <span style="color:#ae81ff">6</span><span style="color:#a6e22e">ad5fb6b9a351a77c396b5f1163cc3b0abcde895</span> <span style="color:#f92672">.</span><span style="color:#a6e22e">gitignore</span>
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">040000</span> <span style="color:#a6e22e">blob</span> <span style="color:#ae81ff">4</span><span style="color:#a6e22e">b66088945aab8b967da07ddd8d3cf8c47a3f53c</span> <span style="color:#a6e22e">source</span><span style="color:#f92672">.</span><span style="color:#a6e22e">py</span>
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">040000</span> <span style="color:#a6e22e">blob</span> <span style="color:#ae81ff">9</span><span style="color:#a6e22e">a3227dca45b3977423bb1296bbc312316c2aa0d</span> <span style="color:#a6e22e">README</span>
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">040000</span> <span style="color:#a6e22e">tree</span> <span style="color:#ae81ff">3</span><span style="color:#a6e22e">b1127d12ee43977423bb1296b8900a316c2ee32</span> <span style="color:#a6e22e">resources</span>
+</span></span></code></pre></div><p>Bingo! You discover some source code files and additional object trees to explore.</p>
+<p>On a remote server, your requests to discover the different files would look a little different. For instance, you can use this URL to determine the HEAD:
+[<code>https://example.com/.git/HEAD](https://example.com/.git/HEAD)</code>
+Use this URL to find the object stored in that HEAD:
+[<code>https://example.com/.git/refs/heads/master](https://example.com/.git/refs/heads/master)</code>
+Use this URL to access the tree associated with the commit:
+[<code>https://example.com/.git/objects/0a/72e6850ef963c6aeee4121d38cf9de773865d8](https://example.com/.git/objects/0a/72e6850ef963c6aeee4121d38cf9de773865d8)</code>
+Finally, use this URL to download the source code stored in the <a href="http://source.py/"><code>source.py</code></a> file:
+<a href="https://example.com/.git/objects/4b/66088945aab8b967da07ddd8d3cf8c47a3f53c"><code>https://example.com/.git/objects/4b/66088945aab8b967da07ddd8d3cf8c47a3f53c</code></a></p>
+<p>After recovering the project’s source code, you can grep for sensitive data such as <code>hardcoded credentials</code>, <code>encryption keys</code>, and developer comments.
+If you have time, you can browse through the entire recovered codebase to conduct a source code review and find potential vulnerabilities.</p>
+<h3 id="step-5-find-information-in-public-files">Step 5: Find Information in Public Files</h3>
+<p>View page source. You should see the HTML source code of the current page. Follow the links on this page to find other HTML files and JavaScript files the application is using.
+Then, on the HTML file and the JavaScript files found, grep every page for hardcoded credentials, API keys, and personal information with keywords like password and api_key.
+You can also locate JavaScript files on a site by using tools like LinkFinder : <a href="https://github.com/GerbenJavado/LinkFinder/">https://github.com/GerbenJavado/LinkFinder/</a></p>
+<h3 id="finding-your-first-information-disclosure">Finding Your First Information Disclosure!</h3>
+<p>Now that you understand the common types of information leaks and how to find them, follow the steps discussed in this chapter to find your first
+information disclosure:</p>
+<ol>
+<li>Look for software version numbers and configuration information by
+using the recon techniques presented in Chapter 5.</li>
+<li>Start searching for exposed configuration files, database files, and other sensitive files uploaded to the production server that aren’t protected
+properly. Techniques you can use include path traversal, scraping the Wayback Machine or paste dump sites, and looking for files in exposed
+.git directories.</li>
+<li>Find information in the application’s public files, such as its HTML and JavaScript source code, by grepping the file with keywords.</li>
+<li>Consider the impact of the information you find before reporting it, and explore ways to escalate its impact.</li>
+<li>Draft your first information disclosure report and send it over to the bug bounty program!</li>
+</ol>
+<hr>
+<h1 id="prevention">Prevention</h1>
+<ul>
+<li>Make sure that everyone involved in producing the website is fully aware of what information is considered sensitive. Sometimes seemingly
+harmless information can be much more useful to an attacker than people realize. Highlighting these dangers can help make sure that sensitive
+information is handled more securely in general by your organization.</li>
+<li>Audit any code for potential information disclosure as part of your QA or build processes. It should be relatively easy to automate some of
+the associated tasks, such as stripping developer comments.</li>
+<li>Use generic error messages as much as possible. Don&rsquo;t provide attackers with clues about application behavior unnecessarily.</li>
+<li>Double-check that any debugging or diagnostic features are disabled in the production environment.</li>
+<li>Make sure you fully understand the configuration settings, and security implications, of any third-party technology that you implement.</li>
+<li>Take the time to investigate and disable any features and settings that you don&rsquo;t actually need.</li>
+</ul>
+<hr>
+<h1 id="portswigger">PortSwigger</h1>
+<h3 id="how-to-test-for-information-disclosure-vulnerabilities">How to test for information disclosure vulnerabilities</h3>
+<h3 id="fuzzing">Fuzzing</h3>
+<p>Even if the content of an <strong>error message</strong> doesn&rsquo;t disclose anything, sometimes the fact that one error case was encountered instead of another one is useful information in itself.</p>
+<ul>
+<li>Add payload positions to parameters and use pre-built wordlists of fuzz strings to test a high volume of different inputs in quick succession.</li>
+<li>Easily identify differences in responses by comparing HTTP status codes, response times, lengths, and so on.</li>
+<li>Use grep matching rules to quickly identify occurrences of keywords, such as <code>error</code>, <code>invalid</code>, <code>SELECT</code>, <code>SQL</code>, and so on.</li>
+<li>Apply grep extraction rules to extract and compare the content of interesting items within responses.</li>
+</ul>
+<h3 id="common-sources-of-information-disclosure">Common sources of information disclosure</h3>
+<ul>
+<li><strong>Files for web crawlers</strong></li>
+</ul>
+<p>Many websites provide files at <code>/robots.txt</code>and <code>/sitemap.xml</code>
+ to help crawlers navigate their site. Among other things, these files often list specific directories that the crawlers should skip,</p>
+<p>for example, because they may contain sensitive information.</p>
+<ul>
+<li><strong>Directory listings</strong></li>
+</ul>
+<p>Web servers can be configured to automatically list the contents of directories that do not have an index page present. This can aid an attacker by enabling them to quickly identify the resources at a given path, and proceed directly to analyzing and attacking those resources. It particularly increases the exposure of sensitive files within the directory that are not intended to be accessible to users, such as temporary files and crash dumps.</p>
+<ul>
+<li><strong>Developer comments</strong></li>
+</ul>
+<p>During development, in-line HTML comments are sometimes added to the markup. These comments are typically stripped before changes are deployed to the production environment. However, comments can sometimes be forgotten, missed, or even left in deliberately because someone wasn&rsquo;t fully aware of the security implications. Although these comments are not visible on the rendered page, they can easily be accessed using Burp, or even the browser&rsquo;s built-in developer tools.</p>
+<ul>
+<li><strong>Error messages</strong></li>
+</ul>
+<p>Verbose error messages can also provide information about different technologies being used by the website. For example, they might explicitly name a template engine, database type, or server that the website is using, along with its version number. This information can be useful because you can easily search for any documented exploits that may exist for this version. Similarly, you can check whether there are any common configuration errors or dangerous default settings that you may be able to exploit. Some of these may be highlighted in the official documentation.</p>
+<p><a href="https://portswigger.net/web-security/information-disclosure/exploiting/lab-infoleak-in-error-messages">Lab: Information disclosure in error messages Web Security Academy</a></p>
+<ul>
+<li><strong>Debugging data</strong></li>
+</ul>
+<p>For debugging purposes, many websites generate custom error messages and logs that contain large amounts of information about the application&rsquo;s behavior. While this information is useful during development, it is also extremely useful to an attacker if it is leaked in the production environment.</p>
+<p>Debug messages can sometimes contain vital information for developing an attack, including:</p>
+<p>⇒ Values for key session variables that can be manipulated via user input</p>
+<p>⇒ Hostnames and credentials for back-end components</p>
+<p>⇒ File and directory names on the server</p>
+<p>⇒ Keys used to encrypt data transmitted via the client</p>
+<p><a href="https://portswigger.net/web-security/information-disclosure/exploiting/lab-infoleak-on-debug-page">Lab: Information disclosure on debug page Web Security Academy</a></p>
+<ul>
+<li><strong>User account pages</strong></li>
+</ul>
+<p>By their very nature, a user&rsquo;s profile or account page usually contains sensitive information, such as the user&rsquo;s email address, phone number, API key, and so on. As users normally only have access to their own account page, this does not represent a vulnerability in itself. However, some websites contain <code>Logic Flows</code> that potentially allow an attacker to leverage these pages in order to view other users&rsquo; data.</p>
+<p>For example, consider a website that determines which user&rsquo;s account page to load based on a <code>user</code> parameter.</p>
+<pre tabindex="0"><code>GET /user/personal-info?user=carlos
+</code></pre><ul>
+<li><strong><strong>Source code disclosure via backup files</strong></strong></li>
+</ul>
+<p>Typical examples of this include API keys and credentials for accessing back-end components.</p>
+<p>If you can identify that a particular open-source technology is being used, this provides easy access to a limited amount of source code.</p>
+<p>For example, text editors often generate temporary backup files while the original file is being edited. These temporary files are usually indicated in some way, such as by appending a tilde (<code>~</code>) to the filename or adding a different file extension. Requesting a code file using a backup file extension can sometimes allow you to read the contents of the file in the response.</p>
+<p><a href="https://portswigger.net/web-security/information-disclosure/exploiting/lab-infoleak-via-backup-files">Lab: Source code disclosure via backup files  Web Security Academy</a></p>
+<ul>
+<li><strong>Information disclosure due to insecure configuration</strong></li>
+</ul>
+<p>Websites are sometimes vulnerable as a result of improper configuration. This is especially common due to the widespread use of third-party technologies, whose vast array of configuration options are not necessarily well-understood by those implementing them. In other cases, developers might forget to disable various debugging options in the production environment. For example, the HTTP <code>TRACE</code> method is designed for diagnostic purposes. If enabled, the web server will respond to requests that use the <code>TRACE</code> method by echoing in the response the exact request that was received. This behavior is often harmless, but occasionally leads to information disclosure, such as the name of internal authentication headers that may be appended to requests by reverse proxies.</p>
+<p><a href="https://portswigger.net/web-security/information-disclosure/exploiting/lab-infoleak-authentication-bypass">Lab: Authentication bypass via information disclosure Web Security Academy</a></p>
+<ul>
+<li>Version control history</li>
+</ul>
+<p>Virtually all websites are developed using some form of version control system, such as Git. By default, a Git project stores all of its version control data in a folder called <code>.git</code>. Occasionally, websites expose this directory in the production environment. In this case, you might be able to access it by simply browsing to <code>/.git</code>. While it is often impractical to manually browse the raw file structure and contents, there are various methods for downloading the entire <code>.git</code> directory. You can then open it using your local installation of Git to gain access to the website&rsquo;s version control history. This may include logs containing committed changes and other interesting information.</p>
+
+    </div>
+    <div class="post-footer">
+      
+    </div>
+  </article>
+
+    </main>
+  </body>
+</html>
