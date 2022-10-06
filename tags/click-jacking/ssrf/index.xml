@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>SSRF on 0xSlaxo Blog</title>
+    <link>https://sl4x0.github.io/tags/ssrf/</link>
+    <description>Recent content in SSRF on 0xSlaxo Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sun, 14 Aug 2022 23:48:05 +0000</lastBuildDate><atom:link href="https://sl4x0.github.io/tags/ssrf/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Server-Side Request Forgery</title>
+      <link>https://sl4x0.github.io/web-notes/ssrf-attacks/</link>
+      <pubDate>Sun, 14 Aug 2022 23:48:05 +0000</pubDate>
+      
+      <guid>https://sl4x0.github.io/web-notes/ssrf-attacks/</guid>
+      <description>Server-side request forgery (SSRF) is a vulnerability that lets an attacker send requests on behalf of a server. During an SSRF, attackers forge the request signatures of the vulnerable server, allowing them to assume a privileged position on a network, bypass firewall controls, and gain access to internal services.
+References SSRF (Server Side Request Forgery)
+AllAboutBugBounty/Server Side Request Forgery.md at master · daffainfo/AllAboutBugBounty
+bugbounty-cheatsheet/ssrf.md at master · EdOverflow/bugbounty-cheatsheet
+HowToHunt/SSRF at master · KathanP19/HowToHunt</description>
+    </item>
+    
+  </channel>
+</rss>

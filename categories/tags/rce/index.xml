@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>RCE on 0xSlaxo Blog</title>
+    <link>https://sl4x0.github.io/tags/rce/</link>
+    <description>Recent content in RCE on 0xSlaxo Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sun, 14 Aug 2022 23:48:05 +0000</lastBuildDate><atom:link href="https://sl4x0.github.io/tags/rce/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Remote Code Execution</title>
+      <link>https://sl4x0.github.io/web-notes/remote-code-execution/</link>
+      <pubDate>Sun, 14 Aug 2022 23:48:05 +0000</pubDate>
+      
+      <guid>https://sl4x0.github.io/web-notes/remote-code-execution/</guid>
+      <description>Remote code execution (RCE) occurs when an attacker can execute arbitrary code on a target machine because of a vulnerability or misconfiguration. RCEs are extremely dangerous, as attackers can often ultimately compromise the web application or even the underlying web server.
+References Remote Code Execution (RCE)
+GitHub - alexbieber/Bug_Bounty_writeups: BUG BOUNTY WRITEUPS - OWASP TOP 10
+Remote Code Execution (RCE)
+Hacksplaining: Web Security for Developers
+Web Application Penetration Testing Notes</description>
+    </item>
+    
+  </channel>
+</rss>

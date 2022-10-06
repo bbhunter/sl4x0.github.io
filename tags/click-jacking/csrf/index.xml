@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>CSRF on 0xSlaxo Blog</title>
+    <link>https://sl4x0.github.io/tags/csrf/</link>
+    <description>Recent content in CSRF on 0xSlaxo Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Tue, 19 Jul 2022 23:48:05 +0000</lastBuildDate><atom:link href="https://sl4x0.github.io/tags/csrf/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Cross-site Request Forgery</title>
+      <link>https://sl4x0.github.io/web-notes/csrf/</link>
+      <pubDate>Tue, 19 Jul 2022 23:48:05 +0000</pubDate>
+      
+      <guid>https://sl4x0.github.io/web-notes/csrf/</guid>
+      <description>In this section, we&amp;rsquo;ll explain what cross-site request forgery is, describe some examples of common CSRF vulnerabilities, and explain how to prevent CSRF attacks.
+Cross-site request forgery Refrences AllAboutBugBounty/Cross Site Request Forgery.md at master · daffainfo/AllAboutBugBounty
+HowToHunt/CSRF at master · KathanP19/HowToHunt
+GitHub - alexbieber/Bug_Bounty_writeups: BUG BOUNTY WRITEUPS - OWASP TOP 10 🔴🔴🔴🔴✔
+CSRF (Cross Site Request Forgery)
+PHP CSRF Guard
+Cross Site Request Forgery - Pastebin.com
+Jay M. on LinkedIn: CSRF</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,375 @@
+<!doctype html>
+<html lang="en-us">
+  <head>
+    <title>JSON Web Tokens Attacks // 0xSlaxo Blog</title>
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <meta charset="utf-8" />
+    <meta name="generator" content="Hugo 0.101.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="author" content="Abdelrhman Allam" />
+    <meta name="description" content="" />
+    <link rel="stylesheet" href="https://sl4x0.github.io/css/main.min.88e7083eff65effb7485b6e6f38d10afbec25093a6fac42d734ce9024d3defbd.css" />
+
+    
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="JSON Web Tokens Attacks"/>
+<meta name="twitter:description" content="JWT Attacks In this section, we&rsquo;ll look at how design issues and flawed handling of JSON web tokens (JWTs) can leave websites vulnerable to a variety of high-severity attacks.
+References JWT.IO
+JWT Vulnerabilities (Json Web Tokens)
+AllAboutBugBounty/JWT Vulnerabilities.md at master · daffainfo/AllAboutBugBounty
+HowToHunt/JWT at master · KathanP19/HowToHunt
+PayloadsAllTheThings/JSON Web Token at master · swisskyrepo/PayloadsAllTheThings
+GitHub - vavkamil/awesome-bugbounty-tools: A curated list of various bug bounty tools
+Web Application Penetration Testing Notes"/>
+
+    <meta property="og:title" content="JSON Web Tokens Attacks" />
+<meta property="og:description" content="JWT Attacks In this section, we&rsquo;ll look at how design issues and flawed handling of JSON web tokens (JWTs) can leave websites vulnerable to a variety of high-severity attacks.
+References JWT.IO
+JWT Vulnerabilities (Json Web Tokens)
+AllAboutBugBounty/JWT Vulnerabilities.md at master · daffainfo/AllAboutBugBounty
+HowToHunt/JWT at master · KathanP19/HowToHunt
+PayloadsAllTheThings/JSON Web Token at master · swisskyrepo/PayloadsAllTheThings
+GitHub - vavkamil/awesome-bugbounty-tools: A curated list of various bug bounty tools
+Web Application Penetration Testing Notes" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://sl4x0.github.io/web-notes/json-web-tokens-attacks/" /><meta property="article:section" content="web-notes" />
+<meta property="article:published_time" content="2022-08-23T23:48:05+00:00" />
+<meta property="article:modified_time" content="2022-08-23T23:48:05+00:00" />
+
+
+
+  </head>
+  <body>
+    <header class="app-header">
+      <a href="https://sl4x0.github.io/"><img class="app-header-avatar" src="/avatar.jpg" alt="Abdelrhman Allam" /></a>
+      <h1>0xSlaxo Blog</h1>
+      <nav class="app-header-menu">
+          <a class="app-header-menu-item" href="/about/">About</a>
+             | 
+          
+          <a class="app-header-menu-item" href="/">Home</a>
+             | 
+          
+          <a class="app-header-menu-item" href="/tags/">Tags</a>
+      </nav>
+      <p> M.A.C.S Student | N00b CTFer</p>
+      <div class="app-header-social">
+        
+          <a href="https://github.com/sl4x0" target="_blank" rel="noreferrer noopener">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-github">
+  <title>My Github</title>
+  <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
+</svg>
+          </a>
+        
+          <a href="https://www.facebook.com/sl4x0" target="_blank" rel="noreferrer noopener">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-facebook">
+  <title>My facebook</title>
+  <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
+</svg>
+          </a>
+        
+          <a href="https://twitter.com/sl4x0" target="_blank" rel="noreferrer noopener">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-twitter">
+  <title>My Twitter</title>
+  <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path>
+</svg>
+          </a>
+        
+          <a href="https://linkedin.com/in/sl4x0" target="_blank" rel="noreferrer noopener">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-linkedin">
+  <title>My Twitter</title>
+  <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle>
+</svg>
+          </a>
+        
+      </div>
+    </header>
+    <main class="app-container">
+      
+  <article class="post">
+    <header class="post-header">
+      <h1 class ="post-title">JSON Web Tokens Attacks</h1>
+      <div class="post-meta">
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-calendar">
+  <title>calendar</title>
+  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line>
+</svg>
+          Aug 23, 2022
+        </div>
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-clock">
+  <title>clock</title>
+  <circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>
+</svg>
+          15 min read
+        </div>
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tag">
+  <title>tag</title>
+  <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line>
+</svg>
+              <a class="tag" href="https://sl4x0.github.io/tags/jwt/">JWT</a>
+              <a class="tag" href="https://sl4x0.github.io/tags/web-notes/">Web-Notes</a>
+        </div>
+      </div>
+    </header>
+    <div class="post-content">
+      <h1 id="jwt-attacks">JWT Attacks</h1>
+<p>In this section, we&rsquo;ll look at how design issues and flawed handling of JSON web tokens (JWTs) can leave websites vulnerable to a variety of high-severity attacks.</p>
+<h1 id="references"><code>References</code></h1>
+<p><a href="https://jwt.io/">JWT.IO</a></p>
+<p><a href="https://book.hacktricks.xyz/pentesting-web/hacking-jwt-json-web-tokens">JWT Vulnerabilities (Json Web Tokens)</a></p>
+<p><a href="https://github.com/daffainfo/AllAboutBugBounty/blob/master/Misc/JWT%20Vulnerabilities.md">AllAboutBugBounty/JWT Vulnerabilities.md at master · daffainfo/AllAboutBugBounty</a></p>
+<p><a href="https://github.com/KathanP19/HowToHunt/tree/master/JWT">HowToHunt/JWT at master · KathanP19/HowToHunt</a></p>
+<p><a href="https://github.com/swisskyrepo/PayloadsAllTheThings/tree/master/JSON%20Web%20Token">PayloadsAllTheThings/JSON Web Token at master · swisskyrepo/PayloadsAllTheThings</a></p>
+<p><a href="https://github.com/vavkamil/awesome-bugbounty-tools#JSON-Web-Token">GitHub - vavkamil/awesome-bugbounty-tools: A curated list of various bug bounty tools</a></p>
+<p><a href="https://techvomit.net/web-application-penetration-testing-notes/#attacking-json-with-burp">Web Application Penetration Testing Notes</a></p>
+<p><a href="https://techvomit.net/web-application-penetration-testing-notes/#jwt">Web Application Penetration Testing Notes</a></p>
+<p><a href="https://cheatsheetseries.owasp.org/cheatsheets/REST_Security_Cheat_Sheet.html#jwt">REST Security - OWASP Cheat Sheet Series</a></p>
+<p><a href="https://github.com/Voorivex/pentest-guide/tree/master/JSON-Web-Token-Flaw">pentest-guide/JSON-Web-Token-Flaw at master · Voorivex/pentest-guide</a></p>
+<p><a href="https://nored0x.github.io/penetration%20testing/writeups-Bug-Bounty-hackrone/#jwt">Writeups Bug Bounty hackerone</a></p>
+<p><a href="https://pastebin.com/5VsufUNR">JSON Hijacking [XSSI] - Pastebin.com</a></p>
+<hr>
+<h1 id="what-are-jwts">What are JWTs?</h1>
+<p>JSON web tokens (JWTs) are a standardized format for sending <strong>cryptographically signed</strong> JSON data between systems.</p>
+<p>They can theoretically contain any kind of data, but are most commonly used to send information (&quot;<em>claims</em>&quot;) about users as part of authentication, <strong>session handling</strong>, and <strong>access control mechanisms</strong>. Unlike with classic session tokens, all of the data that a server needs is <strong>stored client-side</strong> within the JWT itself. This makes JWTs a popular choice for highly distributed websites where users need to interact seamlessly with <strong>multiple back-end servers</strong>.</p>
+<p><img src="https://user-images.githubusercontent.com/70459751/186187995-39caf5a4-d6f9-4758-a97b-c951d329642d.png" alt="image"></p>
+<p><img src="https://user-images.githubusercontent.com/70459751/186188028-584aa39a-107c-4b88-b95b-18802a8d0f22.png" alt="image"></p>
+<h1 id="jwt-format">JWT format</h1>
+<p>A JWT consists of 3 parts: a <em>header</em>, a <em>payload</em>, and a <em>signature</em>. These are each separated by a <strong>dot</strong>, as shown in the following example:</p>
+<p><code>eyJraWQiOiI5MTM2ZGRiMy1jYjBhLTRhMTktYTA3ZS1lYWRmNWE0NGM4YjUiLCJhbGciOiJSUzI1NiJ9</code>.<code>eyJpc3MiOiJwb3J0c3dpZ2dlciIsImV4cCI6MTY0ODAzNzE2NCwibmFtZSI6IkNhcmxvcyBNb250b3lhIiwic3ViIjoiY2FybG9zIiwicm9sZSI6ImJsb2dfYXV0aG9yIiwiZW1haWwiOiJjYXJsb3NAY2FybG9zLW1vbnRveWEubmV0IiwiaWF0IjoxNTE2MjM5MDIyfQ</code>.<code>SYZBPIBg2CRjXAJ8vCER0LA_ENjII1JakvNQoP-Hw6GG1zfl4JyngsZReIfqRvIAEi5L4HV0q7_9qGhQZvy9ZdxEJbwTxRs_6Lb-fZTDpW6lKYNdMyjw45_alSCZ1fypsMWz_2mTpQzil0lOtps5Ei_z7mM7M8gCwe_AGpI53JxduQOaB5HkT5gVrv9cKu9CsW5MS6ZbqYXpGyOG5ehoxqm8DL5tFYaW3lB50ELxi0KsuTKEbD0t5BCl0aCR2MBJWAbN-xeLwEenaqBiwPVvKixYleeDQiBEIylFdNNIMviKRgXiYuAvMziVPbwSgkZVHeEdF5MQP1Oe2Spac-6IfA</code></p>
+<p>The header and payload parts of a JWT are just base64url-encoded JSON objects. For example, you can decode the payload from the token above to reveal the following claims:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;iss&#34;</span>: <span style="color:#e6db74">&#34;portswigger&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;exp&#34;</span>: <span style="color:#ae81ff">1648037164</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;name&#34;</span>: <span style="color:#e6db74">&#34;Carlos Montoya&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;sub&#34;</span>: <span style="color:#e6db74">&#34;carlos&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;role&#34;</span>: <span style="color:#e6db74">&#34;blog_author&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;email&#34;</span>: <span style="color:#e6db74">&#34;carlos@carlos-montoya.net&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;iat&#34;</span>: <span style="color:#ae81ff">1516239022</span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>In most cases, this data can be easily read or modified by anyone with access to the token. Therefore, the security of any JWT-based mechanism is heavily reliant on the <strong>cryptographic signature</strong>.</p>
+<h1 id="jwt-signature">JWT signature</h1>
+<p>The server that issues the token typically generates the signature by <strong>hashing the header and payload</strong>. In some cases, they also <strong>encrypt the resulting hash</strong>. Either way, this process involves a <strong>secret signing key</strong>. This mechanism provides a way for servers to verify that none of the data within the token has been tampered with since it was issued:</p>
+<ul>
+<li>As the signature is directly <strong>derived from the rest of the token</strong>, changing a single byte of the header or payload results in a mismatched signature.</li>
+<li>Without knowing the server&rsquo;s <strong>secret signing key</strong>, it shouldn&rsquo;t be possible to generate the correct signature for a given header or payload.</li>
+</ul>
+<h1 id="jwt-vs-jws-vs-jwe">JWT vs JWS vs JWE</h1>
+<p>The JWT specification is actually very limited. It only <strong>defines a format for representing information</strong> (&ldquo;claims&rdquo;) as a JSON object that can be transferred between two parties. In practice, JWTs aren&rsquo;t really used as a standalone entity. The JWT spec is extended by both the JSON Web Signature (<em>JWS</em>) and JSON Web Encryption (<em>JWE</em>) specifications, which define concrete ways of actually implementing JWTs.</p>
+<p><img src="https://user-images.githubusercontent.com/70459751/186188074-56ee8713-fecd-4e82-97d0-8eaf2121d6d5.png" alt="image"></p>
+<p>In other words, a JWT is usually <strong>either a JWS or JWE token</strong>. When people use the term &ldquo;JWT&rdquo;, they almost always mean a <em>JWS token</em>. JWEs are very similar, except that the actual contents of the token are encrypted rather than just encoded.</p>
+<blockquote>
+<p>For simplicity, throughout these materials, &ldquo;JWT&rdquo; refers primarily to <em>JWS</em> tokens, although some of the vulnerabilities described may also apply to JWE tokens.</p>
+</blockquote>
+<hr>
+<h1 id="what-are-jwt-attacks">What are JWT attacks?</h1>
+<p>JWT attacks involve a user sending <strong>modified JWTs</strong> to the server in order to achieve a malicious goal. Typically, this goal is to bypass <strong>authentication and access controls</strong> by impersonating another user who has already been authenticated.</p>
+<h1 id="what-is-the-impact-of-jwt-attacks">What is the impact of JWT attacks?</h1>
+<p>The impact of JWT attacks is usually severe. If an attacker is able to create their own valid tokens with arbitrary values, they may be able to <em>escalate their own privileges</em> or impersonate other users, taking full control of their accounts.</p>
+<h1 id="how-do-vulnerabilities-to-jwt-attacks-arise">How do vulnerabilities to JWT attacks arise?</h1>
+<p>JWT vulnerabilities typically arise due to <strong>flawed JWT handling</strong> within the application itself. The <em>various specifications</em> related to JWTs are relatively flexible by design, allowing website developers to decide many implementation details for themselves. This can result in them accidentally introducing vulnerabilities even when using battle-hardened libraries. These implementation flaws usually mean that the signature of the JWT is not <em>verified properly</em>. This enables an attacker to tamper with the values passed to the application via the token&rsquo;s payload. Even if the signature is robustly verified, whether it can truly be trusted relies heavily on the server&rsquo;s secret key remaining a secret. If this key is <em>leaked</em> in some way, or can be guessed or brute-forced, an attacker can generate a valid signature for any arbitrary token, compromising the entire mechanism.</p>
+<hr>
+<h1 id="how-to-work-with-jwts-in-burp-suite">How to work with JWTs in Burp Suite</h1>
+<p>Depending on what you&rsquo;re trying to achieve, you may be able to use Burp&rsquo;s built-in features. However, we recommend installing the <em>JWT Editor</em> extension, which is available from the <code>BApp Store</code>. This provides a number of useful features that make it easier to work with JWTs and perform more sophisticated attacks. These include:</p>
+<ul>
+<li>Automatic <strong>highlighting</strong> of any requests in the proxy history that contain <strong>JWTs</strong>.</li>
+<li>An additional tab that lets you <strong>generate or upload cryptographic keys</strong> in a variety of formats.</li>
+<li>An additional message editor tab that lets you <strong>view and edit</strong> the JWT header and payload in raw, unencoded JSON.</li>
+<li>A feature for <strong>signing modified JWTs</strong> directly within Burp Repeater.</li>
+</ul>
+<h3 id="viewing-the-contents-of-jwts">Viewing the contents of JWTs</h3>
+<p>If you just want to view the contents of a JWT in raw JSON form, you can simply select either the header or payload parts of the token in the message editor. You can then view the automatically decoded values in the <em>Inspector</em> ****panel.</p>
+<p><img src="https://user-images.githubusercontent.com/70459751/186188124-f2c7d1ac-a486-4a28-85ef-9bd014ce9b61.png" alt="image"></p>
+<h3 id="editing-the-contents-of-jwts">Editing the contents of JWTs</h3>
+<p>After loading the extension, simply open a request containing a JWT in <em>Burp Repeater</em>, then switch to the extension-generated <em>JSON Web Token</em> ****message editor tab.</p>
+<p><img src="https://user-images.githubusercontent.com/70459751/186188164-28cc7f51-414a-442f-9db0-b26950b73ff4.png" alt="image"></p>
+<h3 id="adding-new-signing-keys">Adding new signing keys</h3>
+<p>The JWT Editor extension can only sign tokens using keys that you have added to its key store. You can either upload keys that you have obtained already, or use the built-in features for generating a brand new key. To add a new key to the JWT Editor&rsquo;s key store:</p>
+<ol>
+<li>Switch to the extension-generated <em>JWT Editor Keys</em> tab in Burp&rsquo;s main tab bar.</li>
+<li>On the right of the screen, click the relevant button for type of key that you want to add, for example, <em>New RSA Key</em>.</li>
+<li>In the dialog, you have the following options:
+<ul>
+<li>Click <em>Generate</em> to automatically create a brand new key of the selected length.</li>
+<li>Paste an existing key. Depending on the type of key, you may be able to toggle between JWK and PEM representations. This also provides an easy way to convert between the two formats.</li>
+</ul>
+</li>
+<li>Click <strong>OK</strong>. The key is saved to the extension&rsquo;s key store, which you can access from the <strong>JWT Editor Keys</strong> tab.</li>
+</ol>
+<p><img src="https://user-images.githubusercontent.com/70459751/186188279-8e39c7b3-0c11-4d50-b72d-52ef52b09779.png" alt="image"></p>
+<h3 id="signing-jwts">Signing JWTs</h3>
+<ol>
+<li><em>Add a suitable key</em> to the extension&rsquo;s key store.</li>
+<li>In Burp Repeater, use the <strong>JSON Web Token</strong> message editor tab to <em>modify the JWT header and payload</em>.</li>
+<li>At the bottom of the screen, click <strong>Sign</strong>.</li>
+<li>In the dialog, select the relevant signing key from the extension&rsquo;s key store.</li>
+<li>If necessary, select the signing algorithm that you want to use. This is normally updated automatically based on the type of key that you select, but you may want to modify this when performing <em>algorithm confusion attacks</em>. You also have options for automatically updating some of the JWT headers.</li>
+<li>Click <strong>OK</strong>. The JWT in the request is replaced with your modified one.</li>
+</ol>
+<p><img src="https://user-images.githubusercontent.com/70459751/186188311-e7e63c0e-653c-4190-8ae6-aee63676a43f.png" alt="image"></p>
+<hr>
+<h1 id="exploiting-flawed-jwt-signature-verification">Exploiting flawed JWT signature verification</h1>
+<p>By design, servers <em>don&rsquo;t usually store any information about the JWTs</em> that they issue. Instead, each token is an entirely self-contained entity. This has several advantages, but also introduces a fundamental problem - the server doesn&rsquo;t actually know anything about the original contents of the token, or even what the original signature was. Therefore, if the <em>server doesn&rsquo;t verify the signature properly</em>, there&rsquo;s nothing to stop an attacker from making arbitrary changes to the rest of the token.</p>
+<p>For example, consider a JWT containing the following claims:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;username&#34;</span>: <span style="color:#e6db74">&#34;carlos&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;isAdmin&#34;</span>: <span style="color:#66d9ef">false</span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>If the server identifies the session based on this <code>username</code>, modifying its value might <em>enable an attacker to impersonate other logged-in users</em>. Similarly, if the <code>isAdmin</code> value is used for access control, this could provide a simple vector for privilege escalation.</p>
+<h3 id="accepting-arbitrary-signatures">Accepting arbitrary signatures</h3>
+<p>JWT libraries typically provide one method for verifying tokens and another that just decodes them. For example, the <em>Node.js</em> library <code>jsonwebtoken</code>
+has <code>verify()</code> and <code>decode()</code></p>
+<p>Occasionally, developers confuse these two methods and only pass incoming tokens to the <code>decode()</code> method.</p>
+<p>This effectively means that the application <em>doesn&rsquo;t verify the signature</em> at all.</p>
+<p><a href="https://portswigger.net/web-security/jwt/lab-jwt-authentication-bypass-via-unverified-signature">Lab: JWT authentication bypass via unverified signature | Web Security Academy</a></p>
+<h3 id="accepting-tokens-with-no-signature">Accepting tokens with no signature</h3>
+<p>Among other things, the JWT header contains an <code>alg</code> parameter. This tells the server which algorithm was used to sign the token and, therefore, which algorithm it needs to use when verifying the signature.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;alg&#34;</span>: <span style="color:#e6db74">&#34;HS256&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;typ&#34;</span>: <span style="color:#e6db74">&#34;JWT&#34;</span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>This is inherently flawed because the server has <em>no option but to implicitly trust user-controllable input</em> from the token which, at this point, hasn&rsquo;t been verified at all. In other words, an attacker can directly influence how the server checks whether the token is trustworthy.</p>
+<p>JWTs can be signed using a range of <em>different algorithms</em>, but can also be left unsigned. In this case, the <code>alg</code> parameter is set to <code>none</code>, which indicates a so-called &ldquo;<em>unsecured JWT</em>&rdquo;. Due to the obvious dangers of this, servers usually reject tokens with <em>no signature</em>. However, as this kind of filtering relies on string parsing, you can sometimes bypass these filters using <em>classic obfuscation techniques</em>, such as <em>mixed capitalization</em> and <em>unexpected encodings</em>.</p>
+<blockquote>
+<p><em>Even if the token is unsigned, the payload part must still be terminated with a trailing dot.</em></p>
+</blockquote>
+<p><a href="https://portswigger.net/web-security/jwt/lab-jwt-authentication-bypass-via-flawed-signature-verification">Lab: JWT authentication bypass via flawed signature verification | Web Security Academy</a></p>
+<h3 id="brute-forcing-secret-keys-using-hashcat">Brute-forcing secret keys using hashcat</h3>
+<p>You just need a valid, signed JWT from the <em>target server</em> and a <a href="https://github.com/wallarm/jwt-secrets/blob/master/jwt.secrets.list">wordlist of well-known secrets</a>. You can then run the following command, passing in the JWT and wordlist as arguments: <code>hashcat -a 0 -m 16500 &lt;jwt&gt; &lt;wordlist&gt;</code></p>
+<p>Hashcat signs the header and payload from the JWT using each secret in the wordlist, then compares the resulting signature with the original one from the server. If any of the signatures match, hashcat outputs the identified secret in the following format, along with various other details: <code>&lt;jwt&gt;:&lt;identified-secret&gt;</code></p>
+<blockquote>
+<p>If you run the command more than once, you need to include the <code>--show</code> flag to output the results.</p>
+</blockquote>
+<p>If the server uses an extremely <em>weak secret</em>, it may even be possible to brute-force this character-by-character rather than using a wordlist.</p>
+<p><a href="https://portswigger.net/web-security/jwt/lab-jwt-authentication-bypass-via-weak-signing-key">Lab: JWT authentication bypass via weak signing key | Web Security Academy</a></p>
+<h3 id="jwt-header-parameter-injections">JWT header parameter injections</h3>
+<p>According to the JWS specification, only the <code>alg</code> header parameter is <strong>mandatory</strong>. In practice, however, JWT headers (also known as
+JOSE headers) often contain several other parameters. The following ones are of particular interest to attackers.</p>
+<p><code>jwk</code> (JSON Web Key) - Provides an embedded <strong>JSON object</strong> representing the key.</p>
+<p><code>jku</code> (JSON Web Key Set URL) - Provides a URL from which servers can <strong>fetch a set of keys</strong> containing the correct key.</p>
+<p><code>kid</code> (Key ID) - Provides an ID that servers can use to  <strong>identify the correct key</strong> in cases where there are multiple keys to 
+choose from. Depending on the format of the key, this may have a matching <code>kid</code> parameter</p>
+<blockquote>
+<p>As you can see, these <strong>user-controllable parameters</strong> each tell the recipient server which key to use when verifying the signature.</p>
+</blockquote>
+<h2 id="injecting-self-signed-jwts-via-the-jwk-parameter"><strong>Injecting self-signed JWTs via the jwk parameter</strong></h2>
+<p>The JSON Web Signature (JWS) specification describes an optional <code>jwk</code> header parameter, which servers can use to embed their public key directly within the token itself in JWK format.</p>
+<blockquote>
+<p>A JWK (JSON Web Key) is a standardized format for representing keys as a JSON object.</p>
+</blockquote>
+<p>You can see an example of this in the following JWT header:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;kid&#34;</span>: <span style="color:#e6db74">&#34;ed2Nf8sb-sD6ng0-scs5390g-fFD8sfxG&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;typ&#34;</span>: <span style="color:#e6db74">&#34;JWT&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;alg&#34;</span>: <span style="color:#e6db74">&#34;RS256&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;jwk&#34;</span>: {
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&#34;kty&#34;</span>: <span style="color:#e6db74">&#34;RSA&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&#34;e&#34;</span>: <span style="color:#e6db74">&#34;AQAB&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&#34;kid&#34;</span>: <span style="color:#e6db74">&#34;ed2Nf8sb-sD6ng0-scs5390g-fFD8sfxG&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&#34;n&#34;</span>: <span style="color:#e6db74">&#34;yy1wpYmffgXBxhAUJzHHocCuJolwDqql75ZWuCQ_cb33K2vh9m&#34;</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><!-- raw HTML omitted -->
+<p>In case you&rsquo;re not familiar with the terms &ldquo;public key&rdquo;  and &ldquo;private key&rdquo;, we&rsquo;ve covered this as part of our materials on 
+algorithm confusion attacks. For more information, see <a href="https://portswigger.net/web-security/jwt/algorithm-confusion#symmetric-vs-asymmetric-algorithms">Symmetric vs asymmetric algorithms</a>.</p>
+<!-- raw HTML omitted -->
+<p>Ideally, servers should only use a <strong>limited whitelist</strong> of public keys to  verify JWT signatures. However, misconfigured servers sometimes use any 
+key that&rsquo;s embedded in the <code>jwk</code> parameter.</p>
+<p>You can exploit this behavior by <strong>signing a modified JWT</strong> using your own RSA private key, then embedding the matching public key 
+in the <code>jwk</code> header.</p>
+<p>Although you can manually add or modify the <code>jwk</code> parameter in Burp, the <a href="https://portswigger.net/bappstore/26aaa5ded2f74beea19e2ed8345a93dd">JWT Editor extension</a> provides a useful feature to help you test for this vulnerability:</p>
+<ol>
+<li>With the extension loaded, in Burp&rsquo;s main tab bar, go to the <strong>JWT Editor Keys</strong> tab.</li>
+<li><a href="https://portswigger.net/web-security/jwt/working-with-jwts-in-burp-suite#adding-new-signing-keys">Generate a new RSA key.</a></li>
+<li>Send a request containing a JWT to Burp Repeater.</li>
+<li>In the message editor, switch to the extension-generated <strong>JSON Web Token</strong> tab and <a href="https://portswigger.net/web-security/jwt/working-with-jwts-in-burp-suite#editing-the-contents-of-jwts">modify</a> the token&rsquo;s payload however you like.</li>
+<li>Click <strong>Attack</strong>, then select <strong>Embedded JWK</strong>. When prompted, select your newly generated RSA key.</li>
+<li>Send the request to test how the server responds.</li>
+</ol>
+<p>You can also perform this attack manually by adding the <code>jwk</code> header yourself. However, you may also need to update the JWT&rsquo;s <code>kid</code> header parameter to match the <code>kid</code> of the embedded key. The extension&rsquo;s built-in attack takes care of this step for you.</p>
+<p><a href="https://portswigger.net/web-security/jwt/lab-jwt-authentication-bypass-via-jwk-header-injection">Lab: JWT authentication bypass via jwk header injection | Web Security Academy</a></p>
+<h2 id="injecting-self-signed-jwts-via-the-jku-parameter">Injecting self-signed JWTs via the JKU parameter</h2>
+<p>Instead of embedding public keys directly using the <code>jwk</code> header parameter, some servers let you use the <code>jku</code> (JWK Set URL) header parameter to reference a JWK Set containing the 
+key. When verifying the signature, the server fetches the relevant key  from this URL.</p>
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;keys&#34;</span>: [
+</span></span><span style="display:flex;"><span>        {
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;kty&#34;</span>: <span style="color:#e6db74">&#34;RSA&#34;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;e&#34;</span>: <span style="color:#e6db74">&#34;AQAB&#34;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;kid&#34;</span>: <span style="color:#e6db74">&#34;75d0ef47-af89-47a9-9061-7c02a610d5ab&#34;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;n&#34;</span>: <span style="color:#e6db74">&#34;o-yy1wpYmffgXBxhAUJzHHocCuJolwDqql75ZWuCQ_cb33K2vh9mk6GPM9gNN4Y_qTVX67WhsN3JvaFYw-fhvsWQ&#34;</span>
+</span></span><span style="display:flex;"><span>        },
+</span></span><span style="display:flex;"><span>        {
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;kty&#34;</span>: <span style="color:#e6db74">&#34;RSA&#34;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;e&#34;</span>: <span style="color:#e6db74">&#34;AQAB&#34;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;kid&#34;</span>: <span style="color:#e6db74">&#34;d8fDFo-fS9-faS14a9-ASf99sa-7c1Ad5abA&#34;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;n&#34;</span>: <span style="color:#e6db74">&#34;fc3f-yy1wpYmffgXBxhAUJzHql79gNNQ_cb33HocCuJolwDqmk6GPM4Y_qTVX67WhsN3JvaFYw-dfg6DH-asAScw&#34;</span>
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    ]
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<p>More secure websites will only fetch keys from <em>trusted domains</em>, but you can sometimes take advantage of URL parsing discrepancies to bypass this
+kind of filtering. We covered some <a href="https://portswigger.net/web-security/ssrf#ssrf-with-whitelist-based-input-filters">examples of these</a> in our topic on <a href="https://portswigger.net/web-security/ssrf">SSRF</a>.</p>
+<p><a href="https://portswigger.net/web-security/jwt/lab-jwt-authentication-bypass-via-jku-header-injection">Lab: JWT authentication bypass via jku header injection | Web Security Academy</a></p>
+<h2 id="injecting-self-signed-jwts-via-the-kid-parameter">Injecting self-signed JWTs via the kid parameter</h2>
+<p>Servers may use several cryptographic keys for signing different kinds 
+of data, not just JWTs. For this reason, the header of a JWT may contain a <code>kid</code> (Key ID) parameter, which <strong>helps the server identify which key to use when verifying the signature</strong>.</p>
+<p>Verification keys are often stored as a <strong>JWK Set</strong>. In this case, the server may simply look for the JWK with the same <code>kid</code> as the token. However, the JWS specification doesn&rsquo;t define a concrete 
+structure for this ID - it&rsquo;s just an <strong>arbitrary string of the developer&rsquo;s choosing</strong>. For example, they might use the <code>kid</code> parameter to point to a particular entry in a database, or even the name of a file.</p>
+<p>If this parameter is also vulnerable to <a href="https://portswigger.net/web-security/file-path-traversal">directory traversal</a> , an attacker could potentially force the server to use an <strong>arbitrary file from its filesystem as the verification key</strong>.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;kid&#34;</span>: <span style="color:#e6db74">&#34;../../path/to/file&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;typ&#34;</span>: <span style="color:#e6db74">&#34;JWT&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;alg&#34;</span>: <span style="color:#e6db74">&#34;HS256&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;k&#34;</span>: <span style="color:#e6db74">&#34;asGsADas3421-dfh9DGN-AFDFDbasfd8-anfjkvc&#34;</span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>This is especially dangerous if the server also supports JWTs signed using a <a href="https://portswigger.net/web-security/jwt/algorithm-confusion#symmetric-vs-asymmetric-algorithms">symmetric algorithm</a>. In this case, an attacker could potentially point the <code>kid</code>
+parameter to a predictable, static file, then sign the JWT using a secret that matches the contents of this file.</p>
+<p>You could theoretically do this with any file, but one of the simplest methods is to use <code>/dev/null</code>,which is present on most Linux systems. As this is an empty file, 
+fetching it returns null. Therefore, signing the token with a Base64-encoded null byte will result in a valid signature.</p>
+<p><a href="https://portswigger.net/web-security/jwt/lab-jwt-authentication-bypass-via-kid-header-path-traversal">Lab: JWT authentication bypass via kid header path traversal | Web Security Academy</a></p>
+<p>If the server stores its verification keys in a database, the <code>kid</code>header parameter is also a potential vector for <a href="https://portswigger.net/web-security/sql-injection">SQL injection</a> attacks.</p>
+<h2 id="other-interesting-jwt-header-parameters">Other interesting JWT header parameters</h2>
+<ul>
+<li><code>cty</code> (Content Type) - Sometimes used to declare a media type for the content in the JWT payload. This is usually omitted from the header, but the underlying parsing library may support it anyway. If you have found a way to bypass signature verification, you can try injecting a <code>cty</code> header to change the content type to <code>text/xml</code> or <code>application/x-java-serialized-object</code>, which can potentially enable new vectors for <a href="https://portswigger.net/web-security/xxe">XXE</a> and <a href="https://portswigger.net/web-security/deserialization">deserialization</a> attacks.</li>
+<li><code>x5c</code> (X.509 Certificate Chain) - Sometimes used to pass the X.509 public key certificate or certificate chain of the key used to digitally sign the JWT. This header parameter
+can be used to inject self-signed certificates, similar to the <code>[jwk</code> header injection](<a href="https://portswigger.net/web-security/jwt#injecting-self-signed-jwts-via-the-jwk-parameter">https://portswigger.net/web-security/jwt#injecting-self-signed-jwts-via-the-jwk-parameter</a>) attacks discussed above. Due to the complexity of the X.509 format and its extensions, parsing these certificates can also introduce
+vulnerabilities. Details of these attacks are beyond the scope of these materials, but for more details, check out <a href="https://talosintelligence.com/vulnerability_reports/TALOS-2017-0293">CVE-2017-2800</a> and <a href="https://mbechler.github.io/2018/01/20/Java-CVE-2018-2633">CVE-2018-2633</a>.</li>
+</ul>
+<h2 id="jwt-algorithm-confusion">JWT algorithm confusion</h2>
+<p>Even if a server uses robust secrets that you are unable to brute-force, you may still be able to forge valid JWTs by signing the token using an algorithm that the developers haven&rsquo;t anticipated. This is known as an algorithm confusion attack.</p>
+<p><a href="https://portswigger.net/web-security/jwt/algorithm-confusion">Algorithm confusion attacks | Web Security Academy</a></p>
+<h1 id="how-to-prevent-jwt-attacks">How to prevent JWT attacks</h1>
+<p>You can protect your own websites against many of the  attacks we&rsquo;ve covered by taking the following high-level measures:</p>
+<ul>
+<li>Use an up-to-date library for handling JWTs and make sure your developers fully understand how it works, along with any
+security implications. Modern libraries make it more difficult for you to inadvertently implement them insecurely, but this isn&rsquo;t foolproof due to the inherent flexibility of the related specifications.</li>
+<li>Make sure that you perform robust signature verification on any JWTs that you receive, and account for edge-cases such as JWTs signed using unexpected algorithms.</li>
+<li>Enforce a strict whitelist of permitted hosts for the <code>jku</code> header.</li>
+<li>Make sure that you&rsquo;re not vulnerable to <a href="https://portswigger.net/web-security/file-path-traversal">path traversal</a> or SQL injection via the <code>kid</code> header parameter.</li>
+</ul>
+<h1 id="additional-best-practice-for-jwt-handling">Additional best practice for JWT handling</h1>
+<p>Although not strictly necessary to avoid introducing  vulnerabilities, we recommend adhering to the following best practice  when using JWTs in your applications:</p>
+<ul>
+<li>Always set an expiration date for any tokens that you issue.</li>
+<li>Avoid sending tokens in URL parameters where possible.</li>
+<li>Include the <code>aud</code> (audience) claim (or similar) to specify the intended recipient of the token. This prevents it from being used on different websites.</li>
+<li>Enable the issuing server to revoke tokens (on logout, for example).</li>
+</ul>
+<p><a href="https://github.com/Sjord/jwtdemo">https://github.com/Sjord/jwtdemo</a></p>
+
+    </div>
+    <div class="post-footer">
+      
+    </div>
+  </article>
+
+    </main>
+  </body>
+</html>

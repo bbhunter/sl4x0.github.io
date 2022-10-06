@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>SQLi on 0xSlaxo Blog</title>
+    <link>https://sl4x0.github.io/tags/sqli/</link>
+    <description>Recent content in SQLi on 0xSlaxo Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sun, 14 Aug 2022 23:48:05 +0000</lastBuildDate><atom:link href="https://sl4x0.github.io/tags/sqli/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>SQL Injection</title>
+      <link>https://sl4x0.github.io/web-notes/sql-injection/</link>
+      <pubDate>Sun, 14 Aug 2022 23:48:05 +0000</pubDate>
+      
+      <guid>https://sl4x0.github.io/web-notes/sql-injection/</guid>
+      <description>SQL is a programming language used to query or modify information stored within a database. A SQL injection is an attack in which the attacker executes arbitrary SQL commands on an application’s database by supplying malicious input inserted into a SQL statement.
+This happens when the input used in SQL queries is incorrectly filtered or escaped and can lead to authentication bypass, sensitive data leaks, tampering of the database, and RCE in some cases.</description>
+    </item>
+    
+  </channel>
+</rss>

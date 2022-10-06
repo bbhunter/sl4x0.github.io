@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Open-Redirects on 0xSlaxo Blog</title>
+    <link>https://sl4x0.github.io/tags/open-redirects/</link>
+    <description>Recent content in Open-Redirects on 0xSlaxo Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Tue, 09 Aug 2022 23:48:05 +0000</lastBuildDate><atom:link href="https://sl4x0.github.io/tags/open-redirects/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Open Redirects</title>
+      <link>https://sl4x0.github.io/web-notes/open-redirects-attacks/</link>
+      <pubDate>Tue, 09 Aug 2022 23:48:05 +0000</pubDate>
+      
+      <guid>https://sl4x0.github.io/web-notes/open-redirects-attacks/</guid>
+      <description>Sites often use HTTP or URL parameters to redirect users to a specified URL without any user action. While this behavior can be useful, it can also cause open redirects,
+References Open Redirects
+Open Redirect
+https://github.com/daffainfo/AllAboutBugBounty/blob/master/Open%20Redirect.md
+bugbounty-cheatsheet/open-redirect.md at master · EdOverflow/bugbounty-cheatsheet
+Open Redirect
+HowToHunt/Open_Redirection at master · KathanP19/HowToHunt
+Open Redirect
+Insecure URL Redirect Kontra
+PayloadsAllTheThings/Open Redirect at master · swisskyrepo/PayloadsAllTheThings
+Open redirects
+pentest-guide/Open-Redirect at master · Voorivex/pentest-guide
+Mechanisms For example, when these users visit their account dashboards at https://example.</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>method on 0xSlaxo Blog</title>
+    <link>https://sl4x0.github.io/tags/method/</link>
+    <description>Recent content in method on 0xSlaxo Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 26 Sep 2022 23:48:05 +0000</lastBuildDate><atom:link href="https://sl4x0.github.io/tags/method/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Web Application Hacker’s Methodology</title>
+      <link>https://sl4x0.github.io/books/wahh-methdology/</link>
+      <pubDate>Mon, 26 Sep 2022 23:48:05 +0000</pubDate>
+      
+      <guid>https://sl4x0.github.io/books/wahh-methdology/</guid>
+      <description>Chapter 21: A Web Application Hacker’s Methodology by @sl4x0 بسم الله الرحمن الرحيمInformation gathered in one stage may enable you to return to an earlier stage and formulate more focused attacks. For example, an access control bug that enables you to obtain a listing of all users may enable you to perform a more effective password-guessing attack against the authentication function. Discovering a key vulnerability in one area of the application may enable you to shortcut some of the work in other areas.</description>
+    </item>
+    
+  </channel>
+</rss>

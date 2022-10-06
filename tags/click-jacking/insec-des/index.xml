@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Insec-Des on 0xSlaxo Blog</title>
+    <link>https://sl4x0.github.io/tags/insec-des/</link>
+    <description>Recent content in Insec-Des on 0xSlaxo Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sun, 07 Aug 2022 23:48:05 +0000</lastBuildDate><atom:link href="https://sl4x0.github.io/tags/insec-des/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Insecure Deserialization</title>
+      <link>https://sl4x0.github.io/web-notes/insecure-deserialization/</link>
+      <pubDate>Sun, 07 Aug 2022 23:48:05 +0000</pubDate>
+      
+      <guid>https://sl4x0.github.io/web-notes/insecure-deserialization/</guid>
+      <description>Insecure deserialization vulnerabilities happen when applications deserialize program objects without proper precaution. An attacker can then manipulate serialized objects to change the program’s behavior.
+References Deserialization
+Deserialization Attacks
+GitHub - ngalongc/bug-bounty-reference: Inspired by https://github.com/djadmin/awesome-bug-bounty, a list of bug bounty write-up that is categorized by the bug nature
+PayloadsAllTheThings/Insecure Deserialization at master · swisskyrepo/PayloadsAllTheThings
+GitHub - vavkamil/awesome-bugbounty-tools: A curated list of various bug bounty tools
+Dashboard
+Web Application Penetration Testing Notes</description>
+    </item>
+    
+  </channel>
+</rss>

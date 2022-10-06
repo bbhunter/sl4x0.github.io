@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>recon on 0xSlaxo Blog</title>
+    <link>https://sl4x0.github.io/tags/recon/</link>
+    <description>Recent content in recon on 0xSlaxo Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language><atom:link href="https://sl4x0.github.io/tags/recon/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Bug bounty playbook - Recon</title>
+      <link>https://sl4x0.github.io/books/bbplaybook-recon/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://sl4x0.github.io/books/bbplaybook-recon/</guid>
+      <description>Chapter 6: Reconnaissance Phase 1 The idea behind horizontal correlation is to find all assets related to a company. This could be acquisitions, CIDR ranges, and domains that are owned by the same person. Vertical correlation when dealing with domains involves finding all subdomains belonging to a single domain.
+CIDR Range A Classless Inter-Domain Routing (CIDR) range is a short way of representing a group of IP addresses. Compromising a server hosted on a company’s CIDR range may lead you directly into their internal network therefore these assets are considered critical and are ideal targets.</description>
+    </item>
+    
+  </channel>
+</rss>

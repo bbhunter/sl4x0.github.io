@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>bug-bounty on 0xSlaxo Blog</title>
+    <link>https://sl4x0.github.io/tags/bug-bounty/</link>
+    <description>Recent content in bug-bounty on 0xSlaxo Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 26 Sep 2022 23:48:05 +0000</lastBuildDate><atom:link href="https://sl4x0.github.io/tags/bug-bounty/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Web Application Hacker’s Methodology</title>
+      <link>https://sl4x0.github.io/books/wahh-methdology/</link>
+      <pubDate>Mon, 26 Sep 2022 23:48:05 +0000</pubDate>
+      
+      <guid>https://sl4x0.github.io/books/wahh-methdology/</guid>
+      <description>Chapter 21: A Web Application Hacker’s Methodology by @sl4x0 بسم الله الرحمن الرحيمInformation gathered in one stage may enable you to return to an earlier stage and formulate more focused attacks. For example, an access control bug that enables you to obtain a listing of all users may enable you to perform a more effective password-guessing attack against the authentication function. Discovering a key vulnerability in one area of the application may enable you to shortcut some of the work in other areas.</description>
+    </item>
+    
+    <item>
+      <title>Bug bounty playbook - Recon</title>
+      <link>https://sl4x0.github.io/books/bbplaybook-recon/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://sl4x0.github.io/books/bbplaybook-recon/</guid>
+      <description>Chapter 6: Reconnaissance Phase 1 The idea behind horizontal correlation is to find all assets related to a company. This could be acquisitions, CIDR ranges, and domains that are owned by the same person. Vertical correlation when dealing with domains involves finding all subdomains belonging to a single domain.
+CIDR Range A Classless Inter-Domain Routing (CIDR) range is a short way of representing a group of IP addresses. Compromising a server hosted on a company’s CIDR range may lead you directly into their internal network therefore these assets are considered critical and are ideal targets.</description>
+    </item>
+    
+    <item>
+      <title>GitHub Digging By @Alwali</title>
+      <link>https://sl4x0.github.io/bug-bounty/github-digging/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://sl4x0.github.io/bug-bounty/github-digging/</guid>
+      <description>🖨️Employees of The Company
+Google : site:github.com inurl:”org=company”
+GitHub : org:company
+®️ Docker Registry Authentication Data
+https://github.com/Plazmaz/leaky-repo/tree/master/.docker
+org:company filename:.dockercfg
+org:company docker AND auth AND email
+user:name filename:.dockercfg
+user:name docker AND auth AND email
+&amp;quot;[company.com](http://company.com/)&amp;quot; docker AND auth AND email
+🈂️ Web Server Credentials
+https://github.com/Plazmaz/leaky-repo/blob/master/.idea/WebServers.xml
+org:company filename:webservers.xml
+org:company fileTransfer AND pass
+user:name filename:webservers.xml
+user:name fileTransfer AND pass
+&amp;quot;[company.com](http://company.com/)&amp;quot; fileTransfer AND pass
+🔑 Firefox Saved Password Collection
+https://github.com/Plazmaz/leaky-repo/blob/master/.mozilla/firefox/logins.json
+org:company filename:firefox/logins.json
+org:company encryptedUsername encryptedPassword</description>
+    </item>
+    
+  </channel>
+</rss>

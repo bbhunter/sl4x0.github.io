@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>BAC on 0xSlaxo Blog</title>
+    <link>https://sl4x0.github.io/tags/bac/</link>
+    <description>Recent content in BAC on 0xSlaxo Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Tue, 26 Jul 2022 23:48:05 +0000</lastBuildDate><atom:link href="https://sl4x0.github.io/tags/bac/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Access Control</title>
+      <link>https://sl4x0.github.io/web-notes/access-control/</link>
+      <pubDate>Tue, 26 Jul 2022 23:48:05 +0000</pubDate>
+      
+      <guid>https://sl4x0.github.io/web-notes/access-control/</guid>
+      <description>In this section, we will discuss what access control security is, describe privilege escalation and the types of vulnerabilities that can arise with access control, and summarize how to prevent these vulnerabilities.
+References Hacksplaining: Web Security for Developers
+Mind-Maps/Access Control Vulnerabilities - Pratik Gaikwad at master · imran-parray/Mind-Maps
+All labs - Web Security Academy
+What is access control? Authentication identifies the user and confirms that they are who they say they are.</description>
+    </item>
+    
+  </channel>
+</rss>

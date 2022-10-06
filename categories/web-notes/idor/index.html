@@ -1,0 +1,309 @@
+<!doctype html>
+<html lang="en-us">
+  <head>
+    <title>Insecure Direct Object References // 0xSlaxo Blog</title>
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <meta charset="utf-8" />
+    <meta name="generator" content="Hugo 0.101.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="author" content="Abdelrhman Allam" />
+    <meta name="description" content="" />
+    <link rel="stylesheet" href="https://sl4x0.github.io/css/main.min.88e7083eff65effb7485b6e6f38d10afbec25093a6fac42d734ce9024d3defbd.css" />
+
+    
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Insecure Direct Object References"/>
+<meta name="twitter:description" content="IDORs happen when users can **access resources that do not belong to them** by directly referencing the object ID, object number, or filename.
+References GitHub - vavkamil/awesome-bugbounty-tools: A curated list of various bug bounty tools
+PayloadsAllTheThings/Insecure Direct Object References at master · swisskyrepo/PayloadsAllTheThings
+GitHub - ngalongc/bug-bounty-reference: Inspired by https://github.com/djadmin/awesome-bug-bounty, a list of bug bounty write-up that is categorized by the bug nature
+GitHub - alexbieber/Bug_Bounty_writeups: BUG BOUNTY WRITEUPS - OWASP TOP 10 🔴🔴🔴🔴✔"/>
+
+    <meta property="og:title" content="Insecure Direct Object References" />
+<meta property="og:description" content="IDORs happen when users can **access resources that do not belong to them** by directly referencing the object ID, object number, or filename.
+References GitHub - vavkamil/awesome-bugbounty-tools: A curated list of various bug bounty tools
+PayloadsAllTheThings/Insecure Direct Object References at master · swisskyrepo/PayloadsAllTheThings
+GitHub - ngalongc/bug-bounty-reference: Inspired by https://github.com/djadmin/awesome-bug-bounty, a list of bug bounty write-up that is categorized by the bug nature
+GitHub - alexbieber/Bug_Bounty_writeups: BUG BOUNTY WRITEUPS - OWASP TOP 10 🔴🔴🔴🔴✔" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://sl4x0.github.io/web-notes/idor/" /><meta property="article:section" content="web-notes" />
+<meta property="article:published_time" content="2022-07-26T23:48:05+00:00" />
+<meta property="article:modified_time" content="2022-07-26T23:48:05+00:00" />
+
+
+
+  </head>
+  <body>
+    <header class="app-header">
+      <a href="https://sl4x0.github.io/"><img class="app-header-avatar" src="/avatar.jpg" alt="Abdelrhman Allam" /></a>
+      <h1>0xSlaxo Blog</h1>
+      <nav class="app-header-menu">
+          <a class="app-header-menu-item" href="/about/">About</a>
+             | 
+          
+          <a class="app-header-menu-item" href="/">Home</a>
+             | 
+          
+          <a class="app-header-menu-item" href="/tags/">Tags</a>
+      </nav>
+      <p> M.A.C.S Student | N00b CTFer</p>
+      <div class="app-header-social">
+        
+          <a href="https://github.com/sl4x0" target="_blank" rel="noreferrer noopener">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-github">
+  <title>My Github</title>
+  <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
+</svg>
+          </a>
+        
+          <a href="https://www.facebook.com/sl4x0" target="_blank" rel="noreferrer noopener">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-facebook">
+  <title>My facebook</title>
+  <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
+</svg>
+          </a>
+        
+          <a href="https://twitter.com/sl4x0" target="_blank" rel="noreferrer noopener">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-twitter">
+  <title>My Twitter</title>
+  <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path>
+</svg>
+          </a>
+        
+          <a href="https://linkedin.com/in/sl4x0" target="_blank" rel="noreferrer noopener">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-linkedin">
+  <title>My Twitter</title>
+  <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle>
+</svg>
+          </a>
+        
+      </div>
+    </header>
+    <main class="app-container">
+      
+  <article class="post">
+    <header class="post-header">
+      <h1 class ="post-title">Insecure Direct Object References</h1>
+      <div class="post-meta">
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-calendar">
+  <title>calendar</title>
+  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line>
+</svg>
+          Jul 26, 2022
+        </div>
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-clock">
+  <title>clock</title>
+  <circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>
+</svg>
+          9 min read
+        </div>
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tag">
+  <title>tag</title>
+  <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line>
+</svg>
+              <a class="tag" href="https://sl4x0.github.io/tags/idor/">IDOR</a>
+              <a class="tag" href="https://sl4x0.github.io/tags/web-notes/">Web-Notes</a>
+        </div>
+      </div>
+    </header>
+    <div class="post-content">
+      <p>IDORs happen when users can <code>**access resources that do not belong to them**</code> by directly referencing the object ID, object number, or filename.</p>
+<h1 id="references"><code>References</code></h1>
+<p><a href="https://github.com/vavkamil/awesome-bugbounty-tools#Insecure-Direct-Object-References">GitHub - vavkamil/awesome-bugbounty-tools: A curated list of various bug bounty tools</a></p>
+<p><a href="https://github.com/swisskyrepo/PayloadsAllTheThings/tree/master/Insecure%20Direct%20Object%20References">PayloadsAllTheThings/Insecure Direct Object References at master · swisskyrepo/PayloadsAllTheThings</a></p>
+<p><a href="https://github.com/ngalongc/bug-bounty-reference#direct-object-reference-idor">GitHub - ngalongc/bug-bounty-reference: Inspired by https://github.com/djadmin/awesome-bug-bounty, a list of bug bounty write-up that is categorized by the bug nature</a></p>
+<p><a href="https://github.com/alexbieber/Bug_Bounty_writeups#insecure-direct-object-reference-idor">GitHub - alexbieber/Bug_Bounty_writeups: BUG BOUNTY WRITEUPS - OWASP TOP 10 🔴🔴🔴🔴✔</a></p>
+<p><a href="https://gowthams.gitbook.io/bughunter-handbook/list-of-vulnerabilities-bugs/insecure-direct-object-references-idor">Insecure Direct Object References (IDOR)</a></p>
+<p><a href="https://github.com/KathanP19/HowToHunt/tree/master/IDOR">HowToHunt/IDOR at master · KathanP19/HowToHunt</a></p>
+<p><a href="https://github.com/daffainfo/AllAboutBugBounty/blob/master/Insecure%20Direct%20Object%20References.md">AllAboutBugBounty/Insecure Direct Object References.md at master · daffainfo/AllAboutBugBounty</a></p>
+<p><a href="https://book.hacktricks.xyz/pentesting-web/idor">IDOR</a></p>
+<p><a href="https://techvomit.net/web-application-penetration-testing-notes/#idors">Web Application Penetration Testing Notes</a></p>
+<p><a href="https://github.com/Voorivex/pentest-guide/tree/master/Insecure-Direct-Object-References">pentest-guide/Insecure-Direct-Object-References at master · Voorivex/pentest-guide</a></p>
+<p><a href="https://nored0x.github.io/penetration%20testing/writeups-Bug-Bounty-hackrone/#idor">Writeups Bug Bounty hackerone</a></p>
+<p><a href="https://pastebin.com/yB3mqyBF">Insecure Direct Object Reference [ IDOR ] - Pastebin.com</a></p>
+<hr>
+<h1 id="mechanisms"><code>Mechanisms</code></h1>
+<p>For example, let’s say that <a href="http://example.com/">example.com</a> is a social media site that allows you to chat with others. And there is a button to show all of <code>your messages</code>: <a href="https://example.com/messages?user_id=1234"></a>.</p>
+<p>What happen if we change the <code>user_id</code> to another number , we can see another user messages without and permisson</p>
+<p>Example Code:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-php" data-lang="php"><span style="display:flex;"><span><span style="color:#a6e22e">messages</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">load_messages</span>(<span style="color:#a6e22e">request</span><span style="color:#f92672">.</span><span style="color:#a6e22e">user_id</span>)
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">display_messages</span>(<span style="color:#a6e22e">messages</span>)
+</span></span></code></pre></div><p>For example, let’s say that users can submit a POST request to change their password.
+The POST request must contain that <code>user’s ID</code> and <code>new password</code>, and they must direct the request to the <code>/change_password</code> endpoint:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-php" data-lang="php"><span style="display:flex;"><span><span style="color:#a6e22e">POST</span> <span style="color:#f92672">/</span><span style="color:#a6e22e">change_password</span>
+</span></span><span style="display:flex;"><span>(<span style="color:#a6e22e">POST</span> <span style="color:#a6e22e">request</span> <span style="color:#a6e22e">body</span>)
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">user_id</span><span style="color:#f92672">=</span><span style="color:#ae81ff">1234</span><span style="color:#f92672">&amp;</span><span style="color:#a6e22e">new_password</span><span style="color:#f92672">=</span><span style="color:#ae81ff">12345</span>
+</span></span></code></pre></div><p>If the applicaiton dosen’t validate the user id , attacker can submit another user_id and change its password.</p>
+<p>For example, this request allows users to access a file they’ve uploaded: <code>https://[example.com/uploads?file=user1234-01.jpeg](http://example.com/uploads?file=user1234-01.jpeg).</code></p>
+<p>we can easily deduce that user-uploaded files follow the naming convention of
+<code>USER_ID-FILE_NUMBER.FILE_EXTENSION</code>. Therefore, another user’s uploaded files might be named <code>user1233–01.jpeg</code>.</p>
+<p>If the application dosen’t validate the user_id , an attacker can modify it like that : <a href="https://example.com/uploads?file=user1233-01.jpeg"></a></p>
+<hr>
+<h1 id="hunting-for-idors"><code>Hunting for IDORs</code></h1>
+<p>The best way to discover IDORs is through a <code>**source code review**</code> that checks if all direct object references are protected by access control.</p>
+<h2 id="step-1-create-two-accounts"><code>Step 1: Create Two Accounts</code></h2>
+<p>If users can have different permissions on the site, create two accounts for each permission level. For example, create two <code>admin accounts</code>, two <code>regular user accounts</code>, two group member accounts, and two non-group-member accounts.</p>
+<p>Continuing the previous example, you could create two accounts on <a href="http://example.com/"></a>: user <code>1235</code> and user <code>1236</code>. One of the accounts would serve as your <code>attacker</code> account, used to carry out the <code>IDOR attacks</code>.</p>
+<p>The message pages for the two users would have the following URLS:
+<a href="https://example.com/messages?user_id=1235"></a> (<code>**Attacker**</code>)</p>
+<p>](<a href="https://example.com/messages?user_id=1236">https://example.com/messages?user_id=1236</a>) (<code>**Victim**</code>)</p>
+<p>In addition to testing with two accounts, you should also repeat the testing procedure without <code>**signing in**</code>. See if you can use an unauthenticated session to access the information or functionalities made available to legitimate users.</p>
+<h2 id="step-2-discover-features"><code>Step 2: Discover Features</code></h2>
+<p>Use the <code>**highestprivileged**</code> account you own and go through the application, looking for application features to test.</p>
+<p>Pay special attention to functionalities that <code>**return user information or modify user data**</code>. Note them for future reference. Here are some features that might have IDORs on <a href="http://example.com/"></a>:</p>
+<p>This endpoint lets you read user <code>messages</code>:
+<a href="https://example.com/messages?user_id=1236"></a></p>
+<p>This one lets you read user <code>files</code>:
+<a href="https://example.com/uploads?file=user1236-01.jpeg"></a>
+This endpoint <code>deletes</code> user messages:
+POST /delete_message
+(POST request body)
+message_id=user1236-0111
+This one is for accessing <code>group files</code>:
+<a href="https://example.com/group_files?group=group3"></a>
+This one <code>deletes a group</code>:
+POST /delete_group
+(POST request body)
+group=group3</p>
+<h2 id="step-3-capture-requests"><code>Step 3: Capture Requests</code></h2>
+<p>Inspect each request carefully and find <code>**the parameters**</code> that contain <code>**numbers**</code>, <code>**usernames**</code>, or <code>**IDs**</code>. Remember that you can trigger IDORs from different locations
+within a request, like <code>**URL parameters**</code>, form <code>**fields**</code>, <code>**filepaths**</code>, <code>**headers**</code>, and <code>**cookies**</code>.</p>
+<p>For example, let’s say you create two accounts, <code>1235</code> and <code>1236</code>. Log into 1235 in <code>Firefox</code> and 1236 in <code>Chrome</code>.
+Use Burp to modify the traffic coming from <code>Firefox</code>. Turn on Intercept in the Proxy tab and edit requests in the proxy text window (Figure 10-1).
+Check if your attack has succeeded by observing the changes reflected on the victim account in <code>Chrome</code>.</p>
+<p><img src="https://user-images.githubusercontent.com/70459751/181092389-bc1af82c-21f1-4594-8eca-60d35e189e39.png" alt="image">
+Figure 10-1</p>
+<h1 id="step-4-change-the-ids"><code>Step 4: Change the IDs</code></h1>
+<p>See if you can access the <code>victim account’s information</code> by using the <code>attacker account</code>. And check if you can modify the second user’s account from the first</p>
+<p>For example, in this setup, you can try to access the functionalities that user 1236(chrome user) has access to via your Firefox browser:
+This endpoint lets you <code>read user messages</code>:
+<a href="https://example.com/messages?user_id=1236"></a></p>
+<p>This one lets you <code>read user files</code>:
+<a href="https://example.com/uploads?file=user1236-01.jpeg"></a>
+This endpoint <code>deletes user</code> messages:
+POST /delete_message
+(POST request body)
+message_id=user1236-0111
+This one is for <code>accessing group files</code>:
+<a href="https://example.com/group_files?group=group3"></a>
+This endpoint <code>deletes a group</code>:
+POST /delete_group
+(POST request body)
+group=group3</p>
+<hr>
+<h1 id="bypassing-idor-protection"><code>Bypassing IDOR Protection</code></h1>
+<p>Modern web applications have also begun implementing more protection against IDORs, and many now use more <code>**complex ID formats**</code>.</p>
+<h2 id="encoded-ids-and-hashed-ids"><code>Encoded IDs and Hashed IDs</code></h2>
+<p>First, don’t ignore encoded and <code>**hashed IDs**</code>.  You should also learn to recognize the most common encoding schemes, like
+<code>**base64**</code>, <code>**URL encoding**</code>, and <code>**base64url**</code>. For example, take a look at the IDs of this endpoint: (base64URL)</p>
+<p><a href="https://example.com/messages?user_id=MTIzNQ"></a></p>
+<p><a href="https://example.com/messages?user_id=MTIzNg"></a></p>
+<p>You can use The [BurpSuite] Decoder to know the decoding scheme!</p>
+<p>If the application is using a hashed or <code>**randomized**</code> ID, see if the ID is <code>**predictable**</code>.</p>
+<p>In this case, try creating a <code>**few accounts to analyze how these IDs are created.**</code> You might be able to find a pattern that will allow you to <code>**predict IDs**</code> belonging to other users.</p>
+<h2 id="leaked-ids"><code>Leaked IDs</code></h2>
+<p>It might also be possible that the application leaks IDs via another <code>**API endpoint or other public pages**</code> of the application, like the profile page of a user.</p>
+<p>The following request would return a list of conversation_ids belonging to that user:
+<code>GET /messages?user_id=1236</code>
+Since the user_id is publicly available on each <code>user’s profile page</code>, I could read any user’s messages by first obtaining their user_id on their profile page,
+retrieving a list of conversation_ids belonging to that user, and finally loading the messages via their conversation_ids.</p>
+<h2 id="offer-the-application-an-id-even-if-it-doesnt-ask-for-one"><code>Offer the Application an ID, Even If It Doesn’t Ask for One</code></h2>
+<p>In modern web applications, you’ll commonly encounter scenarios in which the <code>**application uses cookies instead of IDs to identify the resources a user can access.**</code></p>
+<p>For example, when you send the following GET request to an endpoint, the application will <code>deduce your identity based on your session cookie</code>, and then send you the messages associated with that user</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-php" data-lang="php"><span style="display:flex;"><span><span style="color:#a6e22e">GET</span> <span style="color:#f92672">/</span><span style="color:#a6e22e">api_v1</span><span style="color:#f92672">/</span><span style="color:#a6e22e">messages</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">Host</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">example</span><span style="color:#f92672">.</span><span style="color:#a6e22e">com</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">Cookies</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">session</span><span style="color:#f92672">=</span><span style="color:#a6e22e">YOUR_SESSION_COOKIE</span>
+</span></span></code></pre></div><p>If no IDs exist in the application-generated request, try adding one to the request. <code>Append id, user_id, message_id</code>, or other object references to the URL
+query, or the POST body parameters, and see if it makes a difference to the application’s behavior. For example, say this request displays your messages:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-php" data-lang="php"><span style="display:flex;"><span><span style="color:#66d9ef">If</span> <span style="color:#a6e22e">it</span> <span style="color:#a6e22e">looklike</span> <span style="color:#a6e22e">that</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">GET</span> <span style="color:#f92672">/</span><span style="color:#a6e22e">api_v1</span><span style="color:#f92672">/</span><span style="color:#a6e22e">messages</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">Just</span> <span style="color:#66d9ef">Try</span> <span style="color:#a6e22e">to</span> <span style="color:#a6e22e">Make</span> <span style="color:#66d9ef">this</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">GET</span> <span style="color:#f92672">/</span><span style="color:#a6e22e">api_v1</span><span style="color:#f92672">/</span><span style="color:#a6e22e">messages</span><span style="color:#f92672">?</span><span style="color:#a6e22e">user_id</span><span style="color:#f92672">=</span><span style="color:#a6e22e">ANOTHER_USERS_ID</span>
+</span></span></code></pre></div><h1 id="keep-an-eye-out-for-blind-idors"><code>Keep an Eye Out for Blind IDORs</code></h1>
+<p>For example, imagine that this endpoint on <a href="http://example.com/"></a> allows users to email themselves a copy of a receipt:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-php" data-lang="php"><span style="display:flex;"><span><span style="color:#a6e22e">POST</span> <span style="color:#f92672">/</span><span style="color:#a6e22e">get_receipt</span>
+</span></span><span style="display:flex;"><span>(<span style="color:#a6e22e">POST</span> <span style="color:#a6e22e">request</span> <span style="color:#a6e22e">body</span>)
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">receipt_id</span><span style="color:#f92672">=</span><span style="color:#ae81ff">3001</span>
+</span></span></code></pre></div><p>This request will send a copy of receipt 3001 to the <code>**registered email of the current user**</code>. Now, what if you were to request a receipt that belongs to another user, receipt 2983?</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-php" data-lang="php"><span style="display:flex;"><span><span style="color:#a6e22e">POST</span> <span style="color:#f92672">/</span><span style="color:#a6e22e">get_receipt</span>
+</span></span><span style="display:flex;"><span>(<span style="color:#a6e22e">POST</span> <span style="color:#a6e22e">request</span> <span style="color:#a6e22e">body</span>)
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">receipt_id</span><span style="color:#f92672">=</span><span style="color:#ae81ff">2983</span>
+</span></span></code></pre></div><p>While the HTTP response does not change, you may get a copy of <code>**receipt 2983 in your email inbox!**</code></p>
+<h2 id="change-the-request-method"><code>Change the Request Method</code></h2>
+<p>For example, if this <code>GET</code> request is not vulnerable to IDOR and doesn’t return another user’s resources: GET <a href="http://example.com/uploads/user1236-01.jpeg"></a>`</p>
+<p>you can try to use the DELETE method to delete the resource instead. The <code>DELETE method removes the resource from the target URL</code>: <code>DELETE [](http://example.com/uploads/user1236-01.jpeg)</code></p>
+<p>If <code>POST</code> requests don’t work, you can also try to update another user’s resource by using the <code>PUT</code> method. The P<code>UT method updates</code> or creates the resource at the target URL:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-php" data-lang="php"><span style="display:flex;"><span><span style="color:#a6e22e">PUT</span> <span style="color:#a6e22e">example</span><span style="color:#f92672">.</span><span style="color:#a6e22e">com</span><span style="color:#f92672">/</span><span style="color:#a6e22e">uploads</span><span style="color:#f92672">/</span><span style="color:#a6e22e">user1236</span><span style="color:#f92672">-</span><span style="color:#ae81ff">01.</span><span style="color:#a6e22e">jpeg</span>
+</span></span><span style="display:flex;"><span>(<span style="color:#a6e22e">PUT</span> <span style="color:#a6e22e">request</span> <span style="color:#a6e22e">body</span>)
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">NEW_FILE</span>
+</span></span></code></pre></div><p>Another trick that often works is <code>switching between POST and GET requests</code>. If there is a POST request like this one</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-php" data-lang="php"><span style="display:flex;"><span><span style="color:#a6e22e">POST</span> <span style="color:#f92672">/</span><span style="color:#a6e22e">get_receipt</span>
+</span></span><span style="display:flex;"><span>(<span style="color:#a6e22e">POST</span> <span style="color:#a6e22e">request</span> <span style="color:#a6e22e">body</span>)
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">receipt_id</span><span style="color:#f92672">=</span><span style="color:#ae81ff">2983</span>
+</span></span></code></pre></div><p>you can try rewriting it as a GET request, like this: <code>GET /get_receipt?receipt_id=2983</code></p>
+<h2 id="change-the-requested-file-type"><code>Change the Requested File Type</code></h2>
+<p>For example, applications commonly store information in the JSON file type. Try adding the <code>.json extension to the end of the request URL</code> and see what happens. If this request is blocked by the server</p>
+<p><code>GET /get_receipt?receipt_id=2983</code> Try thia instead: <code>GET /get_receipt?receipt_id=2983.json</code></p>
+<hr>
+<h1 id="escalating-the-attack"><code>Escalating the Attack</code></h1>
+<p>For example, look for functionalities that handle <code>direct messages</code>, <code>personal information</code>, and <code>private content</code>. Consider which application functionalities make use of
+this information and look for IDORs accordingly.</p>
+<p>You can also combine IDORs with other vulnerabilities to increase their impact. For example, a <code>write-based IDOR can be combined with self-XS</code>S
+to form a <code>stored XSS</code>. An IDOR on a <code>password reset endpoint combined with username enumeration can lead to a mass account takeover</code>. Or a write <code>IDOR on an admin account may even lead to RCE!</code></p>
+<hr>
+<h1 id="automating-the-attack"><code>Automating the Attack</code></h1>
+<p>The Burp extension <code>Autorize</code> <a href="https://github.com/Quitten/Autorize/"></a>) scans for authorization issues by accessing higher-privileged accounts with lower-privileged accounts, whereas
+the Burp extensions <code>Auto Repeater</code> <a href="https://github.com/nccgroup/AutoRepeater/"></a>) and <code>AuthMatrix</code> <a href="https://github.com/SecurityInnovation/AuthMatrix/"></a>) allow you
+to automate the process of switching out cookies, headers, and parameters. For more information on how to use these tools, go to the Extender tab of your Burp window, then to the BAppStore tab to find the extension you want to use.</p>
+<hr>
+<h1 id="finding-your-first-idor"><code>Finding Your First IDOR</code></h1>
+<ol>
+<li>
+<p>Create <code>two accounts</code> for each application role and designate one as the attacker account and the other as the victim account.</p>
+</li>
+<li>
+<p>Discover features in the application that might lead to IDORs. Pay attention to <code>features that return sensitive information</code> or modify user data.</p>
+</li>
+<li>
+<p>Revisit the features you discovered in step 2. With a proxy, <code>intercept your browser traffic</code> while you browse through the sensitive functionalities.</p>
+</li>
+<li>
+<p>With a proxy, intercept each sensitive request and <code>switch out the IDs</code> that you see in the requests. If switching out IDs grants you access to
+other users’ information or lets you change their data, you might have found an IDOR.</p>
+</li>
+<li>
+<p>Don’t despair if the application seems to be immune to IDORs. Use this opportunity to try a <code>protection-bypass technique</code>!</p>
+<p>If the application uses an encoded, hashed, or randomized ID, you can try <code>decoding  or predicting the IDs.</code></p>
+<p>You can also try supplying the application with an ID when <code>it does not ask for one</code>. Finally, sometimes changing the
+request method type or file type makes all the difference.</p>
+</li>
+<li>
+<p><code>Monitor for information leaks in export files</code>, email, and text alerts. An
+IDOR now might lead to an info leak in the future.</p>
+</li>
+<li>
+<p>Draft your first IDOR report!</p>
+</li>
+</ol>
+<hr>
+<h1 id="prevention"><code>Prevention</code></h1>
+<p>IDORs happen when an application fails at two things. First, it fails to <code>implement access control</code> based on user identity. Second, it fails to <code>randomize object IDs</code> and instead keeps references to data objects, like a file or a database entry, <code>predictable</code>.</p>
+<p>Applications can prevent IDORs in two ways. <strong>First</strong>, the application can <code>**check the user’s identity and permissions**</code> before granting access to a resource.
+For example, the application can check if the user’s <code>**session cookies**</code> correspond to the user_id whose messages the user is requesting.</p>
+<p><strong>Second</strong>, the website can use a <code>**unique, unpredictable key**</code> or a hashed identifier to reference each user’s resources.</p>
+<p>If <a href="http://example.com/"></a> structured its requests as follows, attackers would no longer be able to access other users’ messages, since there would
+be no way for an attacker to guess such a long, random <code>**user_key**</code> value: <a href="https://example.com/messages?user_key=6MT9EalV9F7r9pns0mK1eDAEW"></a></p>
+<p>But this method isn’t a complete protection against IDORs. Attackers can still <code>**leak user information**</code> if they can find a way to steal these URLs or <code>**user_keys**</code>.</p>
+
+    </div>
+    <div class="post-footer">
+      
+    </div>
+  </article>
+
+    </main>
+  </body>
+</html>

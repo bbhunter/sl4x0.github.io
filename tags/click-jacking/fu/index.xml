@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>FU on 0xSlaxo Blog</title>
+    <link>https://sl4x0.github.io/tags/fu/</link>
+    <description>Recent content in FU on 0xSlaxo Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Tue, 23 Aug 2022 12:48:05 +0000</lastBuildDate><atom:link href="https://sl4x0.github.io/tags/fu/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>File Uploads</title>
+      <link>https://sl4x0.github.io/web-notes/file-uploads/</link>
+      <pubDate>Tue, 23 Aug 2022 12:48:05 +0000</pubDate>
+      
+      <guid>https://sl4x0.github.io/web-notes/file-uploads/</guid>
+      <description>File Upload References Unrestricted File Upload
+File Upload
+AllAboutBugBounty/Arbitrary File Upload.md at master · daffainfo/AllAboutBugBounty
+File Upload
+HowToHunt/File_Upload_bypass at master · KathanP19/HowToHunt
+File Upload
+File upload
+File Upload Vulnerabilities
+Web Application Penetration Testing Notes
+ArabicWebAppsPentesting/47- File upload labs at master · zigoo0/ArabicWebAppsPentesting
+In this section, you&amp;rsquo;ll learn how simple file upload functions can be used as a powerful vector for a number of high-severity attacks.
+What are file upload vulnerabilities? File upload vulnerabilities are when a web server allows users to upload files to its filesystem without sufficiently validating things like their name, type, contents, or size.</description>
+    </item>
+    
+  </channel>
+</rss>

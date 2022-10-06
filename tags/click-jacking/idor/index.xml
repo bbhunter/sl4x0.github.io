@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>IDOR on 0xSlaxo Blog</title>
+    <link>https://sl4x0.github.io/tags/idor/</link>
+    <description>Recent content in IDOR on 0xSlaxo Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Tue, 26 Jul 2022 23:48:05 +0000</lastBuildDate><atom:link href="https://sl4x0.github.io/tags/idor/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Insecure Direct Object References</title>
+      <link>https://sl4x0.github.io/web-notes/idor/</link>
+      <pubDate>Tue, 26 Jul 2022 23:48:05 +0000</pubDate>
+      
+      <guid>https://sl4x0.github.io/web-notes/idor/</guid>
+      <description>IDORs happen when users can **access resources that do not belong to them** by directly referencing the object ID, object number, or filename.
+References GitHub - vavkamil/awesome-bugbounty-tools: A curated list of various bug bounty tools
+PayloadsAllTheThings/Insecure Direct Object References at master · swisskyrepo/PayloadsAllTheThings
+GitHub - ngalongc/bug-bounty-reference: Inspired by https://github.com/djadmin/awesome-bug-bounty, a list of bug bounty write-up that is categorized by the bug nature
+GitHub - alexbieber/Bug_Bounty_writeups: BUG BOUNTY WRITEUPS - OWASP TOP 10 🔴🔴🔴🔴✔</description>
+    </item>
+    
+  </channel>
+</rss>

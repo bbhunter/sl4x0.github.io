@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Click-Jacking on 0xSlaxo Blog</title>
+    <link>https://sl4x0.github.io/tags/click-jacking/</link>
+    <description>Recent content in Click-Jacking on 0xSlaxo Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Tue, 19 Jul 2022 23:48:05 +0000</lastBuildDate><atom:link href="https://sl4x0.github.io/tags/click-jacking/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Clickjacking</title>
+      <link>https://sl4x0.github.io/web-notes/clickjacking/</link>
+      <pubDate>Tue, 19 Jul 2022 23:48:05 +0000</pubDate>
+      
+      <guid>https://sl4x0.github.io/web-notes/clickjacking/</guid>
+      <description>References Clickjacking Defense - OWASP Cheat Sheet Series
+Web Application Penetration Testing Notes
+Clickjacking - Kontra
+Protecting Your Users Against Clickjacking
+Clickjacking
+GitHub - alexbieber/Bug_Bounty_writeups: BUG BOUNTY WRITEUPS - OWASP TOP 10 🔴🔴🔴🔴✔
+What is Clickjacking?
+Clickjacking
+What is Clickjacking? Tutorial &amp;amp; Examples - Web Security Academy
+What is clickjacking? Clickjacking, or user-interface redressing, is an attack that tricks users into clicking a malicious button that has been made to look legitimate.</description>
+    </item>
+    
+  </channel>
+</rss>

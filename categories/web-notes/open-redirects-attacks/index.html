@@ -1,0 +1,331 @@
+<!doctype html>
+<html lang="en-us">
+  <head>
+    <title>Open Redirects // 0xSlaxo Blog</title>
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <meta charset="utf-8" />
+    <meta name="generator" content="Hugo 0.101.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="author" content="Abdelrhman Allam" />
+    <meta name="description" content="" />
+    <link rel="stylesheet" href="https://sl4x0.github.io/css/main.min.88e7083eff65effb7485b6e6f38d10afbec25093a6fac42d734ce9024d3defbd.css" />
+
+    
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Open Redirects"/>
+<meta name="twitter:description" content="Sites often use HTTP or URL parameters to redirect users to a specified URL without any user action. While this behavior can be useful, it can also cause open redirects,
+References Open Redirects
+Open Redirect
+https://github.com/daffainfo/AllAboutBugBounty/blob/master/Open%20Redirect.md
+bugbounty-cheatsheet/open-redirect.md at master · EdOverflow/bugbounty-cheatsheet
+Open Redirect
+HowToHunt/Open_Redirection at master · KathanP19/HowToHunt
+Open Redirect
+Insecure URL Redirect Kontra
+PayloadsAllTheThings/Open Redirect at master · swisskyrepo/PayloadsAllTheThings
+Open redirects
+pentest-guide/Open-Redirect at master · Voorivex/pentest-guide
+Mechanisms For example, when these users visit their account dashboards at https://example."/>
+
+    <meta property="og:title" content="Open Redirects" />
+<meta property="og:description" content="Sites often use HTTP or URL parameters to redirect users to a specified URL without any user action. While this behavior can be useful, it can also cause open redirects,
+References Open Redirects
+Open Redirect
+https://github.com/daffainfo/AllAboutBugBounty/blob/master/Open%20Redirect.md
+bugbounty-cheatsheet/open-redirect.md at master · EdOverflow/bugbounty-cheatsheet
+Open Redirect
+HowToHunt/Open_Redirection at master · KathanP19/HowToHunt
+Open Redirect
+Insecure URL Redirect Kontra
+PayloadsAllTheThings/Open Redirect at master · swisskyrepo/PayloadsAllTheThings
+Open redirects
+pentest-guide/Open-Redirect at master · Voorivex/pentest-guide
+Mechanisms For example, when these users visit their account dashboards at https://example." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://sl4x0.github.io/web-notes/open-redirects-attacks/" /><meta property="article:section" content="web-notes" />
+<meta property="article:published_time" content="2022-08-09T23:48:05+00:00" />
+<meta property="article:modified_time" content="2022-08-09T23:48:05+00:00" />
+
+
+
+  </head>
+  <body>
+    <header class="app-header">
+      <a href="https://sl4x0.github.io/"><img class="app-header-avatar" src="/avatar.jpg" alt="Abdelrhman Allam" /></a>
+      <h1>0xSlaxo Blog</h1>
+      <nav class="app-header-menu">
+          <a class="app-header-menu-item" href="/about/">About</a>
+             | 
+          
+          <a class="app-header-menu-item" href="/">Home</a>
+             | 
+          
+          <a class="app-header-menu-item" href="/tags/">Tags</a>
+      </nav>
+      <p> M.A.C.S Student | N00b CTFer</p>
+      <div class="app-header-social">
+        
+          <a href="https://github.com/sl4x0" target="_blank" rel="noreferrer noopener">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-github">
+  <title>My Github</title>
+  <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
+</svg>
+          </a>
+        
+          <a href="https://www.facebook.com/sl4x0" target="_blank" rel="noreferrer noopener">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-facebook">
+  <title>My facebook</title>
+  <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
+</svg>
+          </a>
+        
+          <a href="https://twitter.com/sl4x0" target="_blank" rel="noreferrer noopener">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-twitter">
+  <title>My Twitter</title>
+  <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path>
+</svg>
+          </a>
+        
+          <a href="https://linkedin.com/in/sl4x0" target="_blank" rel="noreferrer noopener">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-linkedin">
+  <title>My Twitter</title>
+  <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle>
+</svg>
+          </a>
+        
+      </div>
+    </header>
+    <main class="app-container">
+      
+  <article class="post">
+    <header class="post-header">
+      <h1 class ="post-title">Open Redirects</h1>
+      <div class="post-meta">
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-calendar">
+  <title>calendar</title>
+  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line>
+</svg>
+          Aug 9, 2022
+        </div>
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-clock">
+  <title>clock</title>
+  <circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>
+</svg>
+          9 min read
+        </div>
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tag">
+  <title>tag</title>
+  <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line>
+</svg>
+              <a class="tag" href="https://sl4x0.github.io/tags/open-redirects/">Open-Redirects</a>
+              <a class="tag" href="https://sl4x0.github.io/tags/web-notes/">Web-Notes</a>
+        </div>
+      </div>
+    </header>
+    <div class="post-content">
+      <p>Sites often use HTTP or URL parameters to redirect users to a specified URL without any user action. While this behavior can be useful, it can also cause open redirects,</p>
+<h1 id="references"><code>References</code></h1>
+<p><a href="https://www.hacksplaining.com/exercises/open-redirects">Open Redirects</a></p>
+<p><a href="https://book.hacktricks.xyz/pentesting-web/open-redirect">Open Redirect</a></p>
+<p><a href="https://github.com/daffainfo/AllAboutBugBounty/blob/master/Open%20Redirect.md">https://github.com/daffainfo/AllAboutBugBounty/blob/master/Open%20Redirect.md</a></p>
+<p><a href="https://github.com/EdOverflow/bugbounty-cheatsheet/blob/master/cheatsheets/open-redirect.md">bugbounty-cheatsheet/open-redirect.md at master · EdOverflow/bugbounty-cheatsheet</a></p>
+<p><a href="https://gowsundar.gitbook.io/book-of-bugbounty-tips/open-redirect">Open Redirect</a></p>
+<p><a href="https://github.com/KathanP19/HowToHunt/tree/master/Open_Redirection">HowToHunt/Open_Redirection at master · KathanP19/HowToHunt</a></p>
+<p><a href="https://gowthams.gitbook.io/bughunter-handbook/list-of-vulnerabilities-bugs/open-redirect">Open Redirect</a></p>
+<p><a href="https://application.security/free-application-security-training/owasp-top-10-insecure-url-redirect">Insecure URL Redirect Kontra</a></p>
+<p><a href="https://github.com/swisskyrepo/PayloadsAllTheThings/tree/master/Open%20Redirect">PayloadsAllTheThings/Open Redirect at master · swisskyrepo/PayloadsAllTheThings</a></p>
+<p><a href="https://pentestbook.six2dez.com/enumeration/web/open-redirects">Open redirects</a></p>
+<p><a href="https://github.com/Voorivex/pentest-guide/tree/master/Open-Redirect">pentest-guide/Open-Redirect at master · Voorivex/pentest-guide</a></p>
+<hr>
+<h1 id="mechanisms"><code>Mechanisms</code></h1>
+<p>For example, when these users visit their account dashboards at <a href="https://example.com/dashboard">https://example.com/dashboard</a>, the application might redirect them to the login page at <a href="https://example.com/login">https://example.com/login</a>.</p>
+<p>Therefore, the site uses some sort of redirect URL parameter appended to the URL to keep track of the user’s original location.</p>
+<p>For example, the URL <a href="https://example.com/login?redirect=https://example.com/dashboard">https://example.com/login?redirect=https://example.com/dashboard</a> will redirect to the user’s dashboard, located at <a href="https://example.com/dashboard">https://example.com/dashboard</a>, after login.</p>
+<p>During an open-redirect attack, an attacker tricks the user into visiting an external site by providing them with a URL from the legitimate site that redirects somewhere else, like this: <a href="https://example.com/login?redirect=https://">https://example.com/login?redirect=https://</a><a href="http://attacker.com/">attacker.com</a>.</p>
+<p>Another common open-redirect technique is referer-based open redirect.</p>
+<p>The referer is an HTTP request header that browsers automatically include. It tells the server where the request originated from. It’s a common way to determine the user’s location come to form.</p>
+<p>Thus, some sites will redirect to the page’s referrer URL automatically after certain user actions, like login or logout.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-jsx" data-lang="jsx"><span style="display:flex;"><span>&lt;<span style="color:#f92672">html</span>&gt;
+</span></span><span style="display:flex;"><span> &lt;<span style="color:#f92672">a</span> <span style="color:#a6e22e">href</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;https://example.com/login&#34;</span>&gt;<span style="color:#a6e22e">Click</span> <span style="color:#a6e22e">here</span> <span style="color:#a6e22e">to</span> <span style="color:#a6e22e">log</span> <span style="color:#66d9ef">in</span> <span style="color:#a6e22e">to</span> <span style="color:#a6e22e">example</span>.<span style="color:#a6e22e">com</span>&lt;/<span style="color:#f92672">a</span>&gt;
+</span></span><span style="display:flex;"><span>&lt;/<span style="color:#f92672">html</span>&gt;
+</span></span></code></pre></div><p>When a user clicks the link, they’ll be redirected to the location specified by the href attribute of the tag, which is <a href="https://example.com/login">https://example.com/login</a> in this example.</p>
+<p>If <a href="http://example.com/">example.com</a> uses a referer-based redirect system, the user’s browser would redirect to the attacker’s site after the user visits <a href="http://example.com/">example.com</a>, because the browser visited <a href="http://example.com/">example.com</a> via the attacker’s page.</p>
+<hr>
+<h1 id="hunting-for-open-redirects"><code>Hunting for Open Redirects</code></h1>
+<p>You can find open redirects by using a few recon tricks to discover vulnerable endpoints and confirm the open redirect manually.</p>
+<h2 id="step-1-look-for-redirect-parameters">Step 1: Look for Redirect Parameters</h2>
+<p>These often show up as URL parameters like here:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-jsx" data-lang="jsx"><span style="display:flex;"><span><span style="color:#a6e22e">https</span><span style="color:#f92672">:</span><span style="color:#75715e">//example.com/login?**redirect**=https://example.com/dashboard
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">https</span><span style="color:#f92672">:</span><span style="color:#75715e">//example.com/login?**redir**=https://example.com/dashboard
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">https</span><span style="color:#f92672">:</span><span style="color:#75715e">//example.com/login?**next**=https://example.com/dashboard
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">https</span><span style="color:#f92672">:</span><span style="color:#75715e">//example.com/login?**next**=/dashboard
+</span></span></span></code></pre></div><p>Open your proxy while you browse the website. Then, in your <code>HTTP history</code>, look for any parameter that contains absolute or relative URLs.</p>
+<p>An absolute URL is complete and contains all the components necessary to locate the resource it points to, like <a href="https://example.com/login">https://example.com/login</a>.</p>
+<p>Some redirect URLs will even omit the first slash (/) character of the relative URL, as in <a href="https://example.com/login?next=dashboard">https://example.com/login?next=dashboard</a>.</p>
+<blockquote>
+<p>Note that not all redirect parameters have straightforward names like redirect or redir.</p>
+</blockquote>
+<p>I’ve seen redirect parameters named RelayState, next, u, n, and forward. You should record all parameters that seem to be used for redirect, regardless of their parameter names.</p>
+<p>These pages are candidates for referer-based open redirects. To find these pages, you can keep an eye out for <code>3XX</code> response codes like <code>301</code> and <code>302</code>. These response codes indicate a redirect.</p>
+<hr>
+<h2 id="step-2-use-google-dorks-to-find-additional-redirect-parameters">Step 2: Use Google Dorks to Find Additional Redirect Parameters</h2>
+<p>Start by setting your site in the url :</p>
+<p><code>site:example.com</code></p>
+<p>Then look for pages that contain URLs in their URL parameters, making use of %3D, the url encoded version of ( = )</p>
+<p>The following searches for URL parameters that contain absolute URLs: <code>inurl:%3Dhttp site:example.com</code></p>
+<p>This search term might find the following pages:</p>
+<p><a href="https://example.com/login?next=https://example.com/dashboard">https://example.com/login?next=https://example.com/dashboard</a></p>
+<p><a href="https://example.com/login?u=http://example.com/settings">https://example.com/login?u=http://example.com/settings</a></p>
+<p>Also try using <code>%2F</code>, the URL-encoded version of the <code>slash</code> (/). The following search term searches URLs that contain <code>=/</code>, and therefore returns URL parameters that contain relative URLs:</p>
+<p><code>inurl:%3D%2F site:example.com</code></p>
+<p>This search term will find URLs such as this one: <a href="https://example.com/login?n=/dashboard">https://example.com/login?n=/dashboard</a></p>
+<p>Alternatively, you can search for the names of common URL redirect parameters.</p>
+<pre tabindex="0"><code>inurl:redir site:example.com
+inurl:redirect site:example.com
+inurl:redirecturi site:example.com
+inurl:redirect_uri site:example.com
+inurl:redirecturl site:example.com
+inurl:redirect_uri site:example.com
+inurl:return site:example.com
+inurl:returnurl site:example.com
+inurl:relaystate site:example.com
+inurl:forward site:example.com
+inurl:forwardurl site:example.com
+inurl:forward_url site:example.com
+inurl:url site:example.com
+inurl:uri site:example.com
+inurl:dest site:example.com
+inurl:destination site:example.com
+inurl:next site:example.com
+</code></pre><p>These search terms will find URLs such as the following:</p>
+<pre tabindex="0"><code>https://example.com/logout?dest=/
+https://example.com/login?RelayState=https://example.com/home
+https://example.com/logout?forward=home
+https://example.com/login?return=home/settings
+</code></pre><hr>
+<h2 id="step-3-test-for-parameter-based-open-redirects">Step 3: Test for Parameter-Based Open Redirects</h2>
+<p>Insert a random hostname, or a hostname you own, into the redirect parameters; then see if the site
+automatically redirects to the site you specified:</p>
+<pre tabindex="0"><code>https://example.com/login?n=http://google.com
+https://example.com/login?n=http://attacker.com
+</code></pre><p>Some sites will redirect to the destination site immediately after you visit the URL, without any user interaction. But for a lot of pages, the
+redirect won’t happen until after a user action, like registration, login, or logout. In those cases, be sure to carry out the required user interactions
+before checking for the redirect.</p>
+<hr>
+<h2 id="step-4-test-for-referer-based-open-redirects">Step 4: Test for Referer-Based Open Redirects</h2>
+<p>Finally, test for referer-based open redirects on any pages you found in step 1 that redirected users despite not containing a redirect URL parameter. To test
+for these, set up a page on a domain you own and host this HTML page:</p>
+<pre tabindex="0"><code>&lt;html&gt;
+ &lt;a href=&#34;https://example.com/login&#34;&gt;Click on this link!&lt;/a&gt;
+&lt;/html&gt;
+</code></pre><p>Replace the linked URL with the target page. Then reload and visit your HTML page. Click the link and see if you get redirected to your site automatically or after the required user interactions.</p>
+<hr>
+<h1 id="bypassing-open-redirect-protection"><code>Bypassing Open-Redirect Protection</code></h1>
+<p>Here, you can see the components of a URL. The way the browser redirects the user depends on how the browser differentiates between these components:</p>
+<pre tabindex="0"><code>scheme://userinfo@hostname:port/path?query#fragment
+</code></pre><p>For example, how would the browser redirect this URL?</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-jsx" data-lang="jsx"><span style="display:flex;"><span><span style="color:#a6e22e">https</span><span style="color:#f92672">:</span><span style="color:#75715e">//user:password:8080/example.com@attacker.com
+</span></span></span></code></pre></div><p>In this case, you could try to bypass the protection by using a few strategies, which I’ll go over in this section.</p>
+<p>Using Browser Autocorrect</p>
+<p>Modern browsers often autocorrect URLs that don’t have the correct components, in order to correct mangled URLs caused by user typos.</p>
+<p>For example, Chrome will interpret all of these URLs as pointing to <a href="https://attacker.com/">https://attacker.com/</a> :</p>
+<pre tabindex="0"><code>https:attacker.com
+https;attacker.com
+https:\/\/attacker.com
+https:/\/\attacker.com
+</code></pre><p>These quirks can help you bypass URL validation based on a blocklist.</p>
+<p>For example, if the validator rejects any redirect URL that contains the strings HTTPS:// or HTTP://, you can use an alternative string, like HTTPS; , to achieve the same results.</p>
+<p>Most modern browsers also automatically correct backslashes () to forward slashes (/), meaning they’ll treat these URLs as the same:</p>
+<pre tabindex="0"><code>https:\\example.com
+https://example.com
+</code></pre><p>If the validator doesn’t recognize this behavior, the inconsistency could lead to bugs. For example, the following URL is potentially problematic:</p>
+<p><a href="https://attacker.com%5C%5C@example.com/">https://attacker.com%5C%5C@example.com/</a></p>
+<p>But if the browser autocorrects the backslash to a forward slash, it will redirect the user to <a href="http://attacker.com/">attacker.com</a>, and treat @example. com as the path portion of the URL, forming the following valid URL:
+<a href="https://attacker.com/@example.com">https://attacker.com/@example.com</a></p>
+<hr>
+<h2 id="exploiting-flawed-validator-logic">Exploiting Flawed Validator Logic</h2>
+<p>For example, as a common defense against open redirects, the URL validator often checks if the redirect
+URL starts with, contains, or ends with the site’s domain name. You can bypass this type of protection by creating a subdomain or directory with
+the target’s domain name:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-jsx" data-lang="jsx"><span style="display:flex;"><span><span style="color:#a6e22e">https</span><span style="color:#f92672">:</span><span style="color:#75715e">//example.com/login?redir=http://example.com.attacker.com
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">https</span><span style="color:#f92672">:</span><span style="color:#75715e">//example.com/login?redir=http://attacker.com/example.com
+</span></span></span></code></pre></div><p>However, it’s possible to construct a URL that satisfies both of these rules. Take a look at this one:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-jsx" data-lang="jsx"><span style="display:flex;"><span><span style="color:#a6e22e">https</span><span style="color:#f92672">:</span><span style="color:#75715e">//example.com/login?redir=https://example.com.attacker.com/example.com
+</span></span></span></code></pre></div><p>Or you could use the at symbol (@) to make the first <a href="http://example.com/">example.com</a> the username portion of the URL:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-jsx" data-lang="jsx"><span style="display:flex;"><span><span style="color:#a6e22e">https</span><span style="color:#f92672">:</span><span style="color:#75715e">//example.com/login?redir=https://example.com@attacker.com/example.com
+</span></span></span></code></pre></div><hr>
+<h2 id="using-data-urls">Using Data URLs</h2>
+<p>You can also manipulate the scheme portion of the URL to fool the validator.</p>
+<p><code>data:MEDIA_TYPE[;base64],DATA</code></p>
+<p>For example, you can send a plaintext message with the data scheme like this: <code>data:text/plain,hello!</code></p>
+<p>For example, this is the base64-encoded version of the preceding message: <code>data:text/plain;base64,aGVsbG8h</code></p>
+<p>For example, this URL will redirect to <a href="http://example.com/">example.com</a>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-jsx" data-lang="jsx"><span style="display:flex;"><span><span style="color:#a6e22e">data</span><span style="color:#f92672">:</span><span style="color:#a6e22e">text</span><span style="color:#f92672">/</span><span style="color:#a6e22e">html</span>;<span style="color:#a6e22e">base64</span>,
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">PHNjcmlwdD5sb2NhdGlvbj0iaHR0cHM6Ly9leGFtcGxlLmNvbSI8L3NjcmlwdD4</span><span style="color:#f92672">=</span> <span style="color:#75715e">//encoded from &lt;script&gt;location=&#34;https://example.com&#34;&lt;/script&gt;
+</span></span></span></code></pre></div><p>You can insert this data URL into the redirection parameter to bypass blocklists:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-jsx" data-lang="jsx"><span style="display:flex;"><span><span style="color:#a6e22e">https</span><span style="color:#f92672">:</span><span style="color:#75715e">//example.com/login?redir=data:text/html;base64,
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">PHNjcmlwdD5sb2NhdGlvbj0iaHR0cHM6Ly9leGFtcGxlLmNvbSI8L3NjcmlwdD4</span><span style="color:#f92672">=</span>
+</span></span></code></pre></div><hr>
+<h2 id="exploiting-url-decoding">Exploiting URL Decoding</h2>
+<p>URL encoding converts a character into a percentage sign, followed by two hex digits; for example, %2f. This is the URL-encoded version of the slash character (/).</p>
+<p>When validators validate URLs, or when browsers redirect users, they have to first find out what is contained in the URL by decoding any characters that are URL encoded.</p>
+<h3 id="double-encoding">Double Encoding</h3>
+<p>For example, you could URL-encode the slash character in https://<a href="http://example.com/@attacker.com">example.com/@attacker.com</a>. Here is the URL with a URL-encoded slash:</p>
+<p><a href="https://example.com%2f@attacker.com/"><code>https://example.com%2F@attacker.com</code></a></p>
+<p>And here is the URL with a double-URL-encoded slash:</p>
+<p><a href="https://example.com%252f@attacker.com/"><code>https://example.com%252f@attacker.com</code></a></p>
+<p>Finally, here is the URL with a triple-URL-encoded slash:</p>
+<p><a href="https://example.com%25252f@attacker.com/"><code>https://example.com%25252f@attacker.com</code></a></p>
+<p>For example, some validators might decode these URLs completely, then assume the URL redirects to <code>[example.com](http://example.com/)</code>, since @attacker.com is
+in the path portion of the URL. However, the browsers might decode the URL incompletely, and instead, treat <a href="http://example.com/">example.com</a>%25252f as the username
+portion of the URL. On the other hand, if the validator doesn’t double-decode URLs, but
+the browser does, you can use a payload like this one:
+<a href="https://attacker.com%252f@example.com/"><code>https://attacker.com%252f@example.com</code></a>
+The validator would see <a href="http://example.com/">example.com</a> as the hostname. But the browser
+would redirect to <a href="http://attacker.com/">attacker.com</a>, because @example.com becomes the path portion of the URL, like this:
+<a href="https://attacker.com/@example.com"><code>https://attacker.com/@example.com</code></a></p>
+<hr>
+<h2 id="combining-exploit-techniques">Combining Exploit Techniques</h2>
+<p>To defeat more-sophisticated URL validators, combine multiple strategies to bypass layered defenses. I’ve found the following payload to be useful:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-jsx" data-lang="jsx"><span style="display:flex;"><span><span style="color:#a6e22e">https</span><span style="color:#f92672">:</span><span style="color:#75715e">//example.com%252f@attacker.com/example.com
+</span></span></span></code></pre></div><p>Most browsers will interpret example.com%252f as the username portion of the URL. But if the validator overdecodes the URL, it will confuse <a href="http://example.com/">example.com</a> as the hostname portion:
+<a href="https://example.com/@attacker.com/example.com"><code>https://example.com/@attacker.com/example.com</code></a></p>
+<hr>
+<h1 id="escalating-the-attack"><code>Escalating the Attack</code></h1>
+<p>For example, they could send this URL in an email to a user: [<code>https://example.com/login?next=https://attacker.com/fake_login.html](https://example.com/login?next=https://attacker.com/fake_login.html).</code>
+Though this URL would first lead users to the legitimate website, it would redirect them to the attacker’s site after login.</p>
+<p>But open redirects can often serve as a part of a bug chain to achieve a bigger impact. For example,
+an open redirect can help you bypass URL blocklists and allowlists. Take this URL, for example:</p>
+<p><a href="https://example.com/?next=https://attacker.com/"><code>https://example.com/?next=https://attacker.com/</code></a></p>
+<p>This URL will pass even well-implemented URL validators, because the URL is technically still on the legitimate website.</p>
+<p>You could also use open redirects to steal credentials and OAuth tokens.
+Often, when a page redirects to another site, browsers will include the originating URL as a referer HTTP request header. When the originating URL
+contains sensitive information, like authentication tokens, attackers can induce an open redirect to steal the tokens via the referer header.</p>
+<hr>
+<h1 id="finding-your-first-open-redirect"><code>Finding Your First Open Redirect!</code></h1>
+<p>You’re ready to find your first open redirect. Follow the steps covered in this chapter to test your target applications:</p>
+<ol>
+<li>Search for redirect URL parameters. These might be vulnerable to parameter-based open redirect.</li>
+<li>Search for pages that perform referer-based redirects. These are candidates for a referer-based open redirect.</li>
+<li>Test the pages and parameters you’ve found for open redirects.</li>
+<li>If the server blocks the open redirect, try the protection bypass techniques mentioned in this chapter.</li>
+<li>Brainstorm ways of using the open redirect in your other bug chains!</li>
+</ol>
+<hr>
+<h1 id="prevention"><code>Prevention</code></h1>
+<p>For example, a site may blocklist known malicious hostnames or special URL characters often used in open-redirect attacks.</p>
+<p>When a validator implements an allowlist, it will check the hostname portion of the URL to make sure that it matches a predetermined list
+of allowed hosts. If the hostname portion of the URL matches an allowed hostname, the redirect goes through. Otherwise, the server blocks the redirect.</p>
+
+    </div>
+    <div class="post-footer">
+      
+    </div>
+  </article>
+
+    </main>
+  </body>
+</html>
