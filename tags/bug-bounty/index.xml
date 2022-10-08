@@ -6,20 +6,11 @@
     <description>Recent content in bug-bounty on 0xSlaxo Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 26 Sep 2022 23:48:05 +0000</lastBuildDate><atom:link href="https://sl4x0.github.io/tags/bug-bounty/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>Web Application Hacker’s Methodology</title>
-      <link>https://sl4x0.github.io/books/wahh-methdology/</link>
-      <pubDate>Mon, 26 Sep 2022 23:48:05 +0000</pubDate>
-      
-      <guid>https://sl4x0.github.io/books/wahh-methdology/</guid>
-      <description>Chapter 21: A Web Application Hacker’s Methodology by @sl4x0 بسم الله الرحمن الرحيمInformation gathered in one stage may enable you to return to an earlier stage and formulate more focused attacks. For example, an access control bug that enables you to obtain a listing of all users may enable you to perform a more effective password-guessing attack against the authentication function. Discovering a key vulnerability in one area of the application may enable you to shortcut some of the work in other areas.</description>
-    </item>
-    
+    <lastBuildDate>Fri, 30 Sep 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://sl4x0.github.io/tags/bug-bounty/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Bug bounty playbook - Recon</title>
       <link>https://sl4x0.github.io/books/bbplaybook-recon/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <pubDate>Fri, 30 Sep 2022 00:00:00 +0000</pubDate>
       
       <guid>https://sl4x0.github.io/books/bbplaybook-recon/</guid>
       <description>Chapter 6: Reconnaissance Phase 1 The idea behind horizontal correlation is to find all assets related to a company. This could be acquisitions, CIDR ranges, and domains that are owned by the same person. Vertical correlation when dealing with domains involves finding all subdomains belonging to a single domain.
@@ -29,7 +20,7 @@ CIDR Range A Classless Inter-Domain Routing (CIDR) range is a short way of repre
     <item>
       <title>GitHub Digging By @Alwali</title>
       <link>https://sl4x0.github.io/bug-bounty/github-digging/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <pubDate>Fri, 30 Sep 2022 00:00:00 +0000</pubDate>
       
       <guid>https://sl4x0.github.io/bug-bounty/github-digging/</guid>
       <description>🖨️Employees of The Company
@@ -53,6 +44,15 @@ user:name fileTransfer AND pass
 https://github.com/Plazmaz/leaky-repo/blob/master/.mozilla/firefox/logins.json
 org:company filename:firefox/logins.json
 org:company encryptedUsername encryptedPassword</description>
+    </item>
+    
+    <item>
+      <title>Web Application Hacker’s Methodology</title>
+      <link>https://sl4x0.github.io/books/wahh-methdology/</link>
+      <pubDate>Mon, 26 Sep 2022 23:48:05 +0000</pubDate>
+      
+      <guid>https://sl4x0.github.io/books/wahh-methdology/</guid>
+      <description>Chapter 21: A Web Application Hacker’s Methodology by @sl4x0 بسم الله الرحمن الرحيمInformation gathered in one stage may enable you to return to an earlier stage and formulate more focused attacks. For example, an access control bug that enables you to obtain a listing of all users may enable you to perform a more effective password-guessing attack against the authentication function. Discovering a key vulnerability in one area of the application may enable you to shortcut some of the work in other areas.</description>
     </item>
     
   </channel>

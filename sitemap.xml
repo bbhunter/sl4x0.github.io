@@ -8,7 +8,31 @@
     <loc>https://sl4x0.github.io/tags/bascis/</loc>
     <lastmod>2022-09-30T00:00:00+00:00</lastmod>
   </url><url>
+    <loc>https://sl4x0.github.io/tags/basics/</loc>
+    <lastmod>2022-09-30T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://sl4x0.github.io/books/</loc>
+    <lastmod>2022-09-30T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://sl4x0.github.io/books/bbplaybook-recon/</loc>
+    <lastmod>2022-09-30T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://sl4x0.github.io/bug-bounty/</loc>
+    <lastmod>2022-09-30T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://sl4x0.github.io/tags/bug-bounty/</loc>
+    <lastmod>2022-09-30T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://sl4x0.github.io/tags/dorking/</loc>
+    <lastmod>2022-09-30T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://sl4x0.github.io/bug-bounty/github-digging/</loc>
+    <lastmod>2022-09-30T00:00:00+00:00</lastmod>
+  </url><url>
     <loc>https://sl4x0.github.io/tags/pentesting/</loc>
+    <lastmod>2022-09-30T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://sl4x0.github.io/tags/recon/</loc>
     <lastmod>2022-09-30T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://sl4x0.github.io/research/</loc>
@@ -17,14 +41,14 @@
     <loc>https://sl4x0.github.io/tags/</loc>
     <lastmod>2022-09-30T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://sl4x0.github.io/research/what-is-pentester/</loc>
+    <loc>https://sl4x0.github.io/tags/webserver/</loc>
     <lastmod>2022-09-30T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://sl4x0.github.io/books/</loc>
-    <lastmod>2022-09-26T23:48:05+00:00</lastmod>
+    <loc>https://sl4x0.github.io/research/what-is-web-servers/</loc>
+    <lastmod>2022-09-30T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://sl4x0.github.io/tags/bug-bounty/</loc>
-    <lastmod>2022-09-26T23:48:05+00:00</lastmod>
+    <loc>https://sl4x0.github.io/research/what-is-pentester/</loc>
+    <lastmod>2022-09-30T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://sl4x0.github.io/tags/method/</loc>
     <lastmod>2022-09-26T23:48:05+00:00</lastmod>
@@ -152,36 +176,8 @@
     <loc>https://sl4x0.github.io/web-notes/cors-misconfigration/</loc>
     <lastmod>2022-07-12T23:48:05+00:00</lastmod>
   </url><url>
-    <loc>https://sl4x0.github.io/tags/info-disclosure/</loc>
-    <lastmod>2021-10-23T23:48:05+00:00</lastmod>
-  </url><url>
-    <loc>https://sl4x0.github.io/web-notes/information-disclosure/</loc>
-    <lastmod>2021-10-23T23:48:05+00:00</lastmod>
-  </url><url>
-    <loc>https://sl4x0.github.io/web-notes/xxe-attacks/</loc>
-    <lastmod>2021-10-23T23:48:05+00:00</lastmod>
-  </url><url>
-    <loc>https://sl4x0.github.io/tags/xxe/</loc>
-    <lastmod>2021-10-23T23:48:05+00:00</lastmod>
-  </url><url>
     <loc>https://sl4x0.github.io/about/</loc>
   </url><url>
-    <loc>https://sl4x0.github.io/tags/basics/</loc>
-  </url><url>
-    <loc>https://sl4x0.github.io/books/bbplaybook-recon/</loc>
-  </url><url>
-    <loc>https://sl4x0.github.io/bug-bounty/</loc>
-  </url><url>
     <loc>https://sl4x0.github.io/categories/</loc>
-  </url><url>
-    <loc>https://sl4x0.github.io/tags/dorking/</loc>
-  </url><url>
-    <loc>https://sl4x0.github.io/bug-bounty/github-digging/</loc>
-  </url><url>
-    <loc>https://sl4x0.github.io/tags/recon/</loc>
-  </url><url>
-    <loc>https://sl4x0.github.io/tags/webserver/</loc>
-  </url><url>
-    <loc>https://sl4x0.github.io/research/what-is-web-servers/</loc>
   </url>
 </urlset>
