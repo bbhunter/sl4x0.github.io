@@ -5,7 +5,18 @@
     <link>https://sl4x0.github.io/research/</link>
     <description>Recent content in Researches on 0xSlaxo Blog</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>en-us</language><atom:link href="https://sl4x0.github.io/research/index.xml" rel="self" type="application/rss+xml" />
+    <language>en-us</language>
+    <lastBuildDate>Fri, 30 Sep 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://sl4x0.github.io/research/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>What is Pentester, Types, Methodology and Career ?</title>
+      <link>https://sl4x0.github.io/research/what-is-pentester/</link>
+      <pubDate>Fri, 30 Sep 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://sl4x0.github.io/research/what-is-pentester/</guid>
+      <description>Pentesters assess the security of computers, networks, and websites by looking for and exploiting vulnerabilities–commonly known as hacking. &amp;ldquo;With great power comes great responsibility&amp;rdquo;.
+Synonymous Terms and Types of Hackers White hat hackers: Ethical hackers (aka pentesters). Gray hat hackers: Gray hats fall into a fuzzy area. Their intent is not always malicious, but it is not always ethical either. Black hat hackers: Their intent and purpose are illegal. Cyber criminals fall into this category.</description>
+    </item>
+    
     <item>
       <title>What are web webservers?</title>
       <link>https://sl4x0.github.io/research/what-is-web-servers/</link>
