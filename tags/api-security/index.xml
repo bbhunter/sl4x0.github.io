@@ -13,9 +13,10 @@
       <pubDate>Thu, 20 Oct 2022 15:48:05 +0000</pubDate>
       
       <guid>https://sl4x0.github.io/api-notes/common-api-vulnerablities/</guid>
-      <description>Information Disclosure Information may be disclosed in API responses or public sources such as code repositories, search results, news, social media, the target’s website, and public API directories.
-For example, a site that is using the WordPress API may unknowingly be sharing user information with anyone who navigates to the API path /wp-json/wp/v2/users
-GET https://www.sitename.org/wp-json/wp/v2/users [{&amp;#34;id&amp;#34;:1,&amp;#34;name&amp;#34;:&amp;#34;Administrator&amp;#34;, &amp;#34;slug&amp;#34;:&amp;#34;admin&amp;#34;}], {&amp;#34;id&amp;#34;:2,&amp;#34;name&amp;#34;:&amp;#34;Vincent Valentine&amp;#34;, &amp;#34;slug&amp;#34;:&amp;#34;Vincent&amp;#34;}] These slugs can then be used in an attempt to log in as the disclosed users with a brute-force, credential-stuffing, or password-spraying attack.</description>
+      <description>Understanding common vulnerabilities will help you identify weaknesses when you’re testing APIs.
+Information Disclosure Information may be disclosed in API responses or public sources such as code repositories, search results, news, social media, the target’s website, and public API directories.
+Sensitive data can include any information that attackers can leverage to their advantage.
+For example, a site that is using the WordPress API may unknowingly be sharing user information with anyone who navigates to the API path /wp-json/wp/v2/users</description>
     </item>
     
   </channel>
