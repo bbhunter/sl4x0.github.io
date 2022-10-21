@@ -15,12 +15,15 @@
       <guid>https://sl4x0.github.io/web-notes/json-web-tokens-attacks/</guid>
       <description>JWT Attacks In this section, we&amp;rsquo;ll look at how design issues and flawed handling of JSON web tokens (JWTs) can leave websites vulnerable to a variety of high-severity attacks.
 References JWT.IO
-JWT Vulnerabilities (Json Web Tokens)
-AllAboutBugBounty/JWT Vulnerabilities.md at master · daffainfo/AllAboutBugBounty
-HowToHunt/JWT at master · KathanP19/HowToHunt
-PayloadsAllTheThings/JSON Web Token at master · swisskyrepo/PayloadsAllTheThings
-GitHub - vavkamil/awesome-bugbounty-tools: A curated list of various bug bounty tools
-Web Application Penetration Testing Notes</description>
+JWT Vulnerabilities
+AllAboutBugBounty/JWT Vulnerabilities
+HowToHunt/JWT at master
+PayloadsAllTheThings/JSON Web Token GitHub - vavkamil/awesome-bugbounty-tools
+Web Application Penetration Testing Notes
+Web Application Penetration Testing Notes
+REST Security - OWASP Cheat Sheet Series
+pentest-guide/JSON-Web-Token-Flaw at master Writeups Bug Bounty hackerone
+JSON Hijacking [XSSI] - Pastebin.</description>
     </item>
     
   </channel>

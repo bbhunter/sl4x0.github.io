@@ -45,12 +45,15 @@ What are business logic vulnerabilities?</description>
       <guid>https://sl4x0.github.io/web-notes/json-web-tokens-attacks/</guid>
       <description>JWT Attacks In this section, we&amp;rsquo;ll look at how design issues and flawed handling of JSON web tokens (JWTs) can leave websites vulnerable to a variety of high-severity attacks.
 References JWT.IO
-JWT Vulnerabilities (Json Web Tokens)
-AllAboutBugBounty/JWT Vulnerabilities.md at master · daffainfo/AllAboutBugBounty
-HowToHunt/JWT at master · KathanP19/HowToHunt
-PayloadsAllTheThings/JSON Web Token at master · swisskyrepo/PayloadsAllTheThings
-GitHub - vavkamil/awesome-bugbounty-tools: A curated list of various bug bounty tools
-Web Application Penetration Testing Notes</description>
+JWT Vulnerabilities
+AllAboutBugBounty/JWT Vulnerabilities
+HowToHunt/JWT at master
+PayloadsAllTheThings/JSON Web Token GitHub - vavkamil/awesome-bugbounty-tools
+Web Application Penetration Testing Notes
+Web Application Penetration Testing Notes
+REST Security - OWASP Cheat Sheet Series
+pentest-guide/JSON-Web-Token-Flaw at master Writeups Bug Bounty hackerone
+JSON Hijacking [XSSI] - Pastebin.</description>
     </item>
     
     <item>
@@ -200,7 +203,13 @@ Web Application Penetration Testing Notes</description>
       <description>In this section, we&amp;rsquo;ll look at some of the most common authentication mechanisms used by websites and discuss potential vulnerabilities in them.
 We&amp;rsquo;ll highlight both inherent vulnerabilities in different authentication mechanisms, as well as some typical vulnerabilities that are introduced by their improper implementation.
 References Authentication - OWASP Cheat Sheet Series
-GitHub - ngalongc/bug-bounty-reference: Inspired by https://github.com/djadmin/awesome-bug-bounty, a list of bug bounty write-up that is categorized by the bug nature</description>
+GitHub - ngalongc/bug-bounty-reference
+GitHub - alexbieber/Bug_Bounty_writeups
+Bug-bounty/bugbounty_checklist
+HowToHunt/Authentication_Bypass Login Bypass
+Mind-Maps/2FA Bypass Techniques
+Web Application Penetration Testing Notes
+Writeups Bug Bounty hackerone</description>
     </item>
     
     <item>
@@ -211,9 +220,9 @@ GitHub - ngalongc/bug-bounty-reference: Inspired by https://github.com/djadmin/a
       <guid>https://sl4x0.github.io/web-notes/access-control/</guid>
       <description>In this section, we will discuss what access control security is, describe privilege escalation and the types of vulnerabilities that can arise with access control, and summarize how to prevent these vulnerabilities.
 References Hacksplaining: Web Security for Developers
-Mind-Maps/Access Control Vulnerabilities - Pratik Gaikwad at master · imran-parray/Mind-Maps
+Mind-Maps/Access Control Vulnerabilities
 All labs - Web Security Academy
-What is access control? Authentication identifies the user and confirms that they are who they say they are.</description>
+What is access control? Authentication identifies the user and confirms that they are who they say they are. Session management identifies which subsequent HTTP requests are being made by that same user.</description>
     </item>
     
     <item>

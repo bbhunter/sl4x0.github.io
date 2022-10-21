@@ -16,7 +16,13 @@
       <description>In this section, we&amp;rsquo;ll look at some of the most common authentication mechanisms used by websites and discuss potential vulnerabilities in them.
 We&amp;rsquo;ll highlight both inherent vulnerabilities in different authentication mechanisms, as well as some typical vulnerabilities that are introduced by their improper implementation.
 References Authentication - OWASP Cheat Sheet Series
-GitHub - ngalongc/bug-bounty-reference: Inspired by https://github.com/djadmin/awesome-bug-bounty, a list of bug bounty write-up that is categorized by the bug nature</description>
+GitHub - ngalongc/bug-bounty-reference
+GitHub - alexbieber/Bug_Bounty_writeups
+Bug-bounty/bugbounty_checklist
+HowToHunt/Authentication_Bypass Login Bypass
+Mind-Maps/2FA Bypass Techniques
+Web Application Penetration Testing Notes
+Writeups Bug Bounty hackerone</description>
     </item>
     
   </channel>
