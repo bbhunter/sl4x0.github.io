@@ -6,7 +6,19 @@
     <description>Recent content on 0xSlaxo Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 20 Oct 2022 15:48:05 +0000</lastBuildDate><atom:link href="https://sl4x0.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 28 Oct 2022 15:10:05 +0000</lastBuildDate><atom:link href="https://sl4x0.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>How i Use Notion with Bug Bounty and Pentesting Books</title>
+      <link>https://sl4x0.github.io/research/my-method-for-making-book-library-with-notion-for-bb-and-pentesting/</link>
+      <pubDate>Fri, 28 Oct 2022 15:10:05 +0000</pubDate>
+      
+      <guid>https://sl4x0.github.io/research/my-method-for-making-book-library-with-notion-for-bb-and-pentesting/</guid>
+      <description>Introduction Hello Guys!👋 In This Article, I will Explain How I use Notion effectively for Taking Notes, Summarising and Reviewing Books for Bug Bounty, and other Pentesting Notes or Books.
+So first of all we will use a notion’s function called “Table” or “Database” and It’s like what u imagine, Columns and Rows and within it, we can make a library.
+So without further a do let’s start! 😀
+Making Table Open Notion and make a new page by clicking the “Add a page” Button on the left side.</description>
+    </item>
+    
     <item>
       <title>Common API Vulnerabilities</title>
       <link>https://sl4x0.github.io/api-notes/common-api-vulnerablities/</link>
@@ -127,6 +139,18 @@ GitHub - ngalongc/bug-bounty-reference: Inspired by https://github.com/djadmin/a
 Business Logic Flaws - Pastebin.com
 In this section, we&amp;rsquo;ll introduce the concept of business logic vulnerabilities and explain how they can arise due to flawed assumptions about user behavior.
 What are business logic vulnerabilities?</description>
+    </item>
+    
+    <item>
+      <title>Information Disclosure</title>
+      <link>https://sl4x0.github.io/web-notes/information-disclosure/</link>
+      <pubDate>Tue, 23 Aug 2022 23:48:05 +0000</pubDate>
+      
+      <guid>https://sl4x0.github.io/web-notes/information-disclosure/</guid>
+      <description>These bugs are common; in fact, they’re the type of bug I find most often while bug bounty hunting, even when I’m searching for other bug types.
+References Sensitive Information Disclosure
+Mechanisms Information disclosure occurs when an application fails to properly protect sensitive information, giving users access to information they shouldn’t have available to them.
+This sensitive information can include technical details that aid an attack, like software version numbers, internal IP addresses, sensitive filenames, filepaths, user’s age, bank account numbers, email addresses, and mailing addresses, to unauthorized third parties.</description>
     </item>
     
     <item>
@@ -305,6 +329,16 @@ Writeups Bug Bounty hackerone</description>
     </item>
     
     <item>
+      <title>XML external entity</title>
+      <link>https://sl4x0.github.io/web-notes/xxe-attacks/</link>
+      <pubDate>Mon, 01 Aug 2022 23:48:05 +0000</pubDate>
+      
+      <guid>https://sl4x0.github.io/web-notes/xxe-attacks/</guid>
+      <description>XML external entity injection (also known as XXE) is a web security vulnerability that allows an attacker to interfere with an application&amp;rsquo;s processing of XML data.
+It often allows an attacker to view files on the application server filesystem, and to interact with any back-end or external systems that the application itself can access. XXEs can be very impactful bugs, as they can lead to confidential information disclosure, SSRFs, and DoS attacks.</description>
+    </item>
+    
+    <item>
       <title>Access Control</title>
       <link>https://sl4x0.github.io/web-notes/access-control/</link>
       <pubDate>Tue, 26 Jul 2022 23:48:05 +0000</pubDate>
@@ -407,7 +441,7 @@ Exploiting Misconfigured CORS (Cross Origin Resource Sharing)</description>
       <description>I am Abdelrhman Allam, studying Mathematics and Computer Science at Zagazig University.
 Passionate about cybersecurity and looking forward to getting professional knowledge and skills in this field and working to be a Penetration Tester &amp;amp; Red Team OP. I have a base knowledge of OWASP&amp;rsquo;s Top 10 vulnerabilities on Web applications.
 And also solved many labs and CTFs on different websites.
-Studied Many Courses and Books as Self-Study: Courses eJPTv2 eWAPT eWAPTxV2 🔜 Books The Web Application Hacker&amp;rsquo;s Handbook Bug Bounty Bootcamp Real World Bug Hunting Bug Bounty Playbook v1&amp;amp;2 Solved Many labs and CTFs on different sites: PortSwigger TryHackMe HackTheBox picoCTF RootMe </description>
+Studied Many Courses and Books as Self-Study: Courses eJPTv2 eWAPT SANS 552: Bug Bounty and Responsible Disclosure SANS 642: Advanced Web App Pen Testing and Ethical Hacking 🔜 Books The Web Application Hacker&amp;rsquo;s Handbook Bug Bounty Bootcamp Real World Bug Hunting Bug Bounty Playbook v1&amp;amp;2 Hacking APIs Solved Many labs and CTFs on different sites: PortSwigger TryHackMe picoCTF RootMe </description>
     </item>
     
   </channel>

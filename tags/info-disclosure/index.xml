@@ -6,11 +6,11 @@
     <description>Recent content in Info-Disclosure on 0xSlaxo Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 23 Oct 2021 23:48:05 +0000</lastBuildDate><atom:link href="https://sl4x0.github.io/tags/info-disclosure/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 23 Aug 2022 23:48:05 +0000</lastBuildDate><atom:link href="https://sl4x0.github.io/tags/info-disclosure/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Information Disclosure</title>
       <link>https://sl4x0.github.io/web-notes/information-disclosure/</link>
-      <pubDate>Sat, 23 Oct 2021 23:48:05 +0000</pubDate>
+      <pubDate>Tue, 23 Aug 2022 23:48:05 +0000</pubDate>
       
       <guid>https://sl4x0.github.io/web-notes/information-disclosure/</guid>
       <description>These bugs are common; in fact, they’re the type of bug I find most often while bug bounty hunting, even when I’m searching for other bug types.

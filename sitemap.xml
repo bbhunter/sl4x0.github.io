@@ -3,7 +3,22 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://sl4x0.github.io/</loc>
-    <lastmod>2022-10-20T15:48:05+00:00</lastmod>
+    <lastmod>2022-10-28T15:10:05+00:00</lastmod>
+  </url><url>
+    <loc>https://sl4x0.github.io/tags/books/</loc>
+    <lastmod>2022-10-28T15:10:05+00:00</lastmod>
+  </url><url>
+    <loc>https://sl4x0.github.io/research/my-method-for-making-book-library-with-notion-for-bb-and-pentesting/</loc>
+    <lastmod>2022-10-28T15:10:05+00:00</lastmod>
+  </url><url>
+    <loc>https://sl4x0.github.io/tags/notion/</loc>
+    <lastmod>2022-10-28T15:10:05+00:00</lastmod>
+  </url><url>
+    <loc>https://sl4x0.github.io/research/</loc>
+    <lastmod>2022-10-28T15:10:05+00:00</lastmod>
+  </url><url>
+    <loc>https://sl4x0.github.io/tags/</loc>
+    <lastmod>2022-10-28T15:10:05+00:00</lastmod>
   </url><url>
     <loc>https://sl4x0.github.io/tags/api-notes/</loc>
     <lastmod>2022-10-20T15:48:05+00:00</lastmod>
@@ -17,16 +32,10 @@
     <loc>https://sl4x0.github.io/api-notes/common-api-vulnerablities/</loc>
     <lastmod>2022-10-20T15:48:05+00:00</lastmod>
   </url><url>
-    <loc>https://sl4x0.github.io/tags/</loc>
-    <lastmod>2022-10-20T15:48:05+00:00</lastmod>
-  </url><url>
     <loc>https://sl4x0.github.io/tags/bascis/</loc>
     <lastmod>2022-10-06T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://sl4x0.github.io/research/how-web-application-work/</loc>
-    <lastmod>2022-10-06T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://sl4x0.github.io/research/</loc>
     <lastmod>2022-10-06T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://sl4x0.github.io/tags/basics/</loc>
@@ -87,6 +96,12 @@
     <lastmod>2022-08-23T23:48:05+00:00</lastmod>
   </url><url>
     <loc>https://sl4x0.github.io/web-notes/bussiness-logic/</loc>
+    <lastmod>2022-08-23T23:48:05+00:00</lastmod>
+  </url><url>
+    <loc>https://sl4x0.github.io/tags/info-disclosure/</loc>
+    <lastmod>2022-08-23T23:48:05+00:00</lastmod>
+  </url><url>
+    <loc>https://sl4x0.github.io/web-notes/information-disclosure/</loc>
     <lastmod>2022-08-23T23:48:05+00:00</lastmod>
   </url><url>
     <loc>https://sl4x0.github.io/web-notes/json-web-tokens-attacks/</loc>
@@ -154,6 +169,12 @@
   </url><url>
     <loc>https://sl4x0.github.io/web-notes/aurhentication/</loc>
     <lastmod>2022-08-03T23:48:05+00:00</lastmod>
+  </url><url>
+    <loc>https://sl4x0.github.io/web-notes/xxe-attacks/</loc>
+    <lastmod>2022-08-01T23:48:05+00:00</lastmod>
+  </url><url>
+    <loc>https://sl4x0.github.io/tags/xxe/</loc>
+    <lastmod>2022-08-01T23:48:05+00:00</lastmod>
   </url><url>
     <loc>https://sl4x0.github.io/web-notes/access-control/</loc>
     <lastmod>2022-07-26T23:48:05+00:00</lastmod>

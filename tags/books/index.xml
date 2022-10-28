@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>books on 0xSlaxo Blog</title>
+    <link>https://sl4x0.github.io/tags/books/</link>
+    <description>Recent content in books on 0xSlaxo Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 28 Oct 2022 15:10:05 +0000</lastBuildDate><atom:link href="https://sl4x0.github.io/tags/books/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>How i Use Notion with Bug Bounty and Pentesting Books</title>
+      <link>https://sl4x0.github.io/research/my-method-for-making-book-library-with-notion-for-bb-and-pentesting/</link>
+      <pubDate>Fri, 28 Oct 2022 15:10:05 +0000</pubDate>
+      
+      <guid>https://sl4x0.github.io/research/my-method-for-making-book-library-with-notion-for-bb-and-pentesting/</guid>
+      <description>Introduction Hello Guys!👋 In This Article, I will Explain How I use Notion effectively for Taking Notes, Summarising and Reviewing Books for Bug Bounty, and other Pentesting Notes or Books.
+So first of all we will use a notion’s function called “Table” or “Database” and It’s like what u imagine, Columns and Rows and within it, we can make a library.
+So without further a do let’s start! 😀
+Making Table Open Notion and make a new page by clicking the “Add a page” Button on the left side.</description>
+    </item>
+    
+  </channel>
+</rss>

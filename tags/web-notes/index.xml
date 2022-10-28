@@ -38,6 +38,18 @@ What are business logic vulnerabilities?</description>
     </item>
     
     <item>
+      <title>Information Disclosure</title>
+      <link>https://sl4x0.github.io/web-notes/information-disclosure/</link>
+      <pubDate>Tue, 23 Aug 2022 23:48:05 +0000</pubDate>
+      
+      <guid>https://sl4x0.github.io/web-notes/information-disclosure/</guid>
+      <description>These bugs are common; in fact, they’re the type of bug I find most often while bug bounty hunting, even when I’m searching for other bug types.
+References Sensitive Information Disclosure
+Mechanisms Information disclosure occurs when an application fails to properly protect sensitive information, giving users access to information they shouldn’t have available to them.
+This sensitive information can include technical details that aid an attack, like software version numbers, internal IP addresses, sensitive filenames, filepaths, user’s age, bank account numbers, email addresses, and mailing addresses, to unauthorized third parties.</description>
+    </item>
+    
+    <item>
       <title>JSON Web Tokens Attacks</title>
       <link>https://sl4x0.github.io/web-notes/json-web-tokens-attacks/</link>
       <pubDate>Tue, 23 Aug 2022 23:48:05 +0000</pubDate>
@@ -210,6 +222,16 @@ HowToHunt/Authentication_Bypass Login Bypass
 Mind-Maps/2FA Bypass Techniques
 Web Application Penetration Testing Notes
 Writeups Bug Bounty hackerone</description>
+    </item>
+    
+    <item>
+      <title>XML external entity</title>
+      <link>https://sl4x0.github.io/web-notes/xxe-attacks/</link>
+      <pubDate>Mon, 01 Aug 2022 23:48:05 +0000</pubDate>
+      
+      <guid>https://sl4x0.github.io/web-notes/xxe-attacks/</guid>
+      <description>XML external entity injection (also known as XXE) is a web security vulnerability that allows an attacker to interfere with an application&amp;rsquo;s processing of XML data.
+It often allows an attacker to view files on the application server filesystem, and to interact with any back-end or external systems that the application itself can access. XXEs can be very impactful bugs, as they can lead to confidential information disclosure, SSRFs, and DoS attacks.</description>
     </item>
     
     <item>
