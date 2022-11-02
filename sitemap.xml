@@ -3,7 +3,25 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://sl4x0.github.io/</loc>
-    <lastmod>2022-10-28T15:10:05+00:00</lastmod>
+    <lastmod>2022-11-02T15:10:05+00:00</lastmod>
+  </url><url>
+    <loc>https://sl4x0.github.io/tags/basics/</loc>
+    <lastmod>2022-11-02T15:10:05+00:00</lastmod>
+  </url><url>
+    <loc>https://sl4x0.github.io/tags/book/</loc>
+    <lastmod>2022-11-02T15:10:05+00:00</lastmod>
+  </url><url>
+    <loc>https://sl4x0.github.io/books/</loc>
+    <lastmod>2022-11-02T15:10:05+00:00</lastmod>
+  </url><url>
+    <loc>https://sl4x0.github.io/tags/</loc>
+    <lastmod>2022-11-02T15:10:05+00:00</lastmod>
+  </url><url>
+    <loc>https://sl4x0.github.io/books/waf-for-dummies/</loc>
+    <lastmod>2022-11-02T15:10:05+00:00</lastmod>
+  </url><url>
+    <loc>https://sl4x0.github.io/tags/web-security/</loc>
+    <lastmod>2022-11-02T15:10:05+00:00</lastmod>
   </url><url>
     <loc>https://sl4x0.github.io/tags/books/</loc>
     <lastmod>2022-10-28T15:10:05+00:00</lastmod>
@@ -15,9 +33,6 @@
     <lastmod>2022-10-28T15:10:05+00:00</lastmod>
   </url><url>
     <loc>https://sl4x0.github.io/research/</loc>
-    <lastmod>2022-10-28T15:10:05+00:00</lastmod>
-  </url><url>
-    <loc>https://sl4x0.github.io/tags/</loc>
     <lastmod>2022-10-28T15:10:05+00:00</lastmod>
   </url><url>
     <loc>https://sl4x0.github.io/tags/api-notes/</loc>
@@ -32,17 +47,8 @@
     <loc>https://sl4x0.github.io/api-notes/common-api-vulnerablities/</loc>
     <lastmod>2022-10-20T15:48:05+00:00</lastmod>
   </url><url>
-    <loc>https://sl4x0.github.io/tags/bascis/</loc>
-    <lastmod>2022-10-06T00:00:00+00:00</lastmod>
-  </url><url>
     <loc>https://sl4x0.github.io/research/how-web-application-work/</loc>
     <lastmod>2022-10-06T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://sl4x0.github.io/tags/basics/</loc>
-    <lastmod>2022-09-30T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://sl4x0.github.io/books/</loc>
-    <lastmod>2022-09-30T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://sl4x0.github.io/books/bbplaybook-recon/</loc>
     <lastmod>2022-09-30T00:00:00+00:00</lastmod>

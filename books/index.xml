@@ -6,7 +6,18 @@
     <description>Recent content in Books on 0xSlaxo Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 30 Sep 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://sl4x0.github.io/books/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 02 Nov 2022 15:10:05 +0000</lastBuildDate><atom:link href="https://sl4x0.github.io/books/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Web Application Firewalls (WAFs) for Dummies</title>
+      <link>https://sl4x0.github.io/books/waf-for-dummies/</link>
+      <pubDate>Wed, 02 Nov 2022 15:10:05 +0000</pubDate>
+      
+      <guid>https://sl4x0.github.io/books/waf-for-dummies/</guid>
+      <description>This is a summary of the book &amp;ldquo;Web Application Firewalls (WAFs)&amp;rdquo; from F5 Security.
+Understanding WAF Basics In today’s digital economy, web applications are a primary target for attackers. Traditional security tools don’t provide adequate protection for your business-critical applications.
+Looking at Essential WAF Capabilities A WAF protects applications by applying a set of rules to the Hypertext Transfer Protocol (HTTP) or Hypertext Transfer Protocol Secure (HTTPS) sessions that web applications use for communication.</description>
+    </item>
+    
     <item>
       <title>Bug bounty playbook - Recon</title>
       <link>https://sl4x0.github.io/books/bbplaybook-recon/</link>
