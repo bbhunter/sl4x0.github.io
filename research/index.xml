@@ -6,7 +6,17 @@
     <description>Recent content in Researches on 0xSlaxo Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 28 Oct 2022 15:10:05 +0000</lastBuildDate><atom:link href="https://sl4x0.github.io/research/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 08 Nov 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://sl4x0.github.io/research/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Obfuscating Attacks with Encoding</title>
+      <link>https://sl4x0.github.io/research/obfuscating-attacks-w-encoding/</link>
+      <pubDate>Tue, 08 Nov 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://sl4x0.github.io/research/obfuscating-attacks-w-encoding/</guid>
+      <description>This is my Notes about Obfuscation from PortSwigger
+Context-specific decoding Client and Server side use decoding to pass data to systems decoding depends on context which data appears a query param = server side decode text content eg. html = client side decode When constructed attack = be carefull where the payload is being injected [Server Side - Client Side] Decoding discrepancies Injections involving on injecting payloads use reconginzalble patterns html tags javascript functions sql statements Website implement defenses to suspicious patterns Input Filters need to decode inputs to know if it is safe or not Its vital that the decoded perform when checking iputs is the same performed by backend Any discrepancy can enable an attacker to sneak harmful payloads past the filter by applying different encodings that will automatically be removed later.</description>
+    </item>
+    
     <item>
       <title>How i Use Notion with Bug Bounty and Pentesting Books</title>
       <link>https://sl4x0.github.io/research/my-method-for-making-book-library-with-notion-for-bb-and-pentesting/</link>

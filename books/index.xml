@@ -19,16 +19,6 @@ Looking at Essential WAF Capabilities A WAF protects applications by applying a 
     </item>
     
     <item>
-      <title>Bug bounty playbook - Recon</title>
-      <link>https://sl4x0.github.io/books/bbplaybook-recon/</link>
-      <pubDate>Fri, 30 Sep 2022 00:00:00 +0000</pubDate>
-      
-      <guid>https://sl4x0.github.io/books/bbplaybook-recon/</guid>
-      <description>Chapter 6: Reconnaissance Phase 1 The idea behind horizontal correlation is to find all assets related to a company. This could be acquisitions, CIDR ranges, and domains that are owned by the same person. Vertical correlation when dealing with domains involves finding all subdomains belonging to a single domain.
-CIDR Range A Classless Inter-Domain Routing (CIDR) range is a short way of representing a group of IP addresses. Compromising a server hosted on a company’s CIDR range may lead you directly into their internal network therefore these assets are considered critical and are ideal targets.</description>
-    </item>
-    
-    <item>
       <title>Web Application Hacker’s Methodology</title>
       <link>https://sl4x0.github.io/books/wahh-methdology/</link>
       <pubDate>Mon, 26 Sep 2022 23:48:05 +0000</pubDate>

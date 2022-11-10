@@ -6,7 +6,17 @@
     <description>Recent content on 0xSlaxo Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 02 Nov 2022 15:10:05 +0000</lastBuildDate><atom:link href="https://sl4x0.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 08 Nov 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://sl4x0.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Obfuscating Attacks with Encoding</title>
+      <link>https://sl4x0.github.io/research/obfuscating-attacks-w-encoding/</link>
+      <pubDate>Tue, 08 Nov 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://sl4x0.github.io/research/obfuscating-attacks-w-encoding/</guid>
+      <description>This is my Notes about Obfuscation from PortSwigger
+Context-specific decoding Client and Server side use decoding to pass data to systems decoding depends on context which data appears a query param = server side decode text content eg. html = client side decode When constructed attack = be carefull where the payload is being injected [Server Side - Client Side] Decoding discrepancies Injections involving on injecting payloads use reconginzalble patterns html tags javascript functions sql statements Website implement defenses to suspicious patterns Input Filters need to decode inputs to know if it is safe or not Its vital that the decoded perform when checking iputs is the same performed by backend Any discrepancy can enable an attacker to sneak harmful payloads past the filter by applying different encodings that will automatically be removed later.</description>
+    </item>
+    
     <item>
       <title>Web Application Firewalls (WAFs) for Dummies</title>
       <link>https://sl4x0.github.io/books/waf-for-dummies/</link>
@@ -40,16 +50,6 @@ So without further a do let’s start!</description>
 Information Disclosure Information may be disclosed in API responses or public sources such as code repositories, search results, news, social media, the target’s website, and public API directories.
 Sensitive data can include any information that attackers can leverage to their advantage.
 For example, a site that is using the WordPress API may unknowingly be sharing user information with anyone who navigates to the API path /wp-json/wp/v2/users</description>
-    </item>
-    
-    <item>
-      <title>Bug bounty playbook - Recon</title>
-      <link>https://sl4x0.github.io/books/bbplaybook-recon/</link>
-      <pubDate>Fri, 30 Sep 2022 00:00:00 +0000</pubDate>
-      
-      <guid>https://sl4x0.github.io/books/bbplaybook-recon/</guid>
-      <description>Chapter 6: Reconnaissance Phase 1 The idea behind horizontal correlation is to find all assets related to a company. This could be acquisitions, CIDR ranges, and domains that are owned by the same person. Vertical correlation when dealing with domains involves finding all subdomains belonging to a single domain.
-CIDR Range A Classless Inter-Domain Routing (CIDR) range is a short way of representing a group of IP addresses. Compromising a server hosted on a company’s CIDR range may lead you directly into their internal network therefore these assets are considered critical and are ideal targets.</description>
     </item>
     
     <item>
