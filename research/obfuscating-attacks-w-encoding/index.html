@@ -136,28 +136,32 @@ Context-specific decoding Client and Server side use decoding to pass data to sy
 <li>In URLs, a series of reserved characters carry special meaning.</li>
 <li>An ampersand (&amp;) is used as a <strong>delimiter</strong> to separate parameters in the query string.</li>
 <li>What happens if the user searches for something like &ldquo;Fish &amp; Chips&rdquo;?
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span>[...]<span style="color:#f92672">/?</span><span style="color:#a6e22e">search</span><span style="color:#f92672">=</span><span style="color:#a6e22e">Fish</span><span style="color:#f92672">+%</span><span style="color:#ae81ff">26</span><span style="color:#f92672">+</span><span style="color:#a6e22e">Chips</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-html" data-lang="html"><span style="display:flex;"><span>[...]/?search=Fish+%26+Chips
 </span></span></code></pre></div></li>
 <li>Although the space character can be encoded as <code>%20</code>, it is often represented by a plus (<code>+</code>)</li>
 <li>Any URL-based input is automatically URL decoded server-side before it is assigned to the relevant variables.</li>
 <li><strong>you can inject URL-encoded data via the URL and it will usually still be interpreted correctly by the back-end application. As any URL-Based Input is automatically URL decoded</strong></li>
 <li>Occasionally, you may find that WAFs and suchlike fail to properly URL decode your input when checking it.</li>
 <li><strong>you may be able to smuggle payloads to the back-end application simply by encoding any characters or words that are blacklisted.</strong></li>
-<li>so <code>SELECT</code> becomes <code>%53%45%4C%45%43%54</code> and so on.</li>
+<li>so</li>
 </ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-SQL" data-lang="SQL"><span style="display:flex;"><span><span style="color:#66d9ef">SELECT</span>
+</span></span></code></pre></div><p>becomes</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-SQL" data-lang="SQL"><span style="display:flex;"><span><span style="color:#f92672">%</span><span style="color:#ae81ff">53</span><span style="color:#f92672">%</span><span style="color:#ae81ff">45</span><span style="color:#f92672">%</span><span style="color:#ae81ff">4</span><span style="color:#66d9ef">C</span><span style="color:#f92672">%</span><span style="color:#ae81ff">45</span><span style="color:#f92672">%</span><span style="color:#ae81ff">43</span><span style="color:#f92672">%</span><span style="color:#ae81ff">54</span>
+</span></span></code></pre></div><p>and so on.</p>
 <h3 id="obfuscation-via-double-url-encoding">Obfuscation via double URL encoding</h3>
 <ul>
 <li>some servers perform two rounds of URL decoding on any URLs they receive</li>
 <li>Let&rsquo;s say you&rsquo;re trying to inject a standard XSS PoC
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#f92672">&lt;</span><span style="color:#a6e22e">img</span> <span style="color:#a6e22e">src</span><span style="color:#f92672">=</span><span style="color:#a6e22e">x</span> <span style="color:#a6e22e">onerror</span><span style="color:#f92672">=</span><span style="color:#a6e22e">alert</span>(<span style="color:#ae81ff">1</span>)<span style="color:#f92672">&gt;</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-html" data-lang="html"><span style="display:flex;"><span>&lt;<span style="color:#f92672">img</span> <span style="color:#a6e22e">src</span><span style="color:#f92672">=</span><span style="color:#e6db74">x</span> <span style="color:#a6e22e">onerror</span><span style="color:#f92672">=</span><span style="color:#e6db74">alert(1)</span>&gt;
 </span></span></code></pre></div><ul>
 <li>Look Like this</li>
 </ul>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span>[...]<span style="color:#f92672">/?</span><span style="color:#a6e22e">search</span><span style="color:#f92672">=%</span><span style="color:#ae81ff">3</span><span style="color:#a6e22e">Cimg</span><span style="color:#f92672">%</span><span style="color:#ae81ff">20</span><span style="color:#a6e22e">src</span><span style="color:#f92672">%</span><span style="color:#ae81ff">3</span><span style="color:#a6e22e">Dx</span><span style="color:#f92672">%</span><span style="color:#ae81ff">20</span><span style="color:#a6e22e">onerror</span><span style="color:#f92672">%</span><span style="color:#ae81ff">3</span><span style="color:#a6e22e">Dalert</span>(<span style="color:#ae81ff">1</span>)<span style="color:#f92672">%</span><span style="color:#ae81ff">3</span><span style="color:#a6e22e">E</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-html" data-lang="html"><span style="display:flex;"><span>[...]/?search=%3Cimg%20src%3Dx%20onerror%3Dalert(1)%3E
 </span></span></code></pre></div><ul>
 <li>But what if you double-encode the injection?</li>
 </ul>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span>[...]<span style="color:#f92672">/?</span><span style="color:#a6e22e">search</span><span style="color:#f92672">=%</span><span style="color:#ae81ff">253</span><span style="color:#a6e22e">Cimg</span><span style="color:#f92672">%</span><span style="color:#ae81ff">2520</span><span style="color:#a6e22e">src</span><span style="color:#f92672">%</span><span style="color:#ae81ff">253</span><span style="color:#a6e22e">Dx</span><span style="color:#f92672">%</span><span style="color:#ae81ff">2520</span><span style="color:#a6e22e">onerror</span><span style="color:#f92672">%</span><span style="color:#ae81ff">253</span><span style="color:#a6e22e">Dalert</span>(<span style="color:#ae81ff">1</span>)<span style="color:#f92672">%</span><span style="color:#ae81ff">253</span><span style="color:#a6e22e">E</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-html" data-lang="html"><span style="display:flex;"><span>[...]/?search=%253Cimg%2520src%253Dx%2520onerror%253Dalert(1)%253E
 </span></span></code></pre></div><ul>
 <li>If the back-end server subsequently double-decodes this input, the payload will be successfully injected.</li>
 </ul>
@@ -174,7 +178,7 @@ Context-specific decoding Client and Server side use decoding to pass data to sy
 </ul>
 <h3 id="leading-zeros">Leading zeros</h3>
 <p>If your payload still gets blocked after HTML encoding it, you may find that you can evade the filter just by prefixing the code points with a few zeros:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#f92672">&lt;</span><span style="color:#a6e22e">a</span> <span style="color:#a6e22e">href</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;javascript&amp;#00000000000058;alert(1)&#34;</span><span style="color:#f92672">&gt;</span><span style="color:#a6e22e">Click</span> <span style="color:#a6e22e">me</span><span style="color:#f92672">&lt;</span><span style="color:#960050;background-color:#1e0010">/a&gt;</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-html" data-lang="html"><span style="display:flex;"><span>&lt;<span style="color:#f92672">a</span> <span style="color:#a6e22e">href</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;javascript&amp;#00000000000058;alert(1)&#34;</span>&gt;Click me&lt;/<span style="color:#f92672">a</span>&gt;
 </span></span></code></pre></div><h3 id="obfuscation-via-xml-encoding">Obfuscation via XML encoding</h3>
 <p>This enables you to include special characters in the text content of elements without breaking the syntax. Even if you don&rsquo;t need to encode any special characters to avoid syntax errors, you can potentially take advantage of this behavior to obfuscate payloads in the same way as you do with HTML encoding. The difference is that your payload is decoded by the server itself, rather than client-side by a browser. This is useful for bypassing WAFs and other filters, which may block your requests if they detect certain keywords associated with SQL injection attacks.</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#f92672">&lt;stockCheck&gt;</span>
@@ -189,8 +193,8 @@ Context-specific decoding Client and Server side use decoding to pass data to sy
 <ul>
 <li>Unicode escape sequences consist of the prefix <code>\u</code> followed by the four-digit hex code for the character.  <code>\u003a</code> represents a colon</li>
 </ul>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span>eval(<span style="color:#e6db74">&#34;\u0061lert(1)&#34;</span>)
-</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#f92672">&lt;</span><span style="color:#a6e22e">a</span> <span style="color:#a6e22e">href</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;javascript\u{0000000003a}alert(1)&#34;</span><span style="color:#f92672">&gt;</span><span style="color:#a6e22e">Click</span> <span style="color:#a6e22e">me</span><span style="color:#f92672">&lt;</span><span style="color:#960050;background-color:#1e0010">/a&gt;</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-php" data-lang="php"><span style="display:flex;"><span><span style="color:#66d9ef">eval</span>(<span style="color:#e6db74">&#34;\u0061lert(1)&#34;</span>)
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-html" data-lang="html"><span style="display:flex;"><span>&lt;<span style="color:#f92672">a</span> <span style="color:#a6e22e">href</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;javascript\u{0000000003a}alert(1)&#34;</span>&gt;Click me&lt;/<span style="color:#f92672">a</span>&gt;
 </span></span></code></pre></div><h3 id="obfuscation-via-hex-escaping">Obfuscation via hex escaping</h3>
 <ul>
 <li>which represent characters using their hexadecimal code point, prefixed with <code>\x</code></li>
@@ -202,18 +206,18 @@ Context-specific decoding Client and Server side use decoding to pass data to sy
 <ul>
 <li>These are prefixed with a standalone backslash, meaning that the lowercase letter <code>a</code>
 is represented by <code>\141</code>.</li>
-<li><code>eval(&quot;\141lert(1)&quot;)</code></li>
 </ul>
-<h3 id="obfuscation-via-multiple-encodings">Obfuscation via multiple encodings</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-php" data-lang="php"><span style="display:flex;"><span><span style="color:#66d9ef">eval</span>(<span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\141</span><span style="color:#e6db74">lert(1)&#34;</span>)
+</span></span></code></pre></div><h3 id="obfuscation-via-multiple-encodings">Obfuscation via multiple encodings</h3>
 <ul>
-<li>Look at the <code>javascript:</code> URL in the following example:
-<code>&lt;a href=&quot;javascript:&amp;bsol;u0061lert(1)&quot;&gt;Click me&lt;/a&gt;</code></li>
+<li>Look at the <code>javascript:</code> URL in the following example:</li>
 </ul>
-<p>Browsers will first HTML decode <code>&amp;bsol;,</code> resulting in a backslash. This has the effect of turning the otherwise arbitrary <code>u0061</code> characters into the unicode escape <code>\u0061</code>:</p>
-<pre tabindex="0"><code>&lt;a href=&#34;javascript:\u0061lert(1)&#34;&gt;Click me&lt;/a&gt;
-</code></pre><p>This is then decoded further to form a functioning XSS payload:</p>
-<pre tabindex="0"><code>&lt;a href=&#34;javascript:alert(1)&#34;&gt;Click me&lt;/a&gt;
-</code></pre><ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-html" data-lang="html"><span style="display:flex;"><span>&lt;<span style="color:#f92672">a</span> <span style="color:#a6e22e">href</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;javascript:&amp;bsol;u0061lert(1)&#34;</span>&gt;Click me&lt;/<span style="color:#f92672">a</span>&gt;
+</span></span></code></pre></div><p>Browsers will first HTML decode <code>&amp;bsol;,</code> resulting in a backslash. This has the effect of turning the otherwise arbitrary <code>u0061</code> characters into the unicode escape <code>\u0061</code>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-html" data-lang="html"><span style="display:flex;"><span>&lt;<span style="color:#f92672">a</span> <span style="color:#a6e22e">href</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;javascript:\u0061lert(1)&#34;</span>&gt;Click me&lt;/<span style="color:#f92672">a</span>&gt;
+</span></span></code></pre></div><p>This is then decoded further to form a functioning XSS payload:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-html" data-lang="html"><span style="display:flex;"><span>&lt;<span style="color:#f92672">a</span> <span style="color:#a6e22e">href</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;javascript:alert(1)&#34;</span>&gt;Click me&lt;/<span style="color:#f92672">a</span>&gt;
+</span></span></code></pre></div><ul>
 <li>Clearly, to successfully inject a payload in this way, you need a solid understanding of which decoding is performed on your input and in what order.</li>
 </ul>
 <h3 id="obfuscation-via-the-sql-char-function">Obfuscation via the SQL CHAR() function</h3>
@@ -222,10 +226,10 @@ is represented by <code>\141</code>.</li>
 function.</li>
 <li>This accepts a single decimal or hex code point and returns the matching character.</li>
 <li>Hex codes must be prefixed with <code>0x</code>. For example, both <code>CHAR(83)</code> and <code>CHAR(0x53)</code> return the capital letter <code>S</code>.</li>
-<li>For example, even if <code>SELECT</code> is blacklisted, the following injection initially appears harmless:
-<code>CHAR(83)+CHAR(69)+CHAR(76)+CHAR(69)+CHAR(67)+CHAR(84)</code></li>
+<li>For example, even if <code>SELECT</code> is blacklisted, the following injection initially appears harmless:</li>
 </ul>
-
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-SQL" data-lang="SQL"><span style="display:flex;"><span>CHAR(<span style="color:#ae81ff">83</span>)<span style="color:#f92672">+</span>CHAR(<span style="color:#ae81ff">69</span>)<span style="color:#f92672">+</span>CHAR(<span style="color:#ae81ff">76</span>)<span style="color:#f92672">+</span>CHAR(<span style="color:#ae81ff">69</span>)<span style="color:#f92672">+</span>CHAR(<span style="color:#ae81ff">67</span>)<span style="color:#f92672">+</span>CHAR(<span style="color:#ae81ff">84</span>)
+</span></span></code></pre></div>
     </div>
     <div class="post-footer">
       
