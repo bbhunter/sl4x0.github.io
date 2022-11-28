@@ -14,23 +14,13 @@
     <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Insecure Deserialization"/>
 <meta name="twitter:description" content="Insecure deserialization vulnerabilities happen when applications deserialize program objects without proper precaution. An attacker can then manipulate serialized objects to change the program’s behavior.
-References Deserialization
-Deserialization Attacks
-GitHub - ngalongc/bug-bounty-reference: Inspired by https://github.com/djadmin/awesome-bug-bounty, a list of bug bounty write-up that is categorized by the bug nature
-PayloadsAllTheThings/Insecure Deserialization at master · swisskyrepo/PayloadsAllTheThings
-GitHub - vavkamil/awesome-bugbounty-tools: A curated list of various bug bounty tools
-Dashboard
-Web Application Penetration Testing Notes"/>
+Mechanisms Serialization is the process by which some bit of data in a programming language gets converted into a format that allows it to be saved in a database or transferred over a network.
+Deserialization refers to the opposite process, whereby the program reads the serialized object from a file or the network and converts it back into an object."/>
 
     <meta property="og:title" content="Insecure Deserialization" />
 <meta property="og:description" content="Insecure deserialization vulnerabilities happen when applications deserialize program objects without proper precaution. An attacker can then manipulate serialized objects to change the program’s behavior.
-References Deserialization
-Deserialization Attacks
-GitHub - ngalongc/bug-bounty-reference: Inspired by https://github.com/djadmin/awesome-bug-bounty, a list of bug bounty write-up that is categorized by the bug nature
-PayloadsAllTheThings/Insecure Deserialization at master · swisskyrepo/PayloadsAllTheThings
-GitHub - vavkamil/awesome-bugbounty-tools: A curated list of various bug bounty tools
-Dashboard
-Web Application Penetration Testing Notes" />
+Mechanisms Serialization is the process by which some bit of data in a programming language gets converted into a format that allows it to be saved in a database or transferred over a network.
+Deserialization refers to the opposite process, whereby the program reads the serialized object from a file or the network and converts it back into an object." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://sl4x0.github.io/web-notes/insecure-deserialization/" /><meta property="article:section" content="web-notes" />
 <meta property="article:published_time" content="2022-08-07T23:48:05+00:00" />
@@ -119,22 +109,8 @@ Web Application Penetration Testing Notes" />
       </div>
     </header>
     <div class="post-content">
-      <p>Insecure deserialization vulnerabilities happen when applications deserialize program objects without proper precaution. An attacker can then manipulate serialized objects to change the program’s behavior.</p>
-<p><img src="https://user-images.githubusercontent.com/70459751/183296096-7bf64d33-a219-4b5f-b2fe-e80b2932243b.png" alt="1 zVwdJyQL6FH4L5WTcYH3yQ"></p>
-<h1 id="references"><code>References</code></h1>
-<p><a href="https://book.hacktricks.xyz/pentesting-web/deserialization">Deserialization</a></p>
-<p><a href="https://gowthams.gitbook.io/bughunter-handbook/list-of-vulnerabilities-bugs/untitled-1">Deserialization Attacks</a></p>
-<p><a href="https://github.com/ngalongc/bug-bounty-reference#deserialization">GitHub - ngalongc/bug-bounty-reference: Inspired by https://github.com/djadmin/awesome-bug-bounty, a list of bug bounty write-up that is categorized by the bug nature</a></p>
-<p><a href="https://github.com/swisskyrepo/PayloadsAllTheThings/tree/master/Insecure%20Deserialization">PayloadsAllTheThings/Insecure Deserialization at master · swisskyrepo/PayloadsAllTheThings</a></p>
-<p><a href="https://github.com/vavkamil/awesome-bugbounty-tools#Insecure-Deserialization">GitHub - vavkamil/awesome-bugbounty-tools: A curated list of various bug bounty tools</a></p>
-<p><a href="https://attackdefense.com/listingnoauth?labtype=webapp-owasp-top10&amp;subtype=webapp-owasp-top10-insecure-deserial">Dashboard</a></p>
-<p><a href="https://techvomit.net/web-application-penetration-testing-notes/#deserialization-vulnerabilities">Web Application Penetration Testing Notes</a></p>
-<p><a href="https://github.com/joaomatosf/jexboss">https://github.com/joaomatosf/jexboss</a></p>
-<p><a href="https://github.com/0xL1mb0/Web-CTF-Cheatsheet#java-deserialization">GitHub - 0xL1mb0/Web-CTF-Cheatsheet: Web CTF CheatSheet 🐈</a></p>
-<p><a href="https://pentestbook.six2dez.com/enumeration/web/deserialization">Deserialization</a></p>
-<p><a href="https://nored0x.github.io/penetration%20testing/writeups-Bug-Bounty-hackrone/#deserialization">Writeups Bug Bounty hackerone</a></p>
-<p><a href="https://portswigger.net/web-security/all-labs#insecure-deserialization">All labs Web Security Academy</a></p>
-<hr>
+      <p><img src="https://user-images.githubusercontent.com/70459751/183296096-7bf64d33-a219-4b5f-b2fe-e80b2932243b.png" alt="1 zVwdJyQL6FH4L5WTcYH3yQ"></p>
+<p>Insecure deserialization vulnerabilities happen when applications deserialize program objects without proper precaution. An attacker can then manipulate serialized objects to change the program’s behavior.</p>
 <h1 id="mechanisms"><code>Mechanisms</code></h1>
 <p><strong>Serialization</strong> is the process by which some bit of data in a programming language gets converted into a format that allows it to be saved in a database or transferred over a network.</p>
 <p><strong>Deserialization</strong> refers to the opposite process, whereby the program reads the serialized object from a file or the network and converts it back into an object.</p>
@@ -441,6 +417,20 @@ dangerous, so make sure you don’t cause damage to the target application when 
 <li>See if you can escalate the flaw into a SQL injection or remote code execution. Be extra careful not to cause damage to your target application or server.</li>
 <li>Draft your first insecure deserialization report!</li>
 </ol>
+<h1 id="references"><code>References</code></h1>
+<p><a href="https://book.hacktricks.xyz/pentesting-web/deserialization">Deserialization</a></p>
+<p><a href="https://gowthams.gitbook.io/bughunter-handbook/list-of-vulnerabilities-bugs/untitled-1">Deserialization Attacks</a></p>
+<p><a href="https://github.com/ngalongc/bug-bounty-reference#deserialization">GitHub - ngalongc/bug-bounty-reference: Inspired by https://github.com/djadmin/awesome-bug-bounty, a list of bug bounty write-up that is categorized by the bug nature</a></p>
+<p><a href="https://github.com/swisskyrepo/PayloadsAllTheThings/tree/master/Insecure%20Deserialization">PayloadsAllTheThings/Insecure Deserialization at master · swisskyrepo/PayloadsAllTheThings</a></p>
+<p><a href="https://github.com/vavkamil/awesome-bugbounty-tools#Insecure-Deserialization">GitHub - vavkamil/awesome-bugbounty-tools: A curated list of various bug bounty tools</a></p>
+<p><a href="https://attackdefense.com/listingnoauth?labtype=webapp-owasp-top10&amp;subtype=webapp-owasp-top10-insecure-deserial">Dashboard</a></p>
+<p><a href="https://techvomit.net/web-application-penetration-testing-notes/#deserialization-vulnerabilities">Web Application Penetration Testing Notes</a></p>
+<p><a href="https://github.com/joaomatosf/jexboss">https://github.com/joaomatosf/jexboss</a></p>
+<p><a href="https://github.com/0xL1mb0/Web-CTF-Cheatsheet#java-deserialization">GitHub - 0xL1mb0/Web-CTF-Cheatsheet: Web CTF CheatSheet 🐈</a></p>
+<p><a href="https://pentestbook.six2dez.com/enumeration/web/deserialization">Deserialization</a></p>
+<p><a href="https://nored0x.github.io/penetration%20testing/writeups-Bug-Bounty-hackrone/#deserialization">Writeups Bug Bounty hackerone</a></p>
+<p><a href="https://portswigger.net/web-security/all-labs#insecure-deserialization">All labs Web Security Academy</a></p>
+<hr>
 
     </div>
     <div class="post-footer">

@@ -14,13 +14,8 @@
       
       <guid>https://sl4x0.github.io/web-notes/insecure-deserialization/</guid>
       <description>Insecure deserialization vulnerabilities happen when applications deserialize program objects without proper precaution. An attacker can then manipulate serialized objects to change the program’s behavior.
-References Deserialization
-Deserialization Attacks
-GitHub - ngalongc/bug-bounty-reference: Inspired by https://github.com/djadmin/awesome-bug-bounty, a list of bug bounty write-up that is categorized by the bug nature
-PayloadsAllTheThings/Insecure Deserialization at master · swisskyrepo/PayloadsAllTheThings
-GitHub - vavkamil/awesome-bugbounty-tools: A curated list of various bug bounty tools
-Dashboard
-Web Application Penetration Testing Notes</description>
+Mechanisms Serialization is the process by which some bit of data in a programming language gets converted into a format that allows it to be saved in a database or transferred over a network.
+Deserialization refers to the opposite process, whereby the program reads the serialized object from a file or the network and converts it back into an object.</description>
     </item>
     
   </channel>
