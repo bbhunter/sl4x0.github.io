@@ -6,7 +6,18 @@
     <description>Recent content in bug-bounty on 0xSlaxo Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 08 Nov 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://sl4x0.github.io/tags/bug-bounty/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 29 Nov 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://sl4x0.github.io/tags/bug-bounty/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>SANS SEC 552 Cheatsheet</title>
+      <link>https://sl4x0.github.io/bug-bounty/sec-552-cheatsheet/</link>
+      <pubDate>Tue, 29 Nov 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://sl4x0.github.io/bug-bounty/sec-552-cheatsheet/</guid>
+      <description>App Analysis, Logic, and SQL Attacks 💡 Course is inspired from case studies found in various bug bounty programs related to web and mobile app attacks. It will help in catching and reporting tricky web and mobile app security bugs that are commonly reported in bug bounty programs.
+The Hunter’s Challenge JOINING A PROGRAM
+💡 Security researchers can choose from many bug bounty programs available, either from the vendor directly or through a bug bounty platform (HackerOne, Bugcrowd, Synack&amp;hellip;)</description>
+    </item>
+    
     <item>
       <title>Obfuscating Attacks with Encoding</title>
       <link>https://sl4x0.github.io/research/obfuscating-attacks-w-encoding/</link>

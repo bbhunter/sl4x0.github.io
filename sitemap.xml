@@ -3,21 +3,30 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://sl4x0.github.io/</loc>
-    <lastmod>2022-11-08T00:00:00+00:00</lastmod>
+    <lastmod>2022-11-29T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://sl4x0.github.io/tags/basics/</loc>
-    <lastmod>2022-11-08T00:00:00+00:00</lastmod>
+    <loc>https://sl4x0.github.io/bug-bounty/</loc>
+    <lastmod>2022-11-29T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://sl4x0.github.io/tags/bug-bounty/</loc>
+    <lastmod>2022-11-29T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://sl4x0.github.io/tags/sans/</loc>
+    <lastmod>2022-11-29T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://sl4x0.github.io/bug-bounty/sec-552-cheatsheet/</loc>
+    <lastmod>2022-11-29T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://sl4x0.github.io/tags/</loc>
+    <lastmod>2022-11-29T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://sl4x0.github.io/tags/basics/</loc>
     <lastmod>2022-11-08T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://sl4x0.github.io/research/obfuscating-attacks-w-encoding/</loc>
     <lastmod>2022-11-08T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://sl4x0.github.io/research/</loc>
-    <lastmod>2022-11-08T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://sl4x0.github.io/tags/</loc>
     <lastmod>2022-11-08T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://sl4x0.github.io/tags/book/</loc>
@@ -52,9 +61,6 @@
   </url><url>
     <loc>https://sl4x0.github.io/api-notes/common-api-vulnerablities/</loc>
     <lastmod>2022-10-20T15:48:05+00:00</lastmod>
-  </url><url>
-    <loc>https://sl4x0.github.io/bug-bounty/</loc>
-    <lastmod>2022-09-30T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://sl4x0.github.io/tags/dorking/</loc>
     <lastmod>2022-09-30T00:00:00+00:00</lastmod>
