@@ -6,28 +6,7 @@
     <description>Recent content on 0xSlaxo Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 29 Nov 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://sl4x0.github.io/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>SANS SEC 552 Cheatsheet (Bug Bounties and Responsiple Disclosure)</title>
-      <link>https://sl4x0.github.io/bug-bounty/sec-552-cheatsheet/</link>
-      <pubDate>Tue, 29 Nov 2022 00:00:00 +0000</pubDate>
-      
-      <guid>https://sl4x0.github.io/bug-bounty/sec-552-cheatsheet/</guid>
-      <description>App Analysis, Logic, and SQL Attacks 💡 Course is inspired from case studies found in various bug bounty programs related to web and mobile app attacks. It will help in catching and reporting tricky web and mobile app security bugs that are commonly reported in bug bounty programs.
-The Hunter’s Challenge JOINING A PROGRAM
-💡 Security researchers can choose from many bug bounty programs available, either from the vendor directly or through a bug bounty platform (HackerOne, Bugcrowd, Synack&amp;hellip;)</description>
-    </item>
-    
-    <item>
-      <title>Obfuscating Attacks with Encoding</title>
-      <link>https://sl4x0.github.io/research/obfuscating-attacks-w-encoding/</link>
-      <pubDate>Tue, 08 Nov 2022 00:00:00 +0000</pubDate>
-      
-      <guid>https://sl4x0.github.io/research/obfuscating-attacks-w-encoding/</guid>
-      <description>This is my Notes about Obfuscation from PortSwigger
-Context-specific decoding Client and Server side use decoding to pass data to systems decoding depends on context which data appears a query param = server side decode text content eg. html = client side decode When constructed attack = be carefull where the payload is being injected [Server Side - Client Side] Decoding discrepancies Injections involving on injecting payloads use reconginzalble patterns html tags javascript functions sql statements Website implement defenses to suspicious patterns Input Filters need to decode inputs to know if it is safe or not Its vital that the decoded perform when checking iputs is the same performed by backend Any discrepancy can enable an attacker to sneak harmful payloads past the filter by applying different encodings that will automatically be removed later.</description>
-    </item>
-    
+    <lastBuildDate>Wed, 02 Nov 2022 15:10:05 +0000</lastBuildDate><atom:link href="https://sl4x0.github.io/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Web Application Firewalls (WAFs) for Dummies</title>
       <link>https://sl4x0.github.io/books/waf-for-dummies/</link>
@@ -90,26 +69,6 @@ user:name fileTransfer AND pass
 https://github.com/Plazmaz/leaky-repo/blob/master/.mozilla/firefox/logins.json
 org:company filename:firefox/logins.json
 org:company encryptedUsername encryptedPassword</description>
-    </item>
-    
-    <item>
-      <title>What are web webservers?</title>
-      <link>https://sl4x0.github.io/research/what-is-web-servers/</link>
-      <pubDate>Fri, 30 Sep 2022 00:00:00 +0000</pubDate>
-      
-      <guid>https://sl4x0.github.io/research/what-is-web-servers/</guid>
-      <description>What is the Internet First ? The internet is a **wire** a actually buried in the ground it might be fiber optics copper or occasionally beam to satellites or through cell phone networks but the internet is simply a wire.
-The internet is useful because **two computers connected directly** to this wire can communicate a server is a special computer connected directly to the internet and **web pages** or **files** on that server&amp;rsquo;s **hard drive** every server has a unique **Internet Protocol** address or IP address just like a postal address IP addresses help computers find each other but since 72.</description>
-    </item>
-    
-    <item>
-      <title>What is Pentester, Types, Methodology and Career ?</title>
-      <link>https://sl4x0.github.io/research/what-is-pentester/</link>
-      <pubDate>Fri, 30 Sep 2022 00:00:00 +0000</pubDate>
-      
-      <guid>https://sl4x0.github.io/research/what-is-pentester/</guid>
-      <description>Pentesters assess the security of computers, networks, and websites by looking for and exploiting vulnerabilities–commonly known as hacking. &amp;ldquo;With great power comes great responsibility&amp;rdquo;.
-Synonymous Terms and Types of Hackers White hat hackers: Ethical hackers (aka pentesters). Gray hat hackers: Gray hats fall into a fuzzy area. Their intent is not always malicious, but it is not always ethical either. Black hat hackers: Their intent and purpose are illegal. Cyber criminals fall into this category.</description>
     </item>
     
     <item>
@@ -445,9 +404,8 @@ Exploiting Misconfigured CORS (Cross Origin Resource Sharing)</description>
       <guid>https://sl4x0.github.io/about/</guid>
       <description>I am Abdelrhman Allam, studying Mathematics and Computer Science at Zagazig University.
 Passionate about cybersecurity and looking forward to getting professional knowledge and skills in this field and working to be a Penetration Tester &amp;amp; Red Team OP.
-I have a base knowledge of OWASP&amp;rsquo;s Top 10 vulnerabilities on Web applications.
-Also I am doing Security Research and Bug Hunting on Different Platforms like, HackerOne and Huntr.
-Studied Many Courses and Books as Self-Study: Courses eJPTv2 eWAPTxV2 SANS 552: Bug Bounty and Responsible Disclosure Offensive Security Certified Professional (OSCP) 🔜 Books The Web Application Hacker&amp;rsquo;s Handbook Bug Bounty Bootcamp Real World Bug Hunting Bug Bounty Playbook v1&amp;amp;2 Hacking APIs Solved Many labs and CTFs on different sites: PortSwigger TryHackMe picoCTF RootMe My Resume</description>
+I have a base knowledge of OWASP&amp;rsquo;s Top 10 vulnerabilities on Web &amp;amp; API Applications.
+Also I am doing Security Research and Bug Hunting on Different Platforms like, HackerOne and Huntr.</description>
     </item>
     
   </channel>
