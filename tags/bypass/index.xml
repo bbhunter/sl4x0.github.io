@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>bypass on Abdelrhman Allam</title>
+    <link>https://sl4x0.github.io/tags/bypass/</link>
+    <description>Recent content in bypass on Abdelrhman Allam</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sun, 29 Jan 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://sl4x0.github.io/tags/bypass/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Research | Bypass CSRF Protection w/ XSS</title>
+      <link>https://sl4x0.github.io/research/research-bypass-csrf-w-xss/</link>
+      <pubDate>Sun, 29 Jan 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://sl4x0.github.io/research/research-bypass-csrf-w-xss/</guid>
+      <description>Contents About XSS What can we do w/ XSS? Prevention About CSRF Scenario Using XSS for bypassing CSRF protection Another Bypass Technique Exploiting About XSS In Breif: Web Application receives data from client from GET function, then displays it.
+if(isset($_GET[&amp;#39;text&amp;#39;])) { $var = $_GET[&amp;#39;text&amp;#39;]; print $var; } // This code checks if the &amp;#39;text&amp;#39; variable is set for the GET request. // The code stores its contents in a variable called &amp;#34;$var&amp;#34;, And prints its contents.</description>
+    </item>
+    
+  </channel>
+</rss>

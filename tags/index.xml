@@ -1,12 +1,39 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Tags on 0xSlaxo Blog</title>
+    <title>Tags on Abdelrhman Allam</title>
     <link>https://sl4x0.github.io/tags/</link>
-    <description>Recent content in Tags on 0xSlaxo Blog</description>
+    <description>Recent content in Tags on Abdelrhman Allam</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 02 Nov 2022 15:10:05 +0000</lastBuildDate><atom:link href="https://sl4x0.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 29 Jan 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://sl4x0.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>bypass</title>
+      <link>https://sl4x0.github.io/tags/bypass/</link>
+      <pubDate>Sun, 29 Jan 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://sl4x0.github.io/tags/bypass/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>csrf</title>
+      <link>https://sl4x0.github.io/tags/csrf/</link>
+      <pubDate>Sun, 29 Jan 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://sl4x0.github.io/tags/csrf/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>xss</title>
+      <link>https://sl4x0.github.io/tags/xss/</link>
+      <pubDate>Sun, 29 Jan 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://sl4x0.github.io/tags/xss/</guid>
+      <description></description>
+    </item>
+    
     <item>
       <title>basics</title>
       <link>https://sl4x0.github.io/tags/basics/</link>
@@ -274,15 +301,6 @@
       <pubDate>Tue, 19 Jul 2022 23:48:05 +0000</pubDate>
       
       <guid>https://sl4x0.github.io/tags/click-jacking/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>CSRF</title>
-      <link>https://sl4x0.github.io/tags/csrf/</link>
-      <pubDate>Tue, 19 Jul 2022 23:48:05 +0000</pubDate>
-      
-      <guid>https://sl4x0.github.io/tags/csrf/</guid>
       <description></description>
     </item>
     

