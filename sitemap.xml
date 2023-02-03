@@ -3,7 +3,25 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://sl4x0.github.io/</loc>
-    <lastmod>2023-01-29T00:00:00+00:00</lastmod>
+    <lastmod>2023-02-03T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://sl4x0.github.io/tags/chain/</loc>
+    <lastmod>2023-02-03T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://sl4x0.github.io/tags/lfi/</loc>
+    <lastmod>2023-02-03T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://sl4x0.github.io/tags/rce/</loc>
+    <lastmod>2023-02-03T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://sl4x0.github.io/research/local-file-inclusion-to-rce/</loc>
+    <lastmod>2023-02-03T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://sl4x0.github.io/research/</loc>
+    <lastmod>2023-02-03T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://sl4x0.github.io/tags/</loc>
+    <lastmod>2023-02-03T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://sl4x0.github.io/tags/bypass/</loc>
     <lastmod>2023-01-29T00:00:00+00:00</lastmod>
@@ -12,12 +30,6 @@
     <lastmod>2023-01-29T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://sl4x0.github.io/research/research-bypass-csrf-w-xss/</loc>
-    <lastmod>2023-01-29T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://sl4x0.github.io/research/</loc>
-    <lastmod>2023-01-29T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://sl4x0.github.io/tags/</loc>
     <lastmod>2023-01-29T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://sl4x0.github.io/tags/xss/</loc>
@@ -112,9 +124,6 @@
   </url><url>
     <loc>https://sl4x0.github.io/tags/fu/</loc>
     <lastmod>2022-08-23T12:48:05+00:00</lastmod>
-  </url><url>
-    <loc>https://sl4x0.github.io/tags/rce/</loc>
-    <lastmod>2022-08-14T23:48:05+00:00</lastmod>
   </url><url>
     <loc>https://sl4x0.github.io/web-notes/remote-code-execution/</loc>
     <lastmod>2022-08-14T23:48:05+00:00</lastmod>

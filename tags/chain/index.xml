@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>rce on Abdelrhman Allam</title>
-    <link>https://sl4x0.github.io/tags/rce/</link>
-    <description>Recent content in rce on Abdelrhman Allam</description>
+    <title>chain on Abdelrhman Allam</title>
+    <link>https://sl4x0.github.io/tags/chain/</link>
+    <description>Recent content in chain on Abdelrhman Allam</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 03 Feb 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://sl4x0.github.io/tags/rce/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 03 Feb 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://sl4x0.github.io/tags/chain/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Research | How can Local File Inclusion lead to RCE ?</title>
       <link>https://sl4x0.github.io/research/local-file-inclusion-to-rce/</link>
@@ -14,20 +14,6 @@
       
       <guid>https://sl4x0.github.io/research/local-file-inclusion-to-rce/</guid>
       <description>Content File Inclusion How the attck works for Remote File Inclusion How the attck works for Local File Inclusion Vulnerable PHP Function for File Inclusion Local File Inclusion To Remote Command Execution LFI to RCE via Apache Log LFI to RCE via Process Environ LFI to RCE via Other Files Fundamental of Perl Library for Exploit Website Introduction to Socket Introduction to Library for WWW in Perl Condition to use Socket or LWP Writing LFI to RCE Exploit with Perl Script Perl Exploit to Injecting code into Target Inject via logfile Inject via Other files Inject via process environment Perl Exploit to Executing injected code on Target Execute code from logfile Execute code from other files Execute code from process environment Execute code from logfile LFI to RCE Complete Exploit Use Logfile Injection Defenses References File Inclusion File Inclusion allows attackers to run their own code on a vulnerable website.</description>
-    </item>
-    
-    <item>
-      <title>Remote Code Execution</title>
-      <link>https://sl4x0.github.io/web-notes/remote-code-execution/</link>
-      <pubDate>Sun, 14 Aug 2022 23:48:05 +0000</pubDate>
-      
-      <guid>https://sl4x0.github.io/web-notes/remote-code-execution/</guid>
-      <description>Remote code execution (RCE) occurs when an attacker can execute arbitrary code on a target machine because of a vulnerability or misconfiguration. RCEs are extremely dangerous, as attackers can often ultimately compromise the web application or even the underlying web server.
-References Remote Code Execution (RCE)
-GitHub - alexbieber/Bug_Bounty_writeups: BUG BOUNTY WRITEUPS - OWASP TOP 10
-Remote Code Execution (RCE)
-Hacksplaining: Web Security for Developers
-Web Application Penetration Testing Notes</description>
     </item>
     
   </channel>
